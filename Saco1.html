@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cours de Santé Communautaire - Partie 1 </title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2c7a4d 0%, #145c38 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: #f0f0f0;
+            width: 100%;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #2c7a4d, #145c38);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .header {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            color: #145c38;
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+
+        .badge {
+            background: #2c7a4d;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+
+        .content {
+            padding: 30px;
+            min-height: 500px;
+            max-height: 70vh;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            background: #ffffff;
+        }
+
+        .slide {
+            display: none;
+            animation: fadeIn 0.5s ease;
+            margin-bottom: 30px;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide-title {
+            color: #145c38;
+            font-size: 2em;
+            margin-bottom: 25px;
+            font-weight: 700;
+            border-left: 5px solid #2c7a4d;
+            padding-left: 20px;
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 10;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+        }
+
+        .slide-content {
+            color: #2c3e50;
+            line-height: 1.8;
+            font-size: 1.1em;
+        }
+
+        .slide-content h3 {
+            color: #2c7a4d;
+            margin: 20px 0 10px 0;
+            font-size: 1.4em;
+        }
+
+        .slide-content h4 {
+            color: #145c38;
+            margin: 15px 0 8px 0;
+            font-size: 1.2em;
+        }
+
+        .slide-content p {
+            margin: 15px 0;
+        }
+
+        .slide-content ul, .slide-content ol {
+            margin: 15px 0 15px 30px;
+        }
+
+        .slide-content li {
+            margin: 8px 0;
+        }
+
+        .definition {
+            background: #e8f5e9;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #2c7a4d;
+        }
+
+        .formula {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 1.2em;
+            text-align: center;
+            border-left: 4px solid #145c38;
+        }
+
+        .example {
+            background: #fff3e0;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #ff9800;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .table th, .table td {
+            border: 1px solid #dee2e6;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #145c38;
+        }
+
+        .table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .controls {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-btn {
+            background: white;
+            color: #2c3e50;
+            border: 1px solid #dee2e6;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            background: #e9ecef;
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .play-btn {
+            background: linear-gradient(90deg, #2c7a4d, #145c38);
+            color: white;
+            box-shadow: 0 4px 15px rgba(44, 122, 77, 0.4);
+        }
+
+        .play-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(44, 122, 77, 0.5);
+        }
+
+        .stop-btn {
+            background: #dc3545;
+            color: white;
+        }
+
+        .stop-btn:hover {
+            background: #c82333;
+        }
+
+        .counter {
+            color: #6c757d;
+            font-size: 0.9em;
+        }
+
+        .status {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 0.9em;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .scroll-progress {
+            height: 4px;
+            background: linear-gradient(90deg, #2c7a4d, #145c38);
+            width: 0%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 20;
+        }
+
+        .section-marker {
+            border-bottom: 1px solid #e9ecef;
+            margin: 20px 0;
+            padding-bottom: 10px;
+            color: #2c7a4d;
+            font-weight: 600;
+            font-size: 1.3em;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                padding: 20px;
+                max-height: 60vh;
+            }
+            
+            .slide-title {
+                font-size: 1.6em;
+            }
+            
+            .controls {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-buttons {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="status" id="status">Mode navigation</div>
+    
+    <div class="container">
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        
+        <div class="header">
+            <h1>🏥 Santé Communautaire - Partie 1 </h1>
+            <span class="badge" id="slideCounter">1/14</span>
+        </div>
+
+        <div class="content" id="content">
+            <!-- Les slides seront injectées ici par JavaScript -->
+        </div>
+
+        <div class="controls">
+            <div class="nav-buttons">
+                <button class="nav-btn" onclick="prevSlide()" id="prevBtn">← Précédent</button>
+                <button class="nav-btn" onclick="nextSlide()" id="nextBtn">Suivant →</button>
+            </div>
+            <button class="play-btn" onclick="toggleAutoPlay()" id="playBtn">▶ Lecture automatique</button>
+        </div>
+    </div>
+
+    <audio id="audioPlayer" src="Saco1.mp3" controls style="display: none;"></audio>
+    <audio id="backgroundMusic" loop style="display: none;"></audio>
+
+    <script>
+        alert("Astuce: Mettez le cours en pause ⏸️ pour relire 📄 les écrits.\nProfitez bien de ce cours !🙂");
+        
+        // Données du cours - Partie 1 : Slides 1 à 14 (Introduction à la Famille)
+        const slides = [
+            {
+                title: "Introduction à la Santé Communautaire",
+                content: `
+                    <div class="definition">
+                        <strong>Définition :</strong> La santé communautaire est un processus qui implique que les membres d'une communauté travaillent ensemble pour identifier et aborder leurs problèmes de santé, exprimer leurs besoins et participer activement à la mise en place de solutions.
+                    </div>
+                    <p>Il s'agit de l'application des méthodes de la santé publique pour promouvoir la santé au sein d'une communauté, en travaillant sur les aspects sanitaires de manière collective et en réseau.</p>
+                    <p>Les agents de santé communautaires jouent un rôle clé en fournissant éducation, prévention, soins et suivi à domicile.</p>
+                `
+            },
+            {
+                title: "Définition Approfondie",
+                content: `
+                    <div class="definition">
+                        <p>Approche locale et participative de la santé qui implique activement les membres d'une communauté dans l'analyse, la planification, la mise en œuvre et l'évaluation de leurs propres problèmes de santé.</p>
+                    </div>
+                    <p>Elle se distingue de la santé publique en plaçant l'<strong>autonomisation (empowerment)</strong> de la population au cœur de sa démarche.</p>
+                `
+            },
+            {
+                title: "Principes Clés de la Santé Communautaire",
+                content: `
+                    <h3>1. Participation communautaire</h3>
+                    <p>Les individus et les familles s'impliquent dans la prise en charge de leur santé et de leur bien-être.</p>
+                    
+                    <h3>2. Approche collective</h3>
+                    <p>La santé est abordée de manière collective, en tenant compte des interrelations entre les membres de la communauté.</p>
+                    
+                    <h3>3. Travail en réseau</h3>
+                    <p>Collaborations à différents niveaux, horizontalement (entre pairs) ou verticalement (entre différentes couches professionnelles et sociales).</p>
+                    
+                    <h3>4. Co-construction</h3>
+                    <p>Les solutions et les programmes de santé sont élaborés conjointement avec la communauté elle-même.</p>
+                `
+            },
+            {
+                title: "Structure du Système Sanitaire en RDC (1/3)",
+                content: `
+                    <h3>Éléments du système de santé dans la Zone de Santé :</h3>
+                    <ul>
+                        <li><strong>Les individus, familles et communautés</strong></li>
+                        <li><strong>La structure de santé de premier contact :</strong> le Centre de Santé (CS)</li>
+                        <li><strong>Le niveau de référence :</strong> l'Hôpital Général de Référence (HGR)</li>
+                    </ul>
+                    
+                    <h3>Structures de santé d'une Zone de Santé :</h3>
+                    <ul>
+                        <li><strong>Structures obligatoires :</strong> CS et HGR</li>
+                        <li><strong>Structures facultatives :</strong> Centre de Santé Rural (CSR) et Poste de Santé (PS)</li>
+                    </ul>
+                `
+            },
+            {
+                title: "Structure du Système Sanitaire en RDC (2/3)",
+                content: `
+                    <h3>Les organes de gestion de la Zone de Santé :</h3>
+                    <ul>
+                        <li><strong>L'Equipe Cadre de la Zone de Santé (ECZS)</strong></li>
+                        <li><strong>Le Comité de Gestion de la Zone de Santé</strong></li>
+                        <li><strong>Le Conseil d'Administration</strong></li>
+                    </ul>
+                    
+                    <h3>L'Equipe Cadre de la Zone de Santé</h3>
+                    <p>Structure du leadership intégrée au niveau de la Zone de santé. Composition : 5 personnes</p>
+                    <ul>
+                        <li>Médecin Chef de Zone (MCZ)</li>
+                        <li>Médecin Directeur de l'HGR</li>
+                        <li>Directeur de Nursing (DN)</li>
+                        <li>Agent de Gestion (AG)</li>
+                        <li>Inspecteur de Santé de la ZS (IS)</li>
+                    </ul>
+                    <p>Les 4 fonctions intégrées : médicale, de nursing, administrative et d'appui logistique.</p>
+                `
+            },
+            {
+                title: "Structure du Système Sanitaire en RDC (3/3)",
+                content: `
+                    <h3>Comité de Gestion de la ZS</h3>
+                    <p><strong>Membres :</strong></p>
+                    <ul>
+                        <li>Membres de l'Equipe Cadre de la ZS</li>
+                        <li>Un représentant de l'autorité locale</li>
+                        <li>Un représentant des Infirmiers Titulaires des CS</li>
+                        <li>Un représentant des COSA</li>
+                        <li>Partenaires privés ou confessionnels</li>
+                    </ul>
+                    <p>Présidé par le Médecin Chef de Zone</p>
+                    <p><strong>Attributions :</strong> Gestion des ressources, préparation des dossiers pour le CA</p>
+                    
+                    <h3>Conseil d'Administration de la ZS</h3>
+                    <p>Présidé par le Chef de Division Provinciale de la Santé</p>
+                    <p><strong>Attributions :</strong> Approbation des plans, gestion des ressources, collaboration avec partenaires</p>
+                `
+            },
+            {
+                title: "Participation Communautaire",
+                content: `
+                    <div class="definition">
+                        <p><strong>Définition :</strong> Processus par lequel les personnes, individuellement ou en groupe, exercent leur droit de jouer un rôle actif et direct dans le développement des services de santé appropriés, en garantissant les conditions d'une amélioration durable de la vie et en soutenant l'octroi aux communautés du pouvoir dans le développement global.</p>
+                    </div>
+                    
+                    <h3>Avantages :</h3>
+                    <ul>
+                        <li>Concevoir l'état de santé objectivement plutôt qu'avec fatalisme</li>
+                        <li>Inciter à la prise de mesures préventives</li>
+                        <li>Investir main d'œuvre, temps, argent dans la promotion de la santé</li>
+                        <li>Utiliser et entretenir les ouvrages construites</li>
+                        <li>Étendre les activités de soins à la périphérie</li>
+                        <li>Rendre efficace l'éducation sanitaire</li>
+                        <li>Promouvoir l'équité et l'autosuffisance communautaire</li>
+                    </ul>
+                    
+                    <h3>Niveaux de participation :</h3>
+                    <ul>
+                        <li>Participation marginale</li>
+                        <li>Participation active (substantielle)</li>
+                    </ul>
+                `
+            },
+            {
+                title: "La Famille, Base de la Santé (1/3)",
+                content: `
+                    <div class="definition">
+                        <p>Dès le début de l'humanité, la vie et le développement des sociétés ont toujours reposé principalement sur la famille.</p>
+                    </div>
+                    
+                    <h3>Rôles fondamentaux de la famille :</h3>
+                    <ul>
+                        <li>Cellule de toute société</li>
+                        <li>Premier soutien affectif et social</li>
+                        <li>Premiers soins assurés en famille</li>
+                        <li>Principal lien de solidarité entre les individus</li>
+                        <li>Véhicule et transmission des valeurs</li>
+                    </ul>
+                    
+                    <h3>Obstacles à l'unité familiale :</h3>
+                    <ul>
+                        <li>Urbanisation rapide et anarchique</li>
+                        <li>Détérioration de l'environnement</li>
+                        <li>Migrations, guerres et conflits</li>
+                    </ul>
+                `
+            },
+            {
+                title: "La Famille, Base de la Santé (2/3)",
+                content: `
+                    <h3>La santé est fonction de :</h3>
+                    <ul>
+                        <li>L'environnement social et physique</li>
+                        <li>Habitudes et modes de vie de la famille</li>
+                        <li>Comportement sanitaire de ses membres</li>
+                    </ul>
+                    
+                    <h3>Qualité de vie familiale dépend de :</h3>
+                    <ul>
+                        <li>Conditions de logement</li>
+                        <li>Accès à l'eau potable</li>
+                        <li>Salubrité du milieu de vie</li>
+                        <li>Sécurité alimentaire</li>
+                        <li>Capacité à comprendre les conditions de santé</li>
+                        <li>Pouvoir faire appel aux services de santé</li>
+                    </ul>
+                `
+            },
+            {
+                title: "La Famille, Base de la Santé (3/3)",
+                content: `
+                    <div class="definition">
+                        <p>La mère est généralement le <strong>premier agent sanitaire</strong> de la famille. Son niveau d'éducation et d'instruction constitue la première condition de la santé familiale.</p>
+                    </div>
+                    
+                    <h3>Importance de l'éducation de la mère :</h3>
+                    <ul>
+                        <li>Poser des gestes utiles</li>
+                        <li>Reconnaître des signes d'aggravation</li>
+                        <li>Recourir à temps aux services de santé</li>
+                    </ul>
+                    
+                    <p>La perception de la santé et de la maladie dépend de la qualité des rapports familiaux.</p>
+                    <p>L'état de santé d'un individu est fonction de :</p>
+                    <ul>
+                        <li>Qualité du milieu familial</li>
+                        <li>Événements qui s'y produisent</li>
+                        <li>Santé des autres (IST, SIDA, TBC)</li>
+                    </ul>
+                `
+            },
+            {
+                title: "Famille et Soins Mère-Enfant (1/2)",
+                content: `
+                    <h3>1. Soins prénatals</h3>
+                    <ul>
+                        <li>Dépistage précoce de la grossesse</li>
+                        <li>Éducation pour la santé durant la grossesse</li>
+                        <li>Soins prénatals de base</li>
+                        <li>Détection des complications</li>
+                    </ul>
+                    
+                    <h3>2. Pratique de l'accouchement</h3>
+                    <ul>
+                        <li>Identification du début du travail</li>
+                        <li>Détection de risque au moment du travail</li>
+                        <li>Prise en charge du nouveau-né</li>
+                        <li>Soins de base au nouveau-né (allaitement, protection)</li>
+                    </ul>
+                `
+            },
+            {
+                title: "Famille et Soins Mère-Enfant (2/2)",
+                content: `
+                    <h3>3. Soins de base à l'enfant</h3>
+                    <ul>
+                        <li>Nutrition appropriée</li>
+                        <li>Consultation des enfants de moins de 5 ans</li>
+                        <li>Vaccination</li>
+                        <li>Hygiène de l'eau</li>
+                        <li>Garde d'enfant pour libérer la mère</li>
+                    </ul>
+                    
+                    <h3>4. Information sur contrôle de la fécondité</h3>
+                    <p>Santé de la reproduction influencée par les aînées et amies de la famille</p>
+                    
+                    <h3>Évolution des approches :</h3>
+                    <ul>
+                        <li><strong>Ancienne :</strong> schéma médecin-malade</li>
+                        <li><strong>Nouvelle :</strong> triangle thérapeutique (malade - soignant - famille)</li>
+                    </ul>
+                `
+            },
+            {
+                title: "Famille et Demande de Soins",
+                content: `
+                    <div class="definition">
+                        <p>Les besoins de santé des communautés sont constitués par les besoins de santé des familles.</p>
+                    </div>
+                    
+                    <p>Les besoins de santé des familles créent et justifient la demande des soins, y compris l'organisation des services.</p>
+                    
+                    <h3>La planification doit partir de la base :</h3>
+                    <ul>
+                        <li>Nature des besoins</li>
+                        <li>Nature des problèmes</li>
+                        <li>Nombre de bénéficiaires</li>
+                        <li>Tableau épidémiologique</li>
+                        <li>Perception et appréciation des besoins</li>
+                    </ul>
+                `
+            },
+            {
+                title: "Famille Troublée",
+                content: `
+                    <div class="example">
+                        <p>La vie des familles, particulièrement des mères et des enfants, est profondément troublée par :</p>
+                        <ul>
+                            <li>Conflits ethniques</li>
+                            <li>Guerres entraînant des déplacements</li>
+                            <li>Situations périlleuses diverses</li>
+                        </ul>
+                    </div>
+                    
+                    <h3>Conséquences :</h3>
+                    <ul>
+                        <li>Séparation d'avec les autres membres de la famille</li>
+                        <li>Exposition accrue aux risques sanitaires</li>
+                        <li>Vulnérabilité psychologique et sociale</li>
+                    </ul>
+                `
+            }
+        ];
+
+        // Timeline pour la synchronisation audio (en secondes) - Adaptée pour les 14 premières slides
+        const timeline = [
+    42,  // 0: Introduction
+    25,  // 1: Définition approfondie
+    47,  // 2: Principes clés
+    37,  // 3: Structure du système (1)
+    56,  // 4: Structure du système (2)
+    99.5,  // 5: Structure du système (3)
+    84,  // 6: Participation communautaire
+    54,  // 7: Famille base de santé (1)
+    43,  // 8: Famille base de santé (2)
+    57,  // 9: Famille base de santé (3)
+    58,  // 10: Soins mère-enfant (1)
+    44,  // 11: Soins mère-enfant (2)
+    38,  // 12: Demande de soins
+    21   // 13: Famille troublée
+];
+
+        // Calcul des temps cumulés
+        const cumulativeTimes = [];
+        let sum = 0;
+        timeline.forEach((time, index) => {
+            cumulativeTimes[index] = sum;
+            sum += time;
+        });
+        const totalDuration = sum;
+
+        let currentSlide = 0;
+        let isAutoPlaying = false;
+        let autoPlayInterval;
+        const audioPlayer = document.getElementById('audioPlayer');
+        const backgroundMusic = document.getElementById('backgroundMusic');
+
+        function renderSlide(index) {
+            const contentDiv = document.getElementById('content');
+            const slide = slides[index];
+            
+            contentDiv.innerHTML = `
+                <div class="slide active">
+                    <h2 class="slide-title">${slide.title}</h2>
+                    <div class="slide-content">${slide.content}</div>
+                </div>
+            `;
+            
+            document.getElementById('slideCounter').textContent = `${index + 1}/${slides.length}`;
+            document.getElementById('progressFill').style.width = `${((index + 1) / slides.length) * 100}%`;
+            
+            if (!isAutoPlaying) {
+                document.getElementById('prevBtn').disabled = index === 0;
+                document.getElementById('nextBtn').disabled = index === slides.length - 1;
+            } else {
+                document.getElementById('prevBtn').disabled = true;
+                document.getElementById('nextBtn').disabled = true;
+            }
+            
+            if (isAutoPlaying && audioPlayer.src) {
+                const targetTime = cumulativeTimes[index];
+                if (Math.abs(audioPlayer.currentTime - targetTime) > 1) {
+                    audioPlayer.currentTime = targetTime;
+                }
+            }
+            
+            contentDiv.scrollTop = 0;
+        }
+
+        function nextSlide() {
+            if (currentSlide < slides.length - 1) {
+                currentSlide++;
+                renderSlide(currentSlide);
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                renderSlide(currentSlide);
+            }
+        }
+
+        function toggleAutoPlay() {
+            const playBtn = document.getElementById('playBtn');
+            const statusDiv = document.getElementById('status');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            
+            if (!isAutoPlaying) {
+                if (!audioPlayer.src) {
+                    alert('Veuillez ajouter le fichier audio "Saco1.mp3" dans le même dossier.');
+                    return;
+                }
+                
+                isAutoPlaying = true;
+                playBtn.textContent = '⏸ Pause';
+                playBtn.classList.remove('play-btn');
+                playBtn.classList.add('stop-btn');
+                statusDiv.textContent = 'Mode automatique';
+                statusDiv.style.background = 'rgba(40, 167, 69, 0.9)';
+                
+                audioPlayer.play();
+                
+                if (backgroundMusic.src) {
+                    backgroundMusic.play();
+                    backgroundMusic.volume = 0.3;
+                }
+                
+                prevBtn.disabled = true;
+                nextBtn.disabled = true;
+                
+                startSync();
+            } else {
+                isAutoPlaying = false;
+                playBtn.textContent = '▶ Lecture automatique';
+                playBtn.classList.remove('stop-btn');
+                playBtn.classList.add('play-btn');
+                statusDiv.textContent = 'Mode navigation';
+                statusDiv.style.background = 'rgba(0,0,0,0.8)';
+                
+                audioPlayer.pause();
+                if (backgroundMusic.src) {
+                    backgroundMusic.pause();
+                }
+                
+                prevBtn.disabled = currentSlide === 0;
+                nextBtn.disabled = currentSlide === slides.length - 1;
+                
+                if (autoPlayInterval) {
+                    clearInterval(autoPlayInterval);
+                }
+            }
+        }
+
+        function startSync() {
+            autoPlayInterval = setInterval(() => {
+                if (!isAutoPlaying) return;
+                
+                const currentTime = audioPlayer.currentTime;
+                
+                for (let i = 0; i < cumulativeTimes.length; i++) {
+                    const nextTime = cumulativeTimes[i + 1] || totalDuration;
+                    if (currentTime >= cumulativeTimes[i] && currentTime < nextTime) {
+                        if (i !== currentSlide) {
+                            currentSlide = i;
+                            renderSlide(currentSlide);
+                        }
+                        break;
+                    }
+                }
+                
+                const progress = (currentTime / totalDuration) * 100;
+                document.getElementById('progressFill').style.width = `${progress}%`;
+            }, 100);
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (isAutoPlaying) return;
+            
+            if (e.key === 'ArrowLeft') {
+                prevSlide();
+            } else if (e.key === 'ArrowRight') {
+                nextSlide();
+            } else if (e.key === ' ') {
+                e.preventDefault();
+                toggleAutoPlay();
+            }
+        });
+
+        renderSlide(0);
+    </script>
+</body>
+</html>
+                      
