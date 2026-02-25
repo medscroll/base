@@ -335,25 +335,131 @@
             font-size: 1.2rem;
         }
 
-        /* Responsive */
-        @media (max-width: 500px) {
-            .app-container {
-                max-width: 100%;
+        /* Modal pour la saisie du nom */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: #112240;
+            border-radius: 15px;
+            padding: 25px;
+            max-width: 350px;
+            width: 90%;
+            border: 2px solid #64ffda;
+            box-shadow: 0 10px 30px rgba(100, 255, 218, 0.2);
+            animation: modalAppear 0.3s ease;
+        }
+
+        @keyframes modalAppear {
+            from {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
             }
         }
 
-        /* Scrollbar stylisée */
-        .main-content::-webkit-scrollbar {
-            width: 5px;
+        .modal-content h3 {
+            color: #64ffda;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+            text-align: center;
         }
 
-        .main-content::-webkit-scrollbar-track {
-            background: #112240;
+        .modal-content input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            background-color: #0a192f;
+            border: 2px solid #1e3a5c;
+            border-radius: 8px;
+            color: #e6f1ff;
+            font-size: 1rem;
+            text-transform: uppercase;
         }
 
-        .main-content::-webkit-scrollbar-thumb {
-            background: #64ffda;
-            border-radius: 5px;
+        .modal-content input:focus {
+            outline: none;
+            border-color: #64ffda;
+        }
+
+        .modal-content input::placeholder {
+            color: #8892b0;
+            text-transform: none;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .modal-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .modal-btn.cancel {
+            background-color: #1e3a5c;
+            color: #e6f1ff;
+        }
+
+        .modal-btn.cancel:hover {
+            background-color: #2a4a72;
+        }
+
+        .modal-btn.confirm {
+            background-color: #64ffda;
+            color: #0a192f;
+            font-weight: 600;
+        }
+
+        .modal-btn.confirm:hover {
+            background-color: #4fd1b0;
+        }
+
+        /* Message d'accès refusé */
+        .access-denied {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #ff4444;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+            max-width: 90%;
+        }
+
+        .access-denied.show {
+            display: flex;
         }
 
         /* Message de redirection WhatsApp */
@@ -387,6 +493,27 @@
             font-size: 1.2rem;
             cursor: pointer;
             margin-left: 10px;
+        }
+
+        /* Responsive */
+        @media (max-width: 500px) {
+            .app-container {
+                max-width: 100%;
+            }
+        }
+
+        /* Scrollbar stylisée */
+        .main-content::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .main-content::-webkit-scrollbar-track {
+            background: #112240;
+        }
+
+        .main-content::-webkit-scrollbar-thumb {
+            background: #64ffda;
+            border-radius: 5px;
         }
     </style>
 </head>
@@ -430,15 +557,15 @@
             <div class="menu-section">
                 <h2>⭐ Premium</h2>
                 <div class="menu-items">
-                    <div class="menu-card premium" data-premium="anatomie">
+                    <div class="menu-card premium" data-premium="santecom3">
                         <h3> Santé Communautaire III <span class="badge">Premium</span></h3>
-                        <div class="description">Deuxième Partie du Cours de Santé Communautaire</div>
+                        <div class="description">Troisième Partie du Cours de Santé Communautaire</div>
                     </div>
                     <div class="menu-card premium" data-premium="vaccinologie">
                         <h3>💉 Vaccinologie <span class="badge">Premium</span></h3>
                         <div class="description">Mécanismes immunitaires</div>
                     </div>
-                    <div class="menu-card premium" data-premium="medecine">
+                    <div class="menu-card premium" data-premium="tronc">
                         <h3> Anatomie des Mouvements du Tronc<span class="badge">Premium</span></h3>
                         <div class="description">Description des mouvements du tronc</div>
                     </div>
@@ -490,10 +617,10 @@
             </div>
 
             <!-- Section Premium -->
-            <div class="section-title">⭐ Premium <span class="premium-badge">(contactez-nous)</span></div>
+            <div class="section-title">⭐ Premium <span class="premium-badge">(accès réservé)</span></div>
             <div class="cards-grid">
-                <!-- Carte Premium 1 : Anatomie -->
-                <div class="featured-card premium-card premium-pulse" data-premium="anatomie">
+                <!-- Carte Premium 1 : Santé Communautaire III -->
+                <div class="featured-card premium-card premium-pulse" data-premium="santecom3">
                     <div class="card-content">
                         <div class="card-icon">🔬</div>
                         <h3> Santé Communautaire III<span class="premium-badge">Premium</span></h3>
@@ -516,8 +643,8 @@
                     </div>
                 </div>
 
-                <!-- Carte Premium 3 : Médecine interne -->
-                <div class="featured-card premium-card premium-pulse" data-premium="medecine">
+                <!-- Carte Premium 3 : Anatomie du Tronc -->
+                <div class="featured-card premium-card premium-pulse" data-premium="tronc">
                     <div class="card-content">
                         <div class="card-icon">🏥</div>
                         <h3> Anatomie des Mouvements du Tronc<span class="premium-badge">Premium</span></h3>
@@ -542,23 +669,56 @@
         </div>
     </div>
 
-    <!-- Message de redirection temporaire (optionnel) -->
+    <!-- Modal pour la saisie du nom -->
+    <div class="modal-overlay" id="nameModal">
+        <div class="modal-content">
+            <h3>🔐 Accès Premium</h3>
+            <input type="text" id="userName" placeholder="Entrez votre Prénom NOM en majuscules" autocomplete="off">
+            <div class="modal-buttons">
+                <button class="modal-btn cancel" id="cancelModal">Annuler</button>
+                <button class="modal-btn confirm" id="confirmModal">Valider</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Message d'accès refusé -->
+    <div class="access-denied" id="accessDenied">
+        <span>❌ Accès refusé - Vous n'êtes pas dans la liste des utilisateurs Premium</span>
+        <button class="close-message" onclick="this.parentElement.classList.remove('show')">✕</button>
+    </div>
+
+    <!-- Message de redirection temporaire -->
     <div class="redirect-message" id="redirectMessage">
-        <span>🔒 Redirection vers WhatsApp...</span>
+        <span>📱 Redirection vers WhatsApp...</span>
         <button class="close-message" onclick="this.parentElement.classList.remove('show')">✕</button>
     </div>
 
     <script>
+        // ========== LISTE DES UTILISATEURS PREMIUM ==========
+        const premiumUsers = [
+            "JEAN DUPONT",
+            "MARIE CURIE",
+            "PAUL MARTIN",
+            "SOPHIE DURAND",
+            "THOMAS BERNARD",
+            "EMMA PETIT",
+            "LUCAS ROBERT",
+            "CHLOE RICHARD"
+        ];
+        // ====================================================
+
+        // Variables globales
+        let currentPremiumSubject = null;
+
         // Gestion du menu hamburger
         const hamburgerBtn = document.getElementById('hamburgerBtn');
         const menuOverlay = document.getElementById('menuOverlay');
+        const mainContent = document.getElementById('mainContent');
 
         function toggleMenu() {
             hamburgerBtn.classList.toggle('open');
             menuOverlay.classList.toggle('open');
             
-            // Empêcher le scroll du contenu principal quand le menu est ouvert
-            const mainContent = document.getElementById('mainContent');
             if (menuOverlay.classList.contains('open')) {
                 mainContent.style.overflow = 'hidden';
             } else {
@@ -571,50 +731,137 @@
         // Fermer le menu si on clique sur un lien libre accès
         document.querySelectorAll('.menu-card:not(.premium)').forEach(card => {
             card.addEventListener('click', () => {
-                toggleMenu(); // Ferme le menu après navigation
+                if (menuOverlay.classList.contains('open')) {
+                    toggleMenu();
+                }
             });
         });
 
         // Numéro WhatsApp
         const whatsappNumber = '243961803375';
-        const messagePrefix = 'Bonjour MedScroll, je suis intéressé par le contenu Premium';
 
-        // Fonction pour ouvrir WhatsApp avec un message personnalisé
-        function openWhatsApp(sujet) {
-            let message = messagePrefix;
-            if (sujet === 'anatomie') {
-                message = 'Bonjour MedScroll, je suis intéressé par le contenu Premium : Anatomie systémique 3D';
-            } else if (sujet === 'vaccinologie') {
-                message = 'Bonjour MedScroll, je suis intéressé par le contenu Premium : Vaccinologie 3D';
-            } else if (sujet === 'medecine') {
-                message = 'Bonjour MedScroll, je suis intéressé par le contenu Premium : Médecine interne 3D';
-            }
+        // Éléments du modal
+        const modal = document.getElementById('nameModal');
+        const userNameInput = document.getElementById('userName');
+        const cancelModal = document.getElementById('cancelModal');
+        const confirmModal = document.getElementById('confirmModal');
+        const accessDenied = document.getElementById('accessDenied');
+        const redirectMessage = document.getElementById('redirectMessage');
+
+        // Fonction pour ouvrir le modal
+        function openNameModal(subject) {
+            currentPremiumSubject = subject;
+            userNameInput.value = ''; // Vider l'input
+            modal.classList.add('show');
+        }
+
+        // Fonction pour fermer le modal
+        function closeModal() {
+            modal.classList.remove('show');
+            currentPremiumSubject = null;
+        }
+
+        // Fonction pour vérifier l'accès premium
+        function checkPremiumAccess(userName, subject) {
+            // Vérifier si le nom est dans la liste (insensible à la casse)
+            const isPremium = premiumUsers.includes(userName.toUpperCase().trim());
             
-            const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
-            
-            // Afficher un message de redirection
-            const redirectMsg = document.getElementById('redirectMessage');
-            redirectMsg.classList.add('show');
-            
-            // Ouvrir WhatsApp après un court délai
-            setTimeout(() => {
+            if (isPremium) {
+                // ACCÈS AUTORISÉ - Rediriger vers le contenu premium
+                closeModal();
+                
+                // Définir les URLs pour chaque sujet
+                let premiumUrl = '';
+                switch(subject) {
+                    case 'santecom3':
+                        premiumUrl = 'SanteCom3.html'; // À remplacer par l'URL réelle
+                        break;
+                    case 'vaccinologie':
+                        premiumUrl = 'Vaccinologie.html'; // À remplacer par l'URL réelle
+                        break;
+                    case 'tronc':
+                        premiumUrl = 'AnatomieTronc.html'; // À remplacer par l'URL réelle
+                        break;
+                    default:
+                        premiumUrl = '#';
+                }
+                
+                // Ouvrir le contenu premium dans un nouvel onglet
+                window.open(premiumUrl, '_blank');
+                
+                // Afficher un message de succès
+                showRedirectMessage('✅ Accès autorisé - Redirection en cours...', '#25D366');
+                
+            } else {
+                // ACCÈS REFUSÉ - Ouvrir WhatsApp avec le nom inclus
+                closeModal();
+                
+                const message = `Bonjour MedScroll, je suis intéressé par le contenu Premium. Mon nom est : ${userName.toUpperCase()}`;
+                const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+                
+                // Afficher le message d'accès refusé
+                accessDenied.classList.add('show');
+                setTimeout(() => {
+                    accessDenied.classList.remove('show');
+                }, 3000);
+                
+                // Ouvrir WhatsApp
                 window.open(whatsappUrl, '_blank');
-            }, 500);
+            }
+        }
+
+        // Fonction pour afficher un message de redirection personnalisé
+        function showRedirectMessage(text, color) {
+            redirectMessage.querySelector('span').textContent = text;
+            redirectMessage.style.backgroundColor = color;
+            redirectMessage.classList.add('show');
             
-            // Cacher le message après 3 secondes
             setTimeout(() => {
-                redirectMsg.classList.remove('show');
+                redirectMessage.classList.remove('show');
+                // Remettre la couleur par défaut
+                redirectMessage.style.backgroundColor = '#25D366';
+                redirectMessage.querySelector('span').textContent = '📱 Redirection vers WhatsApp...';
             }, 3000);
         }
+
+        // Gestionnaires d'événements pour le modal
+        cancelModal.addEventListener('click', closeModal);
+
+        confirmModal.addEventListener('click', () => {
+            const userName = userNameInput.value.trim();
+            
+            if (userName === '') {
+                alert('Veuillez entrer votre nom');
+                return;
+            }
+            
+            if (currentPremiumSubject) {
+                checkPremiumAccess(userName, currentPremiumSubject);
+            }
+        });
+
+        // Fermer le modal si on clique en dehors
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
+        // Gestion de la touche Entrée dans l'input
+        userNameInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                confirmModal.click();
+            }
+        });
 
         // Gestion des clics sur les cartes Premium du menu
         document.querySelectorAll('.menu-card.premium').forEach(card => {
             card.addEventListener('click', (e) => {
                 e.preventDefault();
                 const sujet = card.getAttribute('data-premium');
-                openWhatsApp(sujet);
+                openNameModal(sujet);
                 if (menuOverlay.classList.contains('open')) {
-                    toggleMenu(); // Ferme le menu après redirection
+                    toggleMenu(); // Ferme le menu
                 }
             });
         });
@@ -624,7 +871,7 @@
             card.addEventListener('click', (e) => {
                 e.preventDefault();
                 const sujet = card.getAttribute('data-premium');
-                openWhatsApp(sujet);
+                openNameModal(sujet);
             });
         });
 
@@ -643,11 +890,13 @@
         }
         fixAndroidLayout();
 
-        // Fermer le message de redirection manuellement
-        document.querySelector('.close-message').addEventListener('click', function(e) {
-            e.stopPropagation();
-            this.parentElement.classList.remove('show');
+        // Fermer les messages manuellement
+        document.querySelectorAll('.close-message').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                this.parentElement.classList.remove('show');
+            });
         });
     </script>
 </body>
-</html>
+        </html>
