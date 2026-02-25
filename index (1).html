@@ -580,31 +580,39 @@
         const messagePrefix = 'Bonjour MedScroll, je suis intéressé par le contenu Premium';
 
         // Fonction pour ouvrir WhatsApp avec un message personnalisé
-        function openWhatsApp(sujet) {
-            let message = messagePrefix;
-            if (sujet === 'anatomie') {
-                message = 'Bonjour MedScroll, je suis intéressé par le contenu Premium : Anatomie systémique 3D';
-            } else if (sujet === 'vaccinologie') {
-                message = 'Bonjour MedScroll, je suis intéressé par le contenu Premium : Vaccinologie 3D';
-            } else if (sujet === 'medecine') {
-                message = 'Bonjour MedScroll, je suis intéressé par le contenu Premium : Médecine interne 3D';
+        // VERIFICATION ACCÈS PREMIUM
+        // ===============================
+        function checkPremiumAccess(sujet) {
+            
+            let userName = prompt("ENTREZ VOTRE NOM ET PRÉNOM EN MAJUSCULE");
+            if (!userName) return;
+            userName = userName.trim().toUpperCase();
+            if (premiumUsers.includes(userName)) {
+                // ✅ ACCÈS AUTORISÉ
+                if (sujet === "anatomie") {
+                    window.open("Saco3.html", "_blank");
+                } 
+                else if (sujet === "vaccinologie") {
+                    window.open("Vaccinologie.html", "_blank");
+                }
+                else if (sujet === "medecine") {
+                    window.open("Tronc.html", "_blank");
+                }
             }
-            
-            const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
-            
-            // Afficher un message de redirection
-            const redirectMsg = document.getElementById('redirectMessage');
-            redirectMsg.classList.add('show');
-            
-            // Ouvrir WhatsApp après un court délai
-            setTimeout(() => {
-                window.open(whatsappUrl, '_blank');
-            }, 500);
-            
-            // Cacher le message après 3 secondes
-            setTimeout(() => {
-                redirectMsg.classList.remove('show');
-            }, 3000);
+            else {
+                // ❌ PAS DANS LA LISTE → REDIRECTION WHATSAPP AVEC SON NOM
+                let message = `Bonjour MedScroll, je suis ${userName} et je souhaite obtenir l'accès Premium (${sujet}).`;
+                const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+                const redirectMsg = document.getElementById('redirectMessage');
+                redirectMsg.classList.add('show');
+
+                setTimeout(() => {
+                    window.open(whatsappUrl, '_blank');
+                }, 500);
+                setTimeout(() => {
+                    redirectMsg.classList.remove('show');
+                }, 3000);
+            }
         }
 
         // Gestion des clics sur les cartes Premium du menu
@@ -612,9 +620,9 @@
             card.addEventListener('click', (e) => {
                 e.preventDefault();
                 const sujet = card.getAttribute('data-premium');
-                openWhatsApp(sujet);
+                checkPremiumAccess(sujet);
                 if (menuOverlay.classList.contains('open')) {
-                    toggleMenu(); // Ferme le menu après redirection
+                    toggleMenu();
                 }
             });
         });
@@ -622,9 +630,9 @@
         // Gestion des clics sur les cartes Premium du contenu principal
         document.querySelectorAll('.premium-card').forEach(card => {
             card.addEventListener('click', (e) => {
-                e.preventDefault();
-                const sujet = card.getAttribute('data-premium');
-                openWhatsApp(sujet);
+            e.preventDefault();
+            const sujet = card.getAttribute('data-premium');
+            checkPremiumAccess(sujet);
             });
         });
 
