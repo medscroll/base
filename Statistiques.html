@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cours de Statistiques - Probabilités et Distributions</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2c3e50 0%, #1e2a36 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: #f0f0f0;
+            width: 100%;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3498db, #2c3e50);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .header {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            font-size: 1.3em;
+            font-weight: 600;
+        }
+
+        .badge {
+            background: #3498db;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+
+        .content {
+            padding: 30px;
+            min-height: 500px;
+            max-height: 70vh;
+            overflow-y: auto;
+            background: #ffffff;
+            scroll-behavior: smooth;
+        }
+
+        .slide {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide-title {
+            color: #2c3e50;
+            font-size: 2.2em;
+            margin-bottom: 25px;
+            font-weight: 700;
+            border-left: 5px solid #3498db;
+            padding-left: 20px;
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 10;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+        }
+
+        .slide-content {
+            color: #2c3e50;
+            line-height: 1.8;
+            font-size: 1.15em;
+        }
+
+        .slide-content h3 {
+            color: #3498db;
+            margin: 25px 0 15px 0;
+            font-size: 1.5em;
+        }
+
+        .slide-content h4 {
+            color: #2c3e50;
+            margin: 20px 0 10px 0;
+            font-size: 1.25em;
+        }
+
+        .slide-content p {
+            margin: 15px 0;
+        }
+
+        .slide-content ul, .slide-content ol {
+            margin: 15px 0 15px 30px;
+        }
+
+        .slide-content li {
+            margin: 10px 0;
+        }
+
+        .definition {
+            background: #e8f4fd;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 25px 0;
+            border-left: 5px solid #3498db;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .definition strong {
+            color: #2c3e50;
+            font-size: 1.1em;
+        }
+
+        .formula {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 25px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 1.3em;
+            text-align: center;
+            border-left: 5px solid #2c3e50;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .example {
+            background: #fef5e7;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 25px 0;
+            border-left: 5px solid #f39c12;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin: 25px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        th {
+            background: #3498db;
+            color: white;
+            font-weight: 600;
+            padding: 15px;
+            text-align: left;
+        }
+
+        td {
+            border: 1px solid #e9ecef;
+            padding: 12px;
+        }
+
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .controls {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-btn {
+            background: white;
+            color: #2c3e50;
+            border: 1px solid #dee2e6;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            background: #e9ecef;
+            transform: translateY(-1px);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .play-btn {
+            background: linear-gradient(90deg, #3498db, #2c3e50);
+            color: white;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        .play-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.5);
+        }
+
+        .stop-btn {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .stop-btn:hover {
+            background: #c0392b;
+        }
+
+        .counter {
+            color: #6c757d;
+            font-size: 0.95em;
+            background: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .status {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 0.9em;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            backdrop-filter: blur(5px);
+        }
+
+        .section-marker {
+            border-bottom: 2px solid #3498db;
+            margin: 30px 0 20px 0;
+            padding-bottom: 10px;
+            color: #2c3e50;
+            font-weight: 600;
+            font-size: 1.3em;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                padding: 20px;
+                max-height: 60vh;
+            }
+            
+            .slide-title {
+                font-size: 1.8em;
+            }
+            
+            .controls {
+                flex-direction: column;
+            }
+            
+            .nav-buttons {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            button {
+                flex: 1;
+                text-align: center;
+            }
+            
+            .status {
+                top: 10px;
+                right: 10px;
+                font-size: 0.8em;
+                padding: 8px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="status" id="status">Mode navigation</div>
+    
+    <div class="container">
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        
+        <div class="header">
+            <h1>📊 Cours de Statistiques - Probabilités et Distributions</h1>
+            <span class="badge" id="slideCounter">1/15</span>
+        </div>
+
+        <div class="content" id="content">
+            <!-- Les slides seront injectées dynamiquement -->
+        </div>
+
+        <div class="controls">
+            <div class="nav-buttons">
+                <button class="nav-btn" onclick="prevSlide()" id="prevBtn">← Précédent</button>
+                <button class="nav-btn" onclick="nextSlide()" id="nextBtn">Suivant →</button>
+            </div>
+            <button class="play-btn" onclick="toggleAutoPlay()" id="playBtn">▶ Lecture automatique</button>
+            <span class="counter" id="timeDisplay">00:00 / 00:00</span>
+        </div>
+    </div>
+
+    <audio id="audioPlayer" src="statistiques_cours.mp3" preload="auto"></audio>
+
+    <script>
+        // Message d'accueil
+        alert("📚 Bienvenue dans le cours de Statistiques !\n\nAstuces :\n• Mettez le cours en pause ⏸️ pour lire les écrits 📄\n• Utilisez les flèches ← → pour naviguer\n• La barre d'espace démarre/arrête la lecture\n\nProfitez bien de ce cours !");
+
+        // ============================================
+        // DONNÉES DU COURS - 15 SLIDES
+        // ============================================
+        const slides = [
+            {
+                title: "Introduction à la Statistique",
+                content: `
+                    <div class="definition">
+                        <strong>Définition :</strong> La statistique est à la fois un ensemble de données et une activité qui consiste en leur recueil, leur traitement et leur interprétation en vue de prendre une décision.
+                    </div>
+                    
+                    <p>Les données d'observation, appelées statistiques, sont prélevées dans une population. La statistique s'intéresse au rapport de population nombreuse.</p>
+                    
+                    <div class="example">
+                        <strong>Exemple :</strong> Dans une entreprise, on collecte des données sur les employés (âge, salaire, ancienneté) pour analyser la structure des ressources humaines et prendre des décisions de gestion.
+                    </div>
+                `
+            },
+            {
+                title: "Grandes Parties de la Statistique",
+                content: `
+                    <h3>Les deux branches principales :</h3>
+                    
+                    <h4>1. Statistique descriptive (déductive)</h4>
+                    <p>Part de la population mère pour étudier et calculer les propriétés d'un échantillon. Elle décrit, résume et présente les données sous forme de tableaux, graphiques et indicateurs.</p>
+                    
+                    <h4>2. Statistique inférentielle (inductive)</h4>
+                    <p>Part de l'échantillon pour remonter et généraliser les résultats à la population mère. Ce sont les lois de probabilité qui permettent de faire ce retour de l'échantillon vers la population.</p>
+                    
+                    <div class="definition">
+                        <strong>À retenir :</strong> La statistique descriptive décrit l'échantillon, la statistique inférentielle généralise à la population.
+                    </div>
+                `
+            },
+            {
+                title: "Expérience Aléatoire et Ensemble Fondamental",
+                content: `
+                    <div class="definition">
+                        <strong>Expérience aléatoire :</strong> Action dont on ne peut pas prédire avec certitude le résultat.
+                    </div>
+                    
+                    <p>Exemples d'expériences aléatoires :</p>
+                    <ul>
+                        <li>Lancer d'un dé</li>
+                        <li>Tirage d'une carte dans un jeu</li>
+                        <li>Tirage d'une boule dans une urne</li>
+                        <li>Lancement d'une pièce de monnaie</li>
+                    </ul>
+                    
+                    <div class="definition">
+                        <strong>Ensemble fondamental (Ω) :</strong> Ensemble de tous les résultats possibles d'une expérience aléatoire.
+                    </div>
+                    
+                    <div class="example">
+                        <strong>Exemple :</strong> Pour un dé à 6 faces, Ω = {1, 2, 3, 4, 5, 6}
+                    </div>
+                `
+            },
+            {
+                title: "Probabilité d'un Événement",
+                content: `
+                    <h3>Propriétés fondamentales :</h3>
+                    
+                    <div class="formula">
+                        P(E) = P(E₁) + P(E₂) + ... + P(Eₙ)
+                    </div>
+                    
+                    <p>Où E₁, E₂, ..., Eₙ sont les événements élémentaires qui composent E.</p>
+                    
+                    <h4>Propriétés :</h4>
+                    <ul>
+                        <li>Si E₁ ⊂ E₂, alors P(E₁) ≤ P(E₂)</li>
+                        <li>P(Ē) = 1 - P(E) où Ē est le complémentaire de E</li>
+                    </ul>
+                    
+                    <div class="example">
+                        <strong>Exemple :</strong> Pour un dé, soit E = {1, 2, 3}. Alors P(E) = P(1) + P(2) + P(3) = 1/6 + 1/6 + 1/6 = 1/2
+                    </div>
+                `
+            },
+            {
+                title: "Loi d'Addition des Probabilités",
+                content: `
+                    <div class="formula">
+                        P(A ∪ B) = P(A) + P(B) - P(A ∩ B)
+                    </div>
+                    
+                    <p>Pour trois événements :</p>
+                    <div class="formula">
+                        P(A ∪ B ∪ C) = P(A) + P(B) + P(C) - P(A∩B) - P(A∩C) - P(B∩C) + P(A∩B∩C)
+                    </div>
+                    
+                    <h4>Cas particulier :</h4>
+                    <p>Si A et B sont mutuellement exclusifs (A ∩ B = ∅), alors :</p>
+                    <div class="formula">
+                        P(A ∪ B) = P(A) + P(B)
+                    </div>
+                    
+                    <div class="example">
+                        <strong>Exemple :</strong> Si P(A) = 0,3, P(B) = 0,4 et P(A∩B) = 0,1, alors P(A∪B) = 0,3 + 0,4 - 0,1 = 0,6
+                    </div>
+                `
+            },
+            {
+                title: "Loi de Multiplication et Probabilité Conditionnelle",
+                content: `
+                    <div class="formula">
+                        P(A ∩ B) = P(A) × P(B|A)
+                    </div>
+                    
+                    <div class="definition">
+                        <strong>Probabilité conditionnelle :</strong> P(B|A) est la probabilité que B se réalise sachant que A est déjà réalisé.
+                    </div>
+                    
+                    <div class="formula">
+                        P(A ∩ B ∩ C) = P(A) × P(B|A) × P(C|A ∩ B)
+                    </div>
+                    
+                    <h4>Cas de l'indépendance :</h4>
+                    <p>Si A et B sont indépendants :</p>
+                    <div class="formula">
+                        P(A ∩ B) = P(A) × P(B)
+                    </div>
+                    
+                    <div class="example">
+                        <strong>Exemple :</strong> On tire deux cartes sans remise. La probabilité que la première soit un as et la seconde un roi est : P(première as) × P(seconde roi | première as) = (4/52) × (4/51)
+                    </div>
+                `
+            },
+            {
+                title: "Variable Aléatoire Uniforme Discrète",
+                content: `
+                    <div class="definition">
+                        <strong>Définition :</strong> X ∼ U(1, ..., m) signifie que X suit une loi uniforme discrète sur les entiers de 1 à m.
+                    </div>
+                    
+                    <h4>Fonction de probabilité :</h4>
+                    <div class="formula">
+                        P(X = x) = 1/m pour tout x ∈ {1, 2, ..., m}
+                    </div>
+                    
+                    <h4>Espérance mathématique :</h4>
+                    <div class="formula">
+                        E(X) = (m + 1)/2
+                    </div>
+                    
+                    <h4>Variance :</h4>
+                    <div class="formula">
+                        V(X) = (m² - 1)/12
+                    </div>
+                    
+                    <h4>Écart-type :</h4>
+                    <div class="formula">
+                        σ(X) = √[(m² - 1)/12]
+                    </div>
+                `
+            },
+            {
+                title: "Exemple de Variable Uniforme - Le Dé à 6 Faces",
+                content: `
+                    <h3>Lancer d'un dé équilibré</h3>
+                    
+                    <div class="table-container">
+                        <table>
+                            <tr>
+                                <th>Valeur x</th>
+                                <th>1</th>
+                                <th>2</th>
+                                <th>3</th>
+                                <th>4</th>
+                                <th>5</th>
+                                <th>6</th>
+                            </tr>
+                            <tr>
+                                <th>P(X = x)</th>
+                                <td>1/6</td>
+                                <td>1/6</td>
+                                <td>1/6</td>
+                                <td>1/6</td>
+                                <td>1/6</td>
+                                <td>1/6</td>
+                            </tr>
+                        </table>
+                    </div>
+                    
+                    <h4>Calculs :</h4>
+                    <div class="formula">
+                        E(X) = (6 + 1)/2 = 3,5
+                    </div>
+                    
+                    <div class="formula">
+                        V(X) = (6² - 1)/12 = (36 - 1)/12 = 35/12 ≈ 2,92
+                    </div>
+                    
+                    <div class="formula">
+                        σ(X) = √(35/12) ≈ 1,71
+                    </div>
+                    
+                    <div class="example">
+                        <strong>Interprétation :</strong> En moyenne, sur un grand nombre de lancers, la valeur moyenne sera d'environ 3,5.
+                    </div>
+                `
+            },
+            {
+                title: "Distribution de Bernoulli",
+                content: `
+                    <div class="definition">
+                        <strong>Définition :</strong> Une variable aléatoire suit une loi de Bernoulli lorsqu'elle n'a que deux valeurs possibles : succès (1) ou échec (0). On dit que la variable est dichotomique.
+                    </div>
+                    
+                    <h4>Paramètres :</h4>
+                    <ul>
+                        <li>p = probabilité de succès (valeur 1)</li>
+                        <li>q = 1 - p = probabilité d'échec (valeur 0)</li>
+                    </ul>
+                    
+                    <h4>Fonction de probabilité :</h4>
+                    <div class="formula">
+                        P(X = 1) = p, P(X = 0) = 1 - p
+                    </div>
+                    
+                    <h4>Espérance :</h4>
+                    <div class="formula">
+                        E(X) = p
+                    </div>
+                    
+                    <h4>Variance :</h4>
+                    <div class="formula">
+                        V(X) = p(1 - p)
+                    </div>
+                    
+                    <div class="example">
+                        <strong>Exemple :</strong> Lancer d'une pièce équilibrée. Succès = "Face" avec p = 0,5, échec = "Pile" avec q = 0,5.
+                    </div>
+                `
+            },
+            {
+                title: "Distribution Binomiale",
+                content: `
+                    <div class="definition">
+                        <strong>Définition :</strong> La distribution binomiale correspond à la répétition de n épreuves de Bernoulli indépendantes. X compte le nombre de succès.
+                    </div>
+                    
+                    <h4>Caractéristiques :</h4>
+                    <ul>
+                        <li>n = nombre d'épreuves</li>
+                        <li>p = probabilité de succès à chaque épreuve</li>
+                        <li>X peut prendre les valeurs 0, 1, 2, ..., n</li>
+                    </ul>
+                    
+                    <h4>Notation :</h4>
+                    <div class="formula">
+                        X ∼ B(n, p)
+                    </div>
+                    
+                    <h4>Espérance :</h4>
+                    <div class="formula">
+                        E(X) = n × p
+                    </div>
+                    
+                    <h4>Variance :</h4>
+                    <div class="formula">
+                        V(X) = n × p × (1 - p)
+                    </div>
+                `
+            },
+            {
+                title: "Formule de la Loi Binomiale",
+                content: `
+                    <h3>Probabilité d'obtenir exactement k succès</h3>
+                    
+                    <div class="formula">
+                        P(X = k) = Cₙᵏ × pᵏ × (1 - p)ⁿ⁻ᵏ
+                    </div>
+                    
+                    <div class="definition">
+                        <strong>Coefficient binomial :</strong>
+                        <div class="formula">
+                            Cₙᵏ = n! / [k! × (n - k)!]
+                        </div>
+                    </div>
+                    
+                    <p>Le coefficient binomial Cₙᵏ représente le nombre de façons de choisir k positions parmi n pour placer les succès.</p>
+                    
+                    <div class="example">
+                        <strong>Exemple :</strong> Pour n = 5 et k = 2, C₅² = 5! / (2! × 3!) = 120 / (2 × 6) = 10 façons d'obtenir 2 succès.
+                    </div>
+                `
+            },
+            {
+                title: "Exemple de Loi Binomiale",
+                content: `
+                    <div class="example">
+                        <strong>Énoncé :</strong> 30% d'une population a subi un accident. On prélève un échantillon de 10 personnes. Quelle est la probabilité d'avoir exactement 4 personnes ayant subi un accident ?
+                    </div>
+                    
+                    <h4>Paramètres :</h4>
+                    <ul>
+                        <li>n = 10 (taille de l'échantillon)</li>
+                        <li>p = 0,3 (probabilité d'avoir subi un accident)</li>
+                        <li>k = 4 (nombre recherché)</li>
+                    </ul>
+                    
+                    <h4>Application numérique :</h4>
+                    <div class="formula">
+                        P(X = 4) = C₁₀⁴ × 0,3⁴ × 0,7⁶
+                    </div>
+                    
+                    <div class="formula">
+                        C₁₀⁴ = 10! / (4! × 6!) = 210
+                    </div>
+                    
+                    <div class="formula">
+                        0,3⁴ = 0,0081
+                    </div>
+                    
+                    <div class="formula">
+                        0,7⁶ ≈ 0,117649
+                    </div>
+                    
+                    <div class="formula">
+                        P(X = 4) = 210 × 0,0081 × 0,117649 ≈ 0,200
+                    </div>
+                    
+                    <p>Soit environ 20% de chances d'obtenir exactement 4 personnes ayant subi un accident.</p>
+                `
+            },
+            {
+                title: "Distribution d'Échantillonnage",
+                content: `
+                    <div class="definition">
+                        <strong>Distribution d'échantillonnage :</strong> Elle répond au problème de savoir combien d'échantillons on peut sélectionner dans une population.
+                    </div>
+                    
+                    <h3>Types d'échantillonnage :</h3>
+                    
+                    <h4>1. Échantillonnage aléatoire avec remise</h4>
+                    <p>Chaque élément peut être choisi plusieurs fois. Les tirages sont indépendants.</p>
+                    
+                    <h4>2. Échantillonnage aléatoire sans remise</h4>
+                    <p>Chaque élément ne peut être choisi qu'une seule fois. Les tirages sont dépendants.</p>
+                    
+                    <div class="table-container">
+                        <table>
+                            <tr>
+                                <th>Type de tirage</th>
+                                <th>Avec remise</th>
+                                <th>Sans remise</th>
+                            </tr>
+                            <tr>
+                                <td>Ordonné</td>
+                                <td>Nᴹ</td>
+                                <td>N! / (N-M)!</td>
+                            </tr>
+                            <tr>
+                                <td>Non ordonné</td>
+                                <td>C(N+M-1, M)</td>
+                                <td>C(N, M)</td>
+                            </tr>
+                        </table>
+                    </div>
+                    
+                    <p>Avec N = taille de la population, M = taille de l'échantillon.</p>
+                `
+            },
+            {
+                title: "Théorie de l'Estimation",
+                content: `
+                    <div class="definition">
+                        <strong>Théorie de l'estimation :</strong> Utilisation des résultats d'un échantillon pour estimer les paramètres de la population.
+                    </div>
+                    
+                    <h3>Deux types d'estimation :</h3>
+                    
+                    <h4>1. Estimation ponctuelle</h4>
+                    <p>Fournit une valeur unique pour estimer le paramètre.</p>
+                    <ul>
+                        <li>Moyenne de l'échantillon x̄ pour estimer la moyenne de la population μ</li>
+                        <li>Proportion de l'échantillon p̂ pour estimer la proportion de la population π</li>
+                    </ul>
+                    
+                    <h4>2. Estimation par intervalle de confiance</h4>
+                    <p>Fournit une fourchette de valeurs avec un niveau de confiance.</p>
+                    <div class="formula">
+                        Intervalle de confiance pour la moyenne : x̄ ± z × (σ/√n)
+                    </div>
+                    
+                    <div class="example">
+                        <strong>Exemple :</strong> Avec un échantillon de 100 personnes, la taille moyenne est de 170 cm et l'écart-type de 10 cm. L'intervalle de confiance à 95% est [168,04 cm ; 171,96 cm].
+                    </div>
+                `
+            },
+            {
+                title: "Tests d'Hypothèses",
+                content: `
+                    <div class="definition">
+                        <strong>Tests d'hypothèses :</strong> Procédure permettant de prendre des décisions sur les paramètres de la population à partir des données de l'échantillon.
+                    </div>
+                    
+                    <h3>Étapes d'un test d'hypothèse :</h3>
+                    <ol>
+                        <li>Formuler l'hypothèse nulle H₀ et l'hypothèse alternative H₁</li>
+                        <li>Choisir le niveau de signification α (généralement 0,05)</li>
+                        <li>Calculer la statistique de test à partir de l'échantillon</li>
+                        <li>Déterminer la région critique ou la p-valeur</li>
+                        <li>Conclure : rejeter H₀ ou ne pas rejeter H₀</li>
+                    </ol>
+                    
+                    <div class="definition">
+                        <strong>Hypothèse nulle H₀ :</strong> Hypothèse que l'on cherche à tester (généralement celle du statu quo).
+                    </div>
+                    
+                    <div class="definition">
+                        <strong>Hypothèse alternative H₁ :</strong> Hypothèse que l'on accepte si H₀ est rejetée.
+                    </div>
+                    
+                    <div class="example">
+                        <strong>Exemple :</strong> Tester si la taille moyenne des hommes est différente de 175 cm. H₀ : μ = 175, H₁ : μ ≠ 175.
+                    </div>
+                `
+            }
+        ];
+
+        // ============================================
+        // TIMINGS PRÉCIS POUR SYNCHRONISATION AUDIO
+        // Calculés avec vitesse de 150 mots/minute
+        // ============================================
+        const timeline = [
+          
+    0.0,
+    
+    35.6,  // Slide 1
+    81,  // Slide 3
+    114,  // Slide 3
+    149.5,  // Slide 4
+    183,  // Slide 5
+    224.5,  // Slide 6
+    251.5,  // Slide 7
+    291.5,  // Slide 8
+    323,  // Slide 9
+    358,  // Slide 10
+    395,  // Slide 11
+    446.8,  // Slide 12
+    482.5,  // Slide 13
+    522,  // Slide 14
+    576    // Slide 15
+    
+    
+    
+        ];
+
+        // Durée totale estimée (dernier timing + durée dernière slide)
+        const totalDuration = 577; // secondes (environ 8 min 18 sec)
+
+        // Variables d'état
+        let currentSlide = 0;
+        let isAutoPlaying = false;
+        let autoPlayInterval;
+        let syncInterval;
+        
+        // Éléments DOM
+        const audioPlayer = document.getElementById('audioPlayer');
+        const contentDiv = document.getElementById('content');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const playBtn = document.getElementById('playBtn');
+        const statusDiv = document.getElementById('status');
+        const slideCounter = document.getElementById('slideCounter');
+        const progressFill = document.getElementById('progressFill');
+        const timeDisplay = document.getElementById('timeDisplay');
+
+        // ============================================
+        // FONCTIONS D'AFFICHAGE
+        // ============================================
+        function renderSlide(index) {
+            const slide = slides[index];
+            
+            contentDiv.innerHTML = `
+                <div class="slide active">
+                    <h2 class="slide-title">${slide.title}</h2>
+                    <div class="slide-content">${slide.content}</div>
+                </div>
+            `;
+            
+            slideCounter.textContent = `${index + 1}/${slides.length}`;
+            progressFill.style.width = `${((index + 1) / slides.length) * 100}%`;
+            
+            // Mise à jour des boutons de navigation
+            if (!isAutoPlaying) {
+                prevBtn.disabled = index === 0;
+                nextBtn.disabled = index === slides.length - 1;
+            }
+            
+            // Scroll en haut
+            contentDiv.scrollTop = 0;
+        }
+
+        // ============================================
+        // FONCTIONS DE NAVIGATION
+        // ============================================
+        function nextSlide() {
+            if (currentSlide < slides.length - 1) {
+                currentSlide++;
+                renderSlide(currentSlide);
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                renderSlide(currentSlide);
+            }
+        }
+
+        // ============================================
+        // SYNCHRONISATION AUDIO / SLIDES
+        // ============================================
+        function updateTimeDisplay() {
+            const current = audioPlayer.currentTime;
+            const minutes = Math.floor(current / 60);
+            const seconds = Math.floor(current % 60);
+            const totalMinutes = Math.floor(totalDuration / 60);
+            const totalSeconds = Math.floor(totalDuration % 60);
+            
+            timeDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')} / ${totalMinutes.toString().padStart(2, '0')}:${totalSeconds.toString().padStart(2, '0')}`;
+            
+            // Mise à jour de la barre de progression
+            const progress = (current / totalDuration) * 100;
+            progressFill.style.width = `${Math.min(progress, 100)}%`;
+        }
+
+        function checkSync() {
+            if (!isAutoPlaying) return;
+            
+            const currentTime = audioPlayer.currentTime;
+            
+            // Trouver la slide correspondante au temps actuel
+            for (let i = timeline.length - 1; i >= 0; i--) {
+                if (currentTime >= timeline[i]) {
+                    if (i !== currentSlide) {
+                        currentSlide = i;
+                        renderSlide(currentSlide);
+                    }
+                    break;
+                }
+            }
+            
+            updateTimeDisplay();
+            
+            // Arrêt automatique à la fin
+            if (currentTime >= totalDuration - 1) {
+                stopAutoPlay();
+            }
+        }
+
+        function startAutoPlay() {
+            if (!audioPlayer.src) {
+                alert('Veuillez placer le fichier audio "statistiques_cours.mp3" dans le même dossier que ce fichier HTML.');
+                return;
+            }
+            
+            isAutoPlaying = true;
+            playBtn.textContent = '⏸ Pause';
+            playBtn.classList.remove('play-btn');
+            playBtn.classList.add('stop-btn');
+            statusDiv.textContent = 'Mode automatique';
+            statusDiv.style.background = 'rgba(40, 167, 69, 0.9)';
+            
+            prevBtn.disabled = true;
+            nextBtn.disabled = true;
+            
+            audioPlayer.play();
+            
+            // Vérifier la synchronisation toutes les 100ms
+            syncInterval = setInterval(checkSync, 100);
+        }
+
+        function stopAutoPlay() {
+            isAutoPlaying = false;
+            playBtn.textContent = '▶ Lecture automatique';
+            playBtn.classList.remove('stop-btn');
+            playBtn.classList.add('play-btn');
+            statusDiv.textContent = 'Mode navigation';
+            statusDiv.style.background = 'rgba(0,0,0,0.8)';
+            
+            audioPlayer.pause();
+            
+            if (syncInterval) {
+                clearInterval(syncInterval);
+            }
+            
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === slides.length - 1;
+        }
+
+        function toggleAutoPlay() {
+            if (isAutoPlaying) {
+                stopAutoPlay();
+            } else {
+                startAutoPlay();
+            }
+        }
+
+        // ============================================
+        // GESTION DES ÉVÉNEMENTS AUDIO
+        // ============================================
+        audioPlayer.addEventListener('ended', function() {
+            stopAutoPlay();
+        });
+
+        audioPlayer.addEventListener('timeupdate', function() {
+            if (!isAutoPlaying) {
+                updateTimeDisplay();
+            }
+        });
+
+        // ============================================
+        // RACCOURCIS CLAVIER
+        // ============================================
+        document.addEventListener('keydown', function(e) {
+            if (isAutoPlaying) return;
+            
+            if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                prevSlide();
+            } else if (e.key === 'ArrowRight') {
+                e.preventDefault();
+                nextSlide();
+            } else if (e.key === ' ') {
+                e.preventDefault();
+                toggleAutoPlay();
+            }
+        });
+
+        // ============================================
+        // INITIALISATION
+        // ============================================
+        renderSlide(0);
+        updateTimeDisplay();
+
+        // Vérifier si l'audio existe
+        audioPlayer.addEventListener('error', function() {
+            console.warn('Fichier audio non trouvé. Placez "statistiques_cours.mp3" dans le même dossier.');
+        });
+    </script>
+</body>
+</html>
