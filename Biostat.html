@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cours de Biostatistique - UPC Médecine</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: #f0f0f0;
+            width: 100%;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .header {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            color: #495057;
+            font-size: 1.2em;
+            font-weight: 500;
+        }
+
+        .badge {
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+
+        .content {
+            padding: 40px;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .slide {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide-title {
+            color: #495057;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            font-weight: 600;
+            border-left: 5px solid #667eea;
+            padding-left: 20px;
+        }
+
+        .slide-content {
+            color: #6c757d;
+            line-height: 1.8;
+            font-size: 1.1em;
+        }
+
+        .formula {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 1.2em;
+            text-align: center;
+            border-left: 4px solid #667eea;
+        }
+
+        .definition {
+            background: #e3f2fd;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #2196f3;
+        }
+
+        .example {
+            background: #fff3e0;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #ff9800;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .table th, .table td {
+            border: 1px solid #dee2e6;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .table th {
+            background: #f8f9fa;
+            font-weight: 600;
+        }
+
+        .table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .controls {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-btn {
+            background: white;
+            color: #495057;
+            border: 1px solid #dee2e6;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            background: #e9ecef;
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .play-btn {
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .play-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+        }
+
+        .stop-btn {
+            background: #dc3545;
+            color: white;
+        }
+
+        .counter {
+            color: #6c757d;
+            font-size: 0.9em;
+        }
+
+        .status {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 0.9em;
+            z-index: 1000;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                padding: 20px;
+            }
+            
+            .slide-title {
+                font-size: 1.4em;
+            }
+            
+            .controls {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="status" id="status">Mode navigation</div>
+    
+    <div class="container">
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        
+        <div class="header">
+            <h1>📊 Biostatistique - B1 Médecine </h1>
+            <span class="badge" id="slideCounter">1/30</span>
+        </div>
+
+        <div class="content" id="content">
+            <!-- Les slides seront injectées ici par JavaScript -->
+        </div>
+
+        <div class="controls">
+            <div class="nav-buttons">
+                <button class="nav-btn" onclick="prevSlide()" id="prevBtn">← Précédent</button>
+                <button class="nav-btn" onclick="nextSlide()" id="nextBtn">Suivant →</button>
+            </div>
+            <button class="play-btn" onclick="toggleAutoPlay()" id="playBtn">▶ Lecture automatique</button>
+        </div>
+    </div>
+
+    <audio id="audioPlayer" src="biostat.mp3" style="display: none;"></audio>
+    <audio id="backgroundMusic" style="display: none;"></audio>
+
+
+    <script>
+        // Données du cours - Slides
+        const slides = [
+            {
+                title: "Introduction à la Biostatistique",
+                content: `
+                    <div class="definition">
+                        <strong>Définition :</strong> La biostatistique est l'ensemble des méthodes statistiques appliquées aux êtres vivants.
+                    </div>
+                    <p>Pourquoi appliquer la statistique en biologie ? Parce que les êtres vivants sont caractérisés par une très grande variabilité :</p>
+                    <ul>
+                        <li><strong>Variabilité inter-individuelle</strong> : différences génétiques entre les individus</li>
+                        <li><strong>Variabilité intra-individuelle</strong> : variations chez un même individu à différents moments</li>
+                    </ul>
+                `
+            },
+            {
+                title: "Types de variables",
+                content: `
+                    <p>Il existe deux types principaux de variables en statistique :</p>
+                    
+                    <h3>1. Variable qualitative</h3>
+                    <p>Variable non mesurable se présentant sous forme d'attribut. Exemple : sexe, nationalité, groupe sanguin.</p>
+                    
+                    <h3>2. Variable quantitative</h3>
+                    <p>Variable mesurable se présentant sous forme de chiffre. Elle se subdivise en :</p>
+                    <ul>
+                        <li><strong>Variable discrète</strong> : nombres entiers (ex: nombre d'enfants)</li>
+                        <li><strong>Variable continue</strong> : nombres décimaux (ex: taille, poids)</li>
+                    </ul>
+                `
+            },
+            {
+                title: "Échelles de mesure",
+                content: `
+                    <h3>Échelle nominale</h3>
+                    <p>On nomme simplement les catégories. Exemple : masculin/féminin.</p>
+                    
+                    <h3>Échelle ordinale</h3>
+                    <p>On nomme et on ordonne les catégories. Exemple : satisfaction (très insatisfait à très satisfait).</p>
+                    
+                    <h3>Échelle d'intervalle</h3>
+                    <p>On nomme, on ordonne et on a des distances égales entre les classes. Exemple : revenu par tranches.</p>
+                `
+            },
+            {
+                title: "Population et échantillon",
+                content: `
+                    <div class="definition">
+                        <p><strong>Population</strong> : Ensemble de tous les sujets partageant un espace commun et une caractéristique donnée.</p>
+                        <p><strong>Échantillon</strong> : Partie de sujets tirés à partir de la population générale.</p>
+                    </div>
+                    
+                    <p><strong>Pourquoi utiliser un échantillon ?</strong></p>
+                    <ul>
+                        <li>Contraintes financières</li>
+                        <li>Contraintes de temps</li>
+                        <li>Un échantillon bien tiré représente les caractéristiques de toute la population</li>
+                    </ul>
+                `
+            },
+            {
+                title: "Paramètres vs Statistiques",
+                content: `
+                    <div class="formula">
+                        <p><strong>Paramètres</strong> = mesures qui décrivent une population</p>
+                        <p><strong>Statistiques</strong> = mesures qui décrivent un échantillon</p>
+                    </div>
+                    
+                    <h3>Deux types de statistiques :</h3>
+                    <ul>
+                        <li><strong>Statistique descriptive</strong> : décrit un ensemble de données (tableaux, graphiques, moyenne)</li>
+                        <li><strong>Statistique inférentielle</strong> : extrapole les résultats de l'échantillon à la population</li>
+                    </ul>
+                `
+            },
+            {
+                title: "Sources des données",
+                content: `
+                    <h3>1. Données récoltées sur base permanente</h3>
+                    <ul>
+                        <li>Statistiques de l'état civil (naissances, décès, mariages)</li>
+                        <li>Recensement de la population</li>
+                        <li>Statistiques médico-sanitaires</li>
+                        <li>Statistiques des organismes assureurs</li>
+                    </ul>
+                    
+                    <h3>2. Enquêtes épidémiologiques</h3>
+                    <ul>
+                        <li>Mesure de l'ampleur d'un problème</li>
+                        <li>Recherche étiologique d'une maladie</li>
+                        <li>Évaluation d'une intervention</li>
+                    </ul>
+                `
+            },
+            {
+                title: "Présentation des données - Tableaux",
+                content: `
+                    <h3>Principes généraux :</h3>
+                    <ul>
+                        <li>Chaque tableau doit être numéroté</li>
+                        <li>Avoir un titre complet (quoi, où, quand)</li>
+                        <li>Les unités de mesure doivent être mentionnées</li>
+                        <li>Les valeurs manquantes sont représentées par "-" ou "ND"</li>
+                    </ul>
+                    
+                    <table class="table">
+                        <tr>
+                            <th>Âge</th>
+                            <th>Effectif</th>
+                            <th>Fréquence (%)</th>
+                        </tr>
+                        <tr>
+                            <td>0-4 ans</td>
+                            <td>45</td>
+                            <td>15%</td>
+                        </tr>
+                        <tr>
+                            <td>5-14 ans</td>
+                            <td>120</td>
+                            <td>40%</td>
+                        </tr>
+                    </table>
+                `
+            },
+            {
+                title: "Graphiques pour variables qualitatives",
+                content: `
+                    <h3>1. Diagramme en barres</h3>
+                    <p>Les modalités sont placées sur l'axe horizontal, les effectifs sur l'axe vertical. La hauteur est proportionnelle à l'effectif.</p>
+                    
+                    <h3>2. Diagramme circulaire (camembert)</h3>
+                    <p>Utilise les fréquences relatives. Chaque modalité est représentée par un secteur dont la surface est proportionnelle au pourcentage.</p>
+                    
+                    <h3>3. Diagramme en barres empilées</h3>
+                    <p>Permet de montrer la composition de différentes catégories.</p>
+                `
+            },
+            {
+                title: "Graphiques pour variables quantitatives",
+                content: `
+                    <h3>Variables discrètes :</h3>
+                    <ul>
+                        <li><strong>Diagramme en bâtons</strong> : hauteur des bâtons correspond à l'effectif</li>
+                        <li><strong>Courbe</strong> : quand la variable varie dans le temps</li>
+                    </ul>
+                    
+                    <h3>Variables continues :</h3>
+                    <ul>
+                        <li><strong>Histogramme</strong> : ensemble de rectangles. Chaque rectangle a une surface proportionnelle à l'effectif de la classe.</li>
+                    </ul>
+                    
+                    <div class="formula">
+                        <strong>Règle de Sturge :</strong> Nombre de classes = 1 + (3,3 × log N)<br>
+                        où N est la taille de l'échantillon
+                    </div>
+                `
+            },
+            {
+                title: "Mesures de tendance centrale - La moyenne",
+                content: `
+                    <p>La moyenne arithmétique est la somme des valeurs divisée par le nombre total de valeurs.</p>
+                    
+                    <h3>Moyenne de données non groupées :</h3>
+                    <div class="formula">
+                        x̄ = (∑xi) / n
+                    </div>
+                    
+                    <h3>Moyenne de données groupées :</h3>
+                    <div class="formula">
+                        x̄ = (∑(mi × fi)) / n
+                    </div>
+                    <p>où mi est la valeur du milieu de la classe et fi l'effectif de la classe</p>
+                    
+                    <div class="example">
+                        <strong>Exemple :</strong> Notes de 10 étudiants : 4, 8, 12, 11, 6, 18, 15, 5, 10, 14<br>
+                        Moyenne = (4+8+12+11+6+18+15+5+10+14)/10 = 103/10 = 10,3
+                    </div>
+                `
+            },
+            {
+                title: "La médiane",
+                content: `
+                    <p>La médiane est la valeur qui divise la série en deux parties égales.</p>
+                    
+                    <h3>Pour une série impaire :</h3>
+                    <div class="formula">
+                        Position de la médiane = (n + 1) / 2
+                    </div>
+                    
+                    <h3>Pour une série paire :</h3>
+                    <div class="formula">
+                        Médiane = (valeur à la position n/2 + valeur à la position n/2 + 1) / 2
+                    </div>
+                    
+                    <div class="example">
+                        <strong>Exemple série impaire (11 valeurs) :</strong><br>
+                        Valeurs ordonnées : 4,5,6,8,10,11,12,13,14,15,18<br>
+                        Position = (11+1)/2 = 6 → Médiane = 11
+                    </div>
+                `
+            },
+            {
+                title: "Le mode",
+                content: `
+                    <p>Le mode est la valeur la plus fréquente dans une série statistique.</p>
+                    
+                    <div class="example">
+                        <strong>Exemple :</strong> Série : 4,5,12,10,7,18,10,13,12,10,12,10,5,5<br>
+                        Le nombre 10 apparaît 4 fois → Mode = 10
+                    </div>
+                    
+                    <p>Une série peut avoir :</p>
+                    <ul>
+                        <li>Un seul mode (unimodale)</li>
+                        <li>Plusieurs modes (multimodale)</li>
+                        <li>Aucun mode</li>
+                    </ul>
+                `
+            },
+            {
+                title: "Les quartiles",
+                content: `
+                    <p>Les quartiles divisent une série en 4 parties égales :</p>
+                    
+                    <div class="formula">
+                        <ul>
+                            <li><strong>Q1 (premier quartile)</strong> : 25% des valeurs lui sont inférieures</li>
+                            <li><strong>Q2 (deuxième quartile)</strong> = médiane : 50% des valeurs lui sont inférieures</li>
+                            <li><strong>Q3 (troisième quartile)</strong> : 75% des valeurs lui sont inférieures</li>
+                        </ul>
+                    </div>
+                    
+                    <p>Il existe aussi les déciles (9 nombres qui divisent en 10 parties) et les centiles (99 nombres qui divisent en 100 parties).</p>
+                `
+            },
+            {
+                title: "Mesures de dispersion - L'étendue",
+                content: `
+                    <p>L'étendue (ou amplitude) est la différence entre la valeur maximale et la valeur minimale.</p>
+                    
+                    <div class="formula">
+                        A = Xmax - Xmin
+                    </div>
+                    
+                    <div class="example">
+                        <strong>Exemple :</strong> Série : 4, 8, 12, 11, 6, 18, 15, 5, 10, 14<br>
+                        Xmax = 18, Xmin = 4<br>
+                        A = 18 - 4 = 14
+                    </div>
+                    
+                    <p>L'étendue donne une information rapide mais est sensible aux valeurs extrêmes.</p>
+                `
+            },
+            {
+                title: "La variance",
+                content: `
+                    <p>La variance est la moyenne des carrés des écarts à la moyenne.</p>
+                    
+                    <h3>Pour données non groupées :</h3>
+                    <div class="formula">
+                        s² = ∑(xi - x̄)² / n
+                    </div>
+                    
+                    <h3>Formule simplifiée :</h3>
+                    <div class="formula">
+                        s² = (∑xi² / n) - x̄²
+                    </div>
+                    
+                    <div class="example">
+                        <strong>Exemple :</strong> Avec la moyenne = 10,3<br>
+                        ∑xi² = 4² + 8² + ... + 14² = 1251<br>
+                        s² = (1251/10) - 106,09 = 125,1 - 106,09 = 19,01
+                    </div>
+                `
+            },
+            {
+                title: "L'écart-type",
+                content: `
+                    <p>L'écart-type est la racine carrée de la variance.</p>
+                    
+                    <div class="formula">
+                        s = √(variance)
+                    </div>
+                    
+                    <p>L'écart-type est exprimé dans la même unité que les données, ce qui facilite l'interprétation.</p>
+                    
+                    <div class="example">
+                        <strong>Exemple :</strong> Avec une variance de 19,01<br>
+                        s = √19,01 = 4,36
+                    </div>
+                    
+                    <p>Un écart-type faible indique que les valeurs sont proches de la moyenne.<br>
+                    Un écart-type élevé indique une forte dispersion des données.</p>
+                `
+            },
+            {
+                title: "Le coefficient de variation",
+                content: `
+                    <p>Le coefficient de variation permet de comparer la dispersion de séries avec des unités différentes.</p>
+                    
+                    <div class="formula">
+                        CV = (s / x̄) × 100
+                    </div>
+                    
+                    <div class="example">
+                        <strong>Exemple :</strong> Avec s = 4,36 et x̄ = 10,3<br>
+                        CV = (4,36 / 10,3) × 100 = 42,3%
+                    </div>
+                    
+                    <p>Le CV est exprimé en pourcentage et permet de comparer la variabilité relative de différentes séries.</p>
+                `
+            },
+            {
+                title: "Distribution normale",
+                content: `
+                    <p>Une distribution est dite normale ou symétrique si :</p>
+                    
+                    <div class="formula">
+                        <strong>Moyenne = Médiane = Mode</strong>
+                    </div>
+                    
+                    <p>Caractéristiques d'une distribution normale :</p>
+                    <ul>
+                        <li>Symétrique par rapport à la moyenne</li>
+                        <li>La majorité des valeurs gravitent autour de la moyenne</li>
+                        <li>50% des effectifs à gauche, 50% à droite</li>
+                    </ul>
+                    
+                    <p>Si moyenne ≠ médiane ≠ mode, la distribution est asymétrique.</p>
+                `
+            },
+            {
+                title: "Probabilités - Définitions",
+                content: `
+                    <div class="definition">
+                        <p>Une probabilité est la chance qu'un événement se produise, exprimée sous forme de proportion, pourcentage ou fréquence relative.</p>
+                    </div>
+                    
+                    <div class="formula">
+                        P(A) = nA / n
+                    </div>
+                    
+                    <p>où :</p>
+                    <ul>
+                        <li>nA = nombre d'issues favorables</li>
+                        <li>n = nombre total d'issues possibles</li>
+                    </ul>
+                    
+                    <div class="example">
+                        <strong>Exemple :</strong> Probabilité d'obtenir un 6 au dé<br>
+                        P(6) = 1/6 = 0,167 (16,7%)
+                    </div>
+                `
+            },
+            {
+                title: "Propriétés des probabilités",
+                content: `
+                    <h3>Propriétés fondamentales :</h3>
+                    <ul>
+                        <li>Une probabilité est toujours comprise entre 0 et 1 (0% et 100%)</li>
+                        <li>Événement impossible : P = 0</li>
+                        <li>Événement certain : P = 1</li>
+                    </ul>
+                    
+                    <h3>Principe d'addition (OU) :</h3>
+                    <div class="formula">
+                        P(A ou B) = P(A) + P(B)
+                    </div>
+                    
+                    <h3>Principe de multiplication (ET) :</h3>
+                    <div class="formula">
+                        P(A et B) = P(A) × P(B)
+                    </div>
+                `
+            },
+            {
+                title: "Distribution binomiale",
+                content: `
+                    <h3>Conditions :</h3>
+                    <ul>
+                        <li>Variable dichotomique (deux issues possibles)</li>
+                        <li>Probabilité de succès = p</li>
+                        <li>Probabilité d'échec = q = 1-p</li>
+                    </ul>
+                    
+                    <div class="formula">
+                        P(X) = C(n,x) × qⁿ⁻ˣ × pˣ
+                    </div>
+                    
+                    <div class="example">
+                        <strong>Exemple :</strong> Population avec 30% de vaccinés.<br>
+                        Probabilité de trouver exactement 4 vaccinés sur 10 personnes :<br>
+                        P(4) = C(10,4) × 0,70⁶ × 0,30⁴ = 210 × 0,1176 × 0,0081 = 0,20 (20%)
+                    </div>
+                `
+            },
+            {
+                title: "Distribution de Poisson",
+                content: `
+                    <h3>Caractéristiques :</h3>
+                    <ul>
+                        <li>Pour les événements rares</li>
+                        <li>Caractérisée par une moyenne λ (lambda)</li>
+                    </ul>
+                    
+                    <div class="formula">
+              P(X) = (e^λ × λ^x) / X!
+                    </div>
+                    
+                    <p>où e = 2,71828 (nombre d'Euler)</p>
+                    
+                    <div class="example">
+                        <strong>Exemple :</strong> Moyenne de 5 accidents par an<br>
+                        Probabilité d'exactement 7 accidents :<br>
+                        P(7) = (e⁻⁵ × 5⁷) / 7! = 0,104
+                    </div>
+                `
+            },
+            {
+                title: "Distribution normale",
+                content: `
+                    <p>La distribution normale (ou de Gauss) est la plus utilisée en statistique.</p>
+                    
+                    <h3>Caractéristiques :</h3>
+                    <ul>
+                        <li>Symétrique par rapport à la moyenne</li>
+                        <li>Moyenne = Médiane = Mode</li>
+                        <li>Aire totale sous la courbe = 1</li>
+                        <li>Utilisée pour les grands échantillons (n ≥ 30)</li>
+                    </ul>
+                    
+                    <h3>Propriétés :</h3>
+                    <ul>
+                        <li>À ±1 écart-type : 68,27% de la population</li>
+                        <li>À ±2 écarts-types : 95,45% de la population</li>
+                        <li>À ±3 écarts-types : 99,73% de la population</li>
+                    </ul>
+                `
+            },
+            {
+                title: "Distribution normale réduite",
+                content: `
+                    <p>La distribution normale réduite (ou standardisée) a :</p>
+                    <ul>
+                        <li>Moyenne = 0</li>
+                        <li>Écart-type = 1</li>
+                    </ul>
+                    
+                    <div class="formula">
+                        Z = (X - μ) / σ
+                    </div>
+                    
+                    <p>Pour chaque valeur de Z, on peut trouver une probabilité dans les tables.</p>
+                    
+                    <div class="example">
+                        <strong>Exemple :</strong> P(Z < -1,53) = 0,0630<br>
+                        P(Z > 1,53) = 0,0630<br>
+                        P(-0,25 < Z < 0,25) = 0,1974
+                    </div>
+                `
+            },
+            {
+                title: "Estimation et intervalles de confiance",
+                content: `
+                    <p>L'inférence statistique permet de tirer des conclusions sur une population à partir d'un échantillon.</p>
+                    
+                    <h3>Intervalle de confiance pour une moyenne :</h3>
+                    <div class="formula">
+                        IC = x̄ ± Z(α/2) × (σ/√n)
+                    </div>
+                    
+                    <p>où :</p>
+                    <ul>
+                        <li>x̄ = moyenne de l'échantillon</li>
+                        <li>Z(α/2) = 1,96 pour un seuil de confiance de 95%</li>
+                        <li>σ = écart-type</li>
+                        <li>n = taille de l'échantillon</li>
+                    </ul>
+                `
+            },
+            {
+                title: "Intervalle de confiance - Exemple",
+                content: `
+                    <div class="example">
+                        <strong>Exemple :</strong> Un kinésithérapeute veut estimer la force moyenne d'un muscle.<br>
+                        n = 35, σ² = 144 (σ = 12), x̄ = 87,5<br>
+                        Seuil de confiance = 95% (Z = 1,96)
+                        
+                        <div class="formula">
+                            IC = 87,5 ± 1,96 × (12/√35)<br>
+                            IC = 87,5 ± 1,96 × 2,03<br>
+                            IC = 87,5 ± 3,98<br>
+                            IC = [83,52 ; 91,48]
+                        </div>
+                        
+                        <p>On est sûr à 95% que la vraie moyenne de la population se trouve entre 83,52 et 91,48.</p>
+                    </div>
+                `
+            },
+            {
+                title: "Intervalle de confiance pour une proportion",
+                content: `
+                    <div class="formula">
+                        IC = p ± Z(α/2) × √(p×q/n)
+                    </div>
+                    
+                    <p>où :</p>
+                    <ul>
+                        <li>p = proportion observée</li>
+                        <li>q = 1 - p</li>
+                        <li>n = taille de l'échantillon</li>
+                    </ul>
+                    
+                    <div class="example">
+                        <strong>Exemple :</strong> Enquête nutritionnelle sur 700 enfants<br>
+                        200 malnutris → p = 200/700 = 0,29<br>
+                        IC95% = 0,29 ± 1,96 × √(0,29×0,71/700)<br>
+                        IC95% = [0,26 ; 0,32]
+                    </div>
+                `
+            },
+            {
+                title: "Tests d'hypothèses - Introduction",
+                content: `
+                    <p>Les tests d'hypothèses permettent de décider si les hypothèses émises sont confirmées par les données.</p>
+                    
+                    <h3>Types d'hypothèses :</h3>
+                    <ul>
+                        <li><strong>H0 (hypothèse nulle)</strong> : pas de différence, pas d'effet</li>
+                        <li><strong>H1 ou HA (hypothèse alternative)</strong> : il existe une différence, un effet</li>
+                    </ul>
+                    
+                    <h3>Erreurs possibles :</h3>
+                    <ul>
+                        <li><strong>Erreur de type I (α)</strong> : rejeter H0 à tort</li>
+                        <li><strong>Erreur de type II (β)</strong> : ne pas rejeter H0 alors qu'elle est fausse</li>
+                    </ul>
+                `
+            },
+            {
+                title: "Seuil de signification",
+                content: `
+                    <p>Le seuil de signification α est la probabilité de commettre une erreur de type I.</p>
+                    
+                    <h3>Valeurs conventionnelles :</h3>
+                    <ul>
+                        <li>α = 0,05 (5%) - le plus utilisé</li>
+                        <li>α = 0,01 (1%)</li>
+                        <li>α = 0,001 (0,1%)</li>
+                    </ul>
+                    
+                    <h3>Valeur p :</h3>
+                    <p>C'est la plus petite valeur de α pour laquelle H0 peut être rejetée.</p>
+                    <p>Si p < α : le test est significatif → on rejette H0</p>
+                    <p>Si p > α : le test n'est pas significatif → on ne rejette pas H0</p>
+                `
+            },
+            
+            {
+                title: "Test sur la moyenne - Exemple",
+                content: `
+                    <div class="example">
+                        <strong>Exemple :</strong> Test sur le taux d'acide urique<br>
+                        n = 30, x̄ = 5,6, σ² = 4, μ₀ = 7, α = 1%
+                        
+                        <h4>Étapes :</h4>
+                        <ol>
+                            <li>H0 : μ = 7, HA : μ ≠ 7</li>
+                            <li>Z = (5,6 - 7) / (2/√30) = -1,4 / 0,37 = -3,83</li>
+                            <li>Valeur critique pour α=1% : ±2,58</li>
+                            <li>|-3,83| > 2,58 → on rejette H0</li>
+                        </ol>
+                        
+                        <p><strong>Conclusion :</strong> Le taux moyen d'acide urique dans cette population est significativement différent de 7 (p < 0,01).</p>
+                    </div>
+                `
+            },
+            {
+                title: "Procédure du test d'hypothèse",
+                content: `
+                    <h3>Les 9 étapes :</h3>
+                    <ol>
+                        <li>Les données (résumées)</li>
+                        <li>Les conditions d'application</li>
+                        <li>Les hypothèses (H0 et HA)</li>
+                        <li>La statistique de test</li>
+                        <li>Distribution de la statistique</li>
+                        <li>La règle de décision</li>
+                        <li>Les calculs</li>
+                        <li>Décision statistique</li>
+                        <li>Conclusion clinique</li>
+                    </ol>
+                    
+                    <div class="formula">
+                        Statistique de test = (Statistique observée - Paramètre d'hypothèse) / Erreur standard
+                    </div>
+                `
+            }
+        ];
+
+        // Timeline pour la synchronisation audio (en secondes)
+        const timeline = [
+    25, 38, 28, 30, 35, 30, 24.5, 35.5, 34, 41,
+    24, 33.5, 32, 25.5, 29.5, 24.5, 30.5, 29.5, 25, 36.5,
+    36, 33, 41.5, 37.5, 26, 45, 45, 36, 42, 54.5, 10];
+
+        // Calcul des temps cumulés
+    const cumulativeTimes = [];
+    let sum = 0;
+    timeline.forEach((time, index) => {
+        cumulativeTimes[index] = sum;
+        sum += time;
+    });
+    const totalDuration = sum;
+
+    // Variables d'état
+    let currentSlide = 0;
+    let isAutoPlaying = false;
+    let autoPlayInterval;
+    let syncInterval;
+    
+    // Éléments DOM
+    const audioPlayer = document.getElementById('audioPlayer');
+    const backgroundMusic = document.getElementById('backgroundMusic');
+    const contentDiv = document.getElementById('content');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const playBtn = document.getElementById('playBtn');
+    const statusDiv = document.getElementById('status');
+    const slideCounter = document.getElementById('slideCounter');
+    const progressFill = document.getElementById('progressFill');
+
+    // ============================================
+    // FONCTIONS D'AFFICHAGE
+    // ============================================
+    function renderSlide(index) {
+        const slide = slides[index];
+        
+        contentDiv.innerHTML = `
+            <div class="slide active">
+                <h2 class="slide-title">${slide.title}</h2>
+                <div class="slide-content">${slide.content}</div>
+            </div>
+        `;
+        
+        slideCounter.textContent = `${index + 1}/${slides.length}`;
+        progressFill.style.width = `${((index + 1) / slides.length) * 100}%`;
+        
+        // Mise à jour des boutons de navigation
+        if (!isAutoPlaying) {
+            prevBtn.disabled = index === 0;
+            nextBtn.disabled = index === slides.length - 1;
+        }
+        
+        // Scroll en haut
+        contentDiv.scrollTop = 0;
+    }
+
+    // ============================================
+    // FONCTIONS DE NAVIGATION
+    // ============================================
+    function nextSlide() {
+        if (currentSlide < slides.length - 1) {
+            currentSlide++;
+            renderSlide(currentSlide);
+        }
+    }
+
+    function prevSlide() {
+        if (currentSlide > 0) {
+            currentSlide--;
+            renderSlide(currentSlide);
+        }
+    }
+
+    // ============================================
+    // SYNCHRONISATION AUDIO / SLIDES
+    // ============================================
+    function updateTimeDisplay() {
+        // Cette fonction peut être simplifiée ou adaptée selon les besoins
+        const current = audioPlayer.currentTime;
+        const minutes = Math.floor(current / 60);
+        const seconds = Math.floor(current % 60);
+        const totalMinutes = Math.floor(totalDuration / 60);
+        const totalSeconds = Math.floor(totalDuration % 60);
+        
+        // Mise à jour de la barre de progression
+        const progress = (current / totalDuration) * 100;
+        progressFill.style.width = `${Math.min(progress, 100)}%`;
+    }
+
+    function checkSync() {
+        if (!isAutoPlaying) return;
+        
+        const currentTime = audioPlayer.currentTime;
+        
+        // Trouver la slide correspondante au temps actuel
+        for (let i = cumulativeTimes.length - 1; i >= 0; i--) {
+            if (currentTime >= cumulativeTimes[i]) {
+                if (i !== currentSlide) {
+                    currentSlide = i;
+                    renderSlide(currentSlide);
+                }
+                break;
+            }
+        }
+        
+        updateTimeDisplay();
+        
+        // Arrêt automatique à la fin
+        if (currentTime >= totalDuration - 1) {
+            stopAutoPlay();
+        }
+    }
+
+    function startAutoPlay() {
+        if (!audioPlayer.src) {
+            alert('Veuillez placer le fichier audio "Saco5.mp3" dans le même dossier que ce fichier HTML.');
+            return;
+        }
+        
+        isAutoPlaying = true;
+        playBtn.textContent = '⏸ Pause';
+        playBtn.classList.remove('play-btn');
+        playBtn.classList.add('stop-btn');
+        statusDiv.textContent = 'Mode automatique';
+        statusDiv.style.background = 'rgba(40, 167, 69, 0.9)';
+        
+        prevBtn.disabled = true;
+        nextBtn.disabled = true;
+        
+        audioPlayer.play();
+        
+        if (backgroundMusic.src) {
+            backgroundMusic.play();
+            backgroundMusic.volume = 0.3;
+        }
+        
+        // Vérifier la synchronisation toutes les 100ms
+        syncInterval = setInterval(checkSync, 100);
+    }
+
+    function stopAutoPlay() {
+        isAutoPlaying = false;
+        playBtn.textContent = '▶ Lecture automatique';
+        playBtn.classList.remove('stop-btn');
+        playBtn.classList.add('play-btn');
+        statusDiv.textContent = 'Mode navigation';
+        statusDiv.style.background = 'rgba(0,0,0,0.8)';
+        
+        audioPlayer.pause();
+        
+        if (backgroundMusic.src) {
+            backgroundMusic.pause();
+        }
+        
+        if (syncInterval) {
+            clearInterval(syncInterval);
+        }
+        
+        prevBtn.disabled = currentSlide === 0;
+        nextBtn.disabled = currentSlide === slides.length - 1;
+    }
+
+    function toggleAutoPlay() {
+        if (isAutoPlaying) {
+            stopAutoPlay();
+        } else {
+            startAutoPlay();
+        }
+    }
+
+    // ============================================
+    // GESTION DES ÉVÉNEMENTS AUDIO
+    // ============================================
+    audioPlayer.addEventListener('ended', function() {
+        stopAutoPlay();
+    });
+
+    audioPlayer.addEventListener('timeupdate', function() {
+        if (!isAutoPlaying) {
+            updateTimeDisplay();
+        }
+    });
+
+    // ============================================
+    // RACCOURCIS CLAVIER
+    // ============================================
+    document.addEventListener('keydown', function(e) {
+        if (isAutoPlaying) return;
+        
+        if (e.key === 'ArrowLeft') {
+            e.preventDefault();
+            prevSlide();
+        } else if (e.key === 'ArrowRight') {
+            e.preventDefault();
+            nextSlide();
+        } else if (e.key === ' ') {
+            e.preventDefault();
+            toggleAutoPlay();
+        }
+    });
+
+    // ============================================
+    // INITIALISATION
+    // ============================================
+    renderSlide(0);
+
+    // Vérifier si l'audio existe
+    audioPlayer.addEventListener('error', function() {
+        console.warn('Fichier audio non trouvé. Placez "Saco5.mp3" dans le même dossier.');
+    });
+</script>
+</body>
+</html> 
+             
