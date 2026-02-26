@@ -586,13 +586,14 @@
         const messagePrefix = 'Bonjour MedScroll, je suis intéressé par le contenu Premium';
         const premiumUsers = [
             "NSIETE BERMIE",
+            "KAMBA TRIOMPHE",
             "MBALA JEAN",
             "KASONGO PATRICK",
             "ILUNGA GRACE"
             ];
 
         function checkPremiumAccess(sujet) {
-        let userName = prompt("ENTREZ VOTRE NOM ET PRÉNOM EN MAJUSCULE");
+        let userName = prompt("ENTREZ VOTRE NOM ET PRÉNOM EN LETTRES MAJUSCULES");
         if (!userName) return;
         userName = userName.trim().toUpperCase();
         if (premiumUsers.includes(userName)) {
