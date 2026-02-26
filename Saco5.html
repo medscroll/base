@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cours de Santé Communautaire - Partie 5 | Nutrition (Mesures & Anémies)</title>
+    <style>
+        /* Même style que les parties précédentes */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2c7a4d 0%, #145c38 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: #f0f0f0;
+            width: 100%;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #2c7a4d, #145c38);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .header {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            color: #145c38;
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+
+        .badge {
+            background: #2c7a4d;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+
+        .content {
+            padding: 30px;
+            min-height: 500px;
+            max-height: 70vh;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            background: #ffffff;
+        }
+
+        .slide {
+            display: none;
+            animation: fadeIn 0.5s ease;
+            margin-bottom: 30px;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide-title {
+            color: #145c38;
+            font-size: 2em;
+            margin-bottom: 25px;
+            font-weight: 700;
+            border-left: 5px solid #2c7a4d;
+            padding-left: 20px;
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 10;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+        }
+
+        .slide-content {
+            color: #2c3e50;
+            line-height: 1.8;
+            font-size: 1.1em;
+        }
+
+        .slide-content h3 {
+            color: #2c7a4d;
+            margin: 20px 0 10px 0;
+            font-size: 1.4em;
+        }
+
+        .slide-content h4 {
+            color: #145c38;
+            margin: 15px 0 8px 0;
+            font-size: 1.2em;
+        }
+
+        .slide-content p {
+            margin: 15px 0;
+        }
+
+        .slide-content ul, .slide-content ol {
+            margin: 15px 0 15px 30px;
+        }
+
+        .slide-content li {
+            margin: 8px 0;
+        }
+
+        .definition {
+            background: #e8f5e9;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #2c7a4d;
+        }
+
+        .formula {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 1.2em;
+            text-align: center;
+            border-left: 4px solid #145c38;
+        }
+
+        .example {
+            background: #fff3e0;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #ff9800;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .table th, .table td {
+            border: 1px solid #dee2e6;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #145c38;
+        }
+
+        .table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .controls {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-btn {
+            background: white;
+            color: #2c3e50;
+            border: 1px solid #dee2e6;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            background: #e9ecef;
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .play-btn {
+            background: linear-gradient(90deg, #2c7a4d, #145c38);
+            color: white;
+            box-shadow: 0 4px 15px rgba(44, 122, 77, 0.4);
+        }
+
+        .play-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(44, 122, 77, 0.5);
+        }
+
+        .stop-btn {
+            background: #dc3545;
+            color: white;
+        }
+
+        .stop-btn:hover {
+            background: #c82333;
+        }
+
+        .counter {
+            color: #6c757d;
+            font-size: 0.9em;
+        }
+
+        .status {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 0.9em;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .scroll-progress {
+            height: 4px;
+            background: linear-gradient(90deg, #2c7a4d, #145c38);
+            width: 0%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 20;
+        }
+
+        .section-marker {
+            border-bottom: 1px solid #e9ecef;
+            margin: 20px 0;
+            padding-bottom: 10px;
+            color: #2c7a4d;
+            font-weight: 600;
+            font-size: 1.3em;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                padding: 20px;
+                max-height: 60vh;
+            }
+            
+            .slide-title {
+                font-size: 1.6em;
+            }
+            
+            .controls {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-buttons {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="status" id="status">Mode navigation</div>
+    
+    <div class="container">
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        
+        <div class="header">
+            <h1>🏥 Santé Communautaire - Partie 5 | Nutrition (Mesures & Anémies)</h1>
+            <span class="badge" id="slideCounter">1/10</span>
+        </div>
+
+        <div class="content" id="content">
+            <!-- Les slides seront injectées ici par JavaScript -->
+        </div>
+
+        <div class="controls">
+            <div class="nav-buttons">
+                <button class="nav-btn" onclick="prevSlide()" id="prevBtn">← Précédent</button>
+                <button class="nav-btn" onclick="nextSlide()" id="nextBtn">Suivant →</button>
+            </div>
+            <button class="play-btn" onclick="toggleAutoPlay()" id="playBtn">▶ Lecture automatique</button>
+        </div>
+    </div>
+
+    <audio id="audioPlayer" src="Saco5.mp3" controls style="display: none;"></audio>
+    <audio id="backgroundMusic" loop style="display: none;"></audio>
+
+    <script>
+        alert("Astuce: Mettez le cours en pause ⏸️ pour relire 📄 les écrits.\nProfitez bien de ce cours !🙂");
+        
+        // Données du cours - Partie 5 : Slides 60 à 69 (Nutrition - Mesures et Anémies)
+        const slides = [
+            {
+                title: "Mesure de l'État Nutritionnel - Méthodes Directes",
+                content: `
+                    <h3>Anthropométrie :</h3>
+                    <ul>
+                        <li>Poids</li>
+                        <li>Taille</li>
+                        <li>Périmètre brachial (circonférence du bras)</li>
+                        <li>Périmètre crânien</li>
+                    </ul>
+                    
+                    <h3>Signes cliniques :</h3>
+                    <ul>
+                        <li><strong>Marasme :</strong> facette de vieillard, peau sur les os, cheveux détériorés, enfant timide</li>
+                        <li><strong>Kwashiorkor :</strong> œdèmes (pieds gonflés), gros ventre, grosses joues, cheveux roux, enfant turbulent</li>
+                    </ul>
+                    
+                    <h3>Consommation alimentaire :</h3>
+                    <p>Pesée des aliments, questionnaires</p>
+                `
+            },
+            
+            {
+                title: "Mesure de l'État Nutritionnel - Méthodes Indirectes",
+                content: `
+                    <h3>Indicateurs :</h3>
+                    <ul>
+                        <li>Taux de mortalité des enfants 1-4 ans (élévé → MPE)</li>
+                        <li>Productions vivrières et disponibilités alimentaires</li>
+                        <li>Prix sur les marchés (prix élevé → malnutrition)</li>
+                        <li>Visite écologique rapide (voir, écouter, demander)</li>
+                        <li>Données météorologiques</li>
+                        <li>Surfaces cultivées et prévisions de récolte</li>
+                        <li>Importations d'aliments</li>
+                        <li>Taux d'inflation</li>
+                    </ul>
+                `
+            },
+            {
+                title: "Indicateurs Anthropométriques",
+                content: `
+                    <h3>Paramètres clés :</h3>
+                    <ul>
+                        <li><strong>Poids à la naissance :</strong> < 2,5 kg = malnutrition (reflète état nutritionnel de la mère)</li>
+                        <li><strong>Poids par rapport à l'âge (P/A)</strong></li>
+                        <li><strong>Taille par rapport à l'âge (T/A)</strong></li>
+                        <li><strong>Poids par rapport à la taille (P/T)</strong></li>
+                        <li><strong>Circonférence brachiale</strong></li>
+                        <li><strong>Périmètre crânien</strong></li>
+                    </ul>
+                `
+            },
+            {
+                title: "Indice de Masse Corporelle (IMC)",
+                content: `
+                    <div class="formula">
+                        <p><strong>IMC = Poids (kg) / Taille² (m)</strong></p>
+                    </div>
+                    
+                    <table class="table">
+                        <tr>
+                            <th>Valeur IMC</th>
+                            <th>Interprétation</th>
+                        </tr>
+                        <tr>
+                            <td>< 16,0</td>
+                            <td>Malnutrition sévère</td>
+                        </tr>
+                        <tr>
+                            <td>16,0 - 16,99</td>
+                            <td>MPE modérée</td>
+                        </tr>
+                        <tr>
+                            <td>17,0 - 18,49</td>
+                            <td>Malnutrition légère</td>
+                        </tr>
+                        <tr>
+                            <td>18,5 - 24,99</td>
+                            <td>Normal</td>
+                        </tr>
+                        <tr>
+                            <td>25,0 - 29,99</td>
+                            <td>Obésité grade 1</td>
+                        </tr>
+                        <tr>
+                            <td>30,0 - 39,99</td>
+                            <td>Obésité grade 2</td>
+                        </tr>
+                        <tr>
+                            <td>≥ 40</td>
+                            <td>Obésité majeure</td>
+                        </tr>
+                    </table>
+                    <p>Poids idéal: homme 22,7 / femme 22,4</p>
+                `
+            },
+            {
+                title: "Classification OMS de la MPE",
+                content: `
+                    <div class="formula">
+                        <p><strong>Classification par écarts-types (Z-scores) :</strong></p>
+                        <ul>
+                            <li><strong>MPE globale :</strong> P/A ≤ -2 ET</li>
+                            <li><strong>MPE aiguë :</strong> P/T ≤ -2 ET</li>
+                            <li><strong>MPE chronique :</strong> T/A ≤ -2 ET</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="definition">
+                        <p><strong>-2 ET</strong> signifie que l'indicateur est inférieur de 2 écarts-types à la médiane de référence.</p>
+                    </div>
+                `
+            },
+            {
+                title: "Anémies Nutritionnelles - Seuils",
+                content: `
+                    <table class="table">
+                        <tr>
+                            <th>Groupe</th>
+                            <th>Anémie légère/modérée</th>
+                            <th>Anémie grave</th>
+                        </tr>
+                        <tr>
+                            <td>Femmes enceintes et enfants < 5 ans</td>
+                            <td>Hgb < 11 g/dl</td>
+                            <td>Hgb < 7 g/dl</td>
+                        </tr>
+                        <tr>
+                            <td>Femmes non enceintes et enfants d'âge scolaire</td>
+                            <td>Hgb < 12 g/dl</td>
+                            <td>Hgb < 7 g/dl</td>
+                        </tr>
+                        <tr>
+                            <td>Hommes adultes</td>
+                            <td>Hgb < 13 g/dl</td>
+                            <td>Hgb < 7 g/dl</td>
+                        </tr>
+                    </table>
+                `
+            },
+            {
+                title: "Apports en Fer Recommandés",
+                content: `
+                    <h3>Besoins quotidiens :</h3>
+                    <ul>
+                        <li><strong>Homme :</strong> 10 mg</li>
+                        <li><strong>Femme :</strong> 15-18 mg</li>
+                    </ul>
+                    
+                    <h3>Grossesse :</h3>
+                    <ul>
+                        <li>Supplément d'1g de fer pour l'unité fœto-placentaire</li>
+                        <li>Administration de sels de fer (≈50 mg/jour)</li>
+                    </ul>
+                    
+                    <h3>Enfant :</h3>
+                    <ul>
+                        <li>Apport 1-1,5 mg/kg/jour à partir du 3ème mois</li>
+                        <li>Lait maternel + complément alimentaire</li>
+                    </ul>
+                `
+            },
+            {
+                title: "Causes de l'Anémie Ferriprive",
+                content: `
+                    <h3>Principales causes :</h3>
+                    <ul>
+                        <li><strong>Insuffisance d'apport en fer</strong></li>
+                        <li><strong>Troubles d'absorption :</strong> facteur intrinsèque déficitaire (achlorhydrie)</li>
+                        <li><strong>Besoins accrus :</strong> grossesse (2ème moitié), lactation, croissance</li>
+                        <li><strong>Hémorragies aiguës ou chroniques</strong></li>
+                        <li><strong>Parasitoses :</strong>
+                            <ul>
+                                <li>Ankylostomes : 1000 œufs/g selles → 4,5 ml sang/jour</li>
+                                <li>Necator Americanus : 1000 œufs/g selles → 2,1 ml sang/jour</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <p>1,5 million de personnes souffrent d'anémie ferriprive dans le monde.</p>
+                    <p>Groupes les plus atteints : femmes enceintes, allaitantes, enfants < 5 ans.</p>
+                `
+            },
+            {
+                title: "Conséquences de l'Anémie Ferriprive",
+                content: `
+                    <h3>Capacité de travail :</h3>
+                    <ul>
+                        <li>Diminution de l'aptitude aux tâches énergétiques</li>
+                        <li>Réduction de la performance au travail</li>
+                    </ul>
+                    
+                    <h3>Performance intellectuelle :</h3>
+                    <ul>
+                        <li>Diminution de la capacité scolaire chez l'enfant</li>
+                        <li>Réduction du développement psychomoteur avant même l'anémie</li>
+                    </ul>
+                    
+                    <h3>Défenses immunitaires :</h3>
+                    <ul>
+                        <li>Altérations des défenses immunologiques</li>
+                    </ul>
+                    
+                    <h3>Grossesse :</h3>
+                    <ul>
+                        <li>Augmentation du risque de prématurité</li>
+                        <li>Augmentation de la morbidité et mortalité fœto-maternelle</li>
+                    </ul>
+                `
+            },
+            {
+                title: "Conseils Nutritionnels à la CPS",
+                content: `
+                    <div class="example">
+                        <h3>Messages clés pour les mamans :</h3>
+                        <ul>
+                            <li><strong>Allaitement au sein jusqu'à 2 ans</strong></li>
+                            <li><strong>Supplémentation à partir de 6 mois (sevrage progressif) :</strong>
+                                <ul>
+                                    <li>Vitamines</li>
+                                    <li>Sels minéraux</li>
+                                    <li>Glucides et lipides</li>
+                                    <li>Protéines</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <h3>La CPS consiste à :</h3>
+                    <ul>
+                        <li>Identifier enfants à problème (évolution pondérale stationnaire ou décroissante)</li>
+                        <li>Prodiguer des conseils nutritionnels</li>
+                        <li>Faire des démonstrations culinaires</li>
+                        <li>Assurer la réhabilitation nutritionnelle</li>
+                    </ul>
+                `
+            }
+        ];
+
+        // Timeline pour la synchronisation audio (en secondes) - Adaptée pour les slides 60-69
+            // Timeline pour la synchronisation audio (en secondes) - Adaptée pour les slides 60-69
+    const timeline = [
+        46,  // 1
+        52.5,  // 2
+        29,  // 3
+        60,  // 4
+        34.5,  // 5
+        48.5,  // 6
+        37.5,  // 7
+        52.5,  // 8
+        47,  // 9
+        40. // 10
+    ];
+
+    // Calcul des temps cumulés
+    const cumulativeTimes = [];
+    let sum = 0;
+    timeline.forEach((time, index) => {
+        cumulativeTimes[index] = sum;
+        sum += time;
+    });
+    const totalDuration = sum;
+
+    // Variables d'état
+    let currentSlide = 0;
+    let isAutoPlaying = false;
+    let autoPlayInterval;
+    let syncInterval;
+    
+    // Éléments DOM
+    const audioPlayer = document.getElementById('audioPlayer');
+    const backgroundMusic = document.getElementById('backgroundMusic');
+    const contentDiv = document.getElementById('content');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const playBtn = document.getElementById('playBtn');
+    const statusDiv = document.getElementById('status');
+    const slideCounter = document.getElementById('slideCounter');
+    const progressFill = document.getElementById('progressFill');
+
+    // ============================================
+    // FONCTIONS D'AFFICHAGE
+    // ============================================
+    function renderSlide(index) {
+        const slide = slides[index];
+        
+        contentDiv.innerHTML = `
+            <div class="slide active">
+                <h2 class="slide-title">${slide.title}</h2>
+                <div class="slide-content">${slide.content}</div>
+            </div>
+        `;
+        
+        slideCounter.textContent = `${index + 1}/${slides.length}`;
+        progressFill.style.width = `${((index + 1) / slides.length) * 100}%`;
+        
+        // Mise à jour des boutons de navigation
+        if (!isAutoPlaying) {
+            prevBtn.disabled = index === 0;
+            nextBtn.disabled = index === slides.length - 1;
+        }
+        
+        // Scroll en haut
+        contentDiv.scrollTop = 0;
+    }
+
+    // ============================================
+    // FONCTIONS DE NAVIGATION
+    // ============================================
+    function nextSlide() {
+        if (currentSlide < slides.length - 1) {
+            currentSlide++;
+            renderSlide(currentSlide);
+        }
+    }
+
+    function prevSlide() {
+        if (currentSlide > 0) {
+            currentSlide--;
+            renderSlide(currentSlide);
+        }
+    }
+
+    // ============================================
+    // SYNCHRONISATION AUDIO / SLIDES
+    // ============================================
+    function updateTimeDisplay() {
+        // Cette fonction peut être simplifiée ou adaptée selon les besoins
+        const current = audioPlayer.currentTime;
+        const minutes = Math.floor(current / 60);
+        const seconds = Math.floor(current % 60);
+        const totalMinutes = Math.floor(totalDuration / 60);
+        const totalSeconds = Math.floor(totalDuration % 60);
+        
+        // Mise à jour de la barre de progression
+        const progress = (current / totalDuration) * 100;
+        progressFill.style.width = `${Math.min(progress, 100)}%`;
+    }
+
+    function checkSync() {
+        if (!isAutoPlaying) return;
+        
+        const currentTime = audioPlayer.currentTime;
+        
+        // Trouver la slide correspondante au temps actuel
+        for (let i = cumulativeTimes.length - 1; i >= 0; i--) {
+            if (currentTime >= cumulativeTimes[i]) {
+                if (i !== currentSlide) {
+                    currentSlide = i;
+                    renderSlide(currentSlide);
+                }
+                break;
+            }
+        }
+        
+        updateTimeDisplay();
+        
+        // Arrêt automatique à la fin
+        if (currentTime >= totalDuration - 1) {
+            stopAutoPlay();
+        }
+    }
+
+    function startAutoPlay() {
+        if (!audioPlayer.src) {
+            alert('Veuillez placer le fichier audio "Saco5.mp3" dans le même dossier que ce fichier HTML.');
+            return;
+        }
+        
+        isAutoPlaying = true;
+        playBtn.textContent = '⏸ Pause';
+        playBtn.classList.remove('play-btn');
+        playBtn.classList.add('stop-btn');
+        statusDiv.textContent = 'Mode automatique';
+        statusDiv.style.background = 'rgba(40, 167, 69, 0.9)';
+        
+        prevBtn.disabled = true;
+        nextBtn.disabled = true;
+        
+        audioPlayer.play();
+        
+        if (backgroundMusic.src) {
+            backgroundMusic.play();
+            backgroundMusic.volume = 0.3;
+        }
+        
+        // Vérifier la synchronisation toutes les 100ms
+        syncInterval = setInterval(checkSync, 100);
+    }
+
+    function stopAutoPlay() {
+        isAutoPlaying = false;
+        playBtn.textContent = '▶ Lecture automatique';
+        playBtn.classList.remove('stop-btn');
+        playBtn.classList.add('play-btn');
+        statusDiv.textContent = 'Mode navigation';
+        statusDiv.style.background = 'rgba(0,0,0,0.8)';
+        
+        audioPlayer.pause();
+        
+        if (backgroundMusic.src) {
+            backgroundMusic.pause();
+        }
+        
+        if (syncInterval) {
+            clearInterval(syncInterval);
+        }
+        
+        prevBtn.disabled = currentSlide === 0;
+        nextBtn.disabled = currentSlide === slides.length - 1;
+    }
+
+    function toggleAutoPlay() {
+        if (isAutoPlaying) {
+            stopAutoPlay();
+        } else {
+            startAutoPlay();
+        }
+    }
+
+    // ============================================
+    // GESTION DES ÉVÉNEMENTS AUDIO
+    // ============================================
+    audioPlayer.addEventListener('ended', function() {
+        stopAutoPlay();
+    });
+
+    audioPlayer.addEventListener('timeupdate', function() {
+        if (!isAutoPlaying) {
+            updateTimeDisplay();
+        }
+    });
+
+    // ============================================
+    // RACCOURCIS CLAVIER
+    // ============================================
+    document.addEventListener('keydown', function(e) {
+        if (isAutoPlaying) return;
+        
+        if (e.key === 'ArrowLeft') {
+            e.preventDefault();
+            prevSlide();
+        } else if (e.key === 'ArrowRight') {
+            e.preventDefault();
+            nextSlide();
+        } else if (e.key === ' ') {
+            e.preventDefault();
+            toggleAutoPlay();
+        }
+    });
+
+    // ============================================
+    // INITIALISATION
+    // ============================================
+    renderSlide(0);
+
+    // Vérifier si l'audio existe
+    audioPlayer.addEventListener('error', function() {
+        console.warn('Fichier audio non trouvé. Placez "Saco5.mp3" dans le même dossier.');
+    });
+</script>
+</body>
+</html 
