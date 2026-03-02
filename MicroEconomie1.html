@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cours de Microéconomie | Tronc Commun Semestre 1</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1100px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: #f0f0f0;
+            width: 100%;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #1e3c72, #2a5298);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .header {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            color: #1e3c72;
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+
+        .badge {
+            background: #2a5298;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+
+        .content {
+            padding: 30px;
+            min-height: 500px;
+            max-height: 70vh;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            background: #ffffff;
+        }
+
+        .slide {
+            display: none;
+            animation: fadeIn 0.5s ease;
+            margin-bottom: 30px;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide-title {
+            color: #1e3c72;
+            font-size: 2em;
+            margin-bottom: 25px;
+            font-weight: 700;
+            border-left: 5px solid #2a5298;
+            padding-left: 20px;
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 10;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+        }
+
+        .slide-content {
+            color: #2c3e50;
+            line-height: 1.8;
+            font-size: 1.1em;
+        }
+
+        .slide-content h3 {
+            color: #2a5298;
+            margin: 20px 0 10px 0;
+            font-size: 1.4em;
+        }
+
+        .slide-content h4 {
+            color: #1e3c72;
+            margin: 15px 0 8px 0;
+            font-size: 1.2em;
+        }
+
+        .slide-content p {
+            margin: 15px 0;
+        }
+
+        .slide-content ul, .slide-content ol {
+            margin: 15px 0 15px 30px;
+        }
+
+        .slide-content li {
+            margin: 8px 0;
+        }
+
+        .definition {
+            background: #e8f0fe;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #2a5298;
+        }
+
+        .formula {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 1.2em;
+            text-align: center;
+            border-left: 4px solid #1e3c72;
+        }
+
+        .example {
+            background: #fff3e0;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #ff9800;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .table th, .table td {
+            border: 1px solid #dee2e6;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #1e3c72;
+        }
+
+        .table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .controls {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-btn {
+            background: white;
+            color: #2c3e50;
+            border: 1px solid #dee2e6;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            background: #e9ecef;
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .play-btn {
+            background: linear-gradient(90deg, #1e3c72, #2a5298);
+            color: white;
+            box-shadow: 0 4px 15px rgba(42, 82, 152, 0.4);
+        }
+
+        .play-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(42, 82, 152, 0.5);
+        }
+
+        .stop-btn {
+            background: #dc3545;
+            color: white;
+        }
+
+        .stop-btn:hover {
+            background: #c82333;
+        }
+
+        .counter {
+            color: #6c757d;
+            font-size: 0.9em;
+        }
+
+        .status {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 0.9em;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .section-marker {
+            border-bottom: 1px solid #e9ecef;
+            margin: 20px 0;
+            padding-bottom: 10px;
+            color: #2a5298;
+            font-weight: 600;
+            font-size: 1.3em;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                padding: 20px;
+                max-height: 60vh;
+            }
+            
+            .slide-title {
+                font-size: 1.6em;
+            }
+            
+            .controls {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-buttons {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="status" id="status">Mode navigation</div>
+    
+    <div class="container">
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        
+        <div class="header">
+            <h1>📘 Microéconomie - Tronc Commun Semestre 1 </h1>
+            <span class="badge" id="slideCounter">1/32</span>
+        </div>
+
+        <div class="content" id="content">
+            <!-- Slides injectées par JavaScript -->
+        </div>
+
+        <div class="controls">
+            <div class="nav-buttons">
+                <button class="nav-btn" onclick="prevSlide()" id="prevBtn">← Précédent</button>
+                <button class="nav-btn" onclick="nextSlide()" id="nextBtn">Suivant →</button>
+            </div>
+            <button class="play-btn" onclick="toggleAutoPlay()" id="playBtn">▶ Lecture automatique</button>
+        </div>
+    </div>
+
+    <audio id="audioPlayer" src="MicroEco1.mp3    " controls style="display: none;"></audio>
+
+    <script>
+        alert("🎓 Astuce: Mettez le cours en pause pour relire les définitions.\nBonne révision !");
+
+        // Données du cours de microéconomie basées sur le PDF
+        const slides = [
+            {
+                title: "Définitions de l'économie",
+                content: `
+                    <h3>1. Science de la gestion de la rareté</h3>
+                    <p>Selon Lord Robbins : « L'économie est l'étude du comportement humain en tant que relation entre les fins et les moyens rares à usages alternatifs ».</p>
+                    
+                    <h3>2. Actes économiques fondamentaux</h3>
+                    <p>Production, répartition, distribution et consommation.</p>
+                    
+                    <h3>3. Science de l'optimisation</h3>
+                    <p>Obtenir le plus grand résultat possible pour des moyens donnés.</p>
+                    
+                    <h3>4. Science des richesses</h3>
+                    <p>Aristote : « science d'acquérir des richesses ».<br>
+                    A. Smith : « procurer au peuple un revenu ou une subsistance abondante ».<br>
+                    A. Marshall : « acquisition et usage des choses matérielles nécessaires au bien être ».</p>
+                    
+                    <div class="definition">
+                        <strong>Synthèse de P. Samuelson :</strong> L'économie étudie comment les hommes décident d'affecter des ressources rares à la production et la répartition des biens et services.
+                    </div>
+                `
+            },
+            {
+                title: "Les biens économiques",
+                content: `
+                    <h3>Caractéristiques d'un bien économique</h3>
+                    <ul>
+                        <li><strong>Rareté :</strong> offre limitée</li>
+                        <li><strong>Contrepartie :</strong> nécessite un paiement</li>
+                        <li><strong>Substituabilité :</strong> peut être remplacé</li>
+                    </ul>
+                    
+                    <div class="example">
+                        <p><strong>Exemple :</strong> L'air n'est pas un bien économique, contrairement à l'air pur qui peut remplacer l'air pollué.</p>
+                    </div>
+                    
+                    <h3>Les consommateurs</h3>
+                    <p>On considère les agents uniquement à travers leurs choix de consommation. Sont inclus :</p>
+                    <ul>
+                        <li>Choix de travail, éducation</li>
+                        <li>Consommation courante, santé</li>
+                        <li>Environnement</li>
+                    </ul>
+                    
+                    <h3>Caractéristiques des biens</h3>
+                    <p>Les biens sont homogènes : pas d'ambiguïté dans les stratégies des agents.</p>
+                `
+            },
+            {
+                title: "Taux d'échange et prix",
+                content: `
+                    <div class="definition">
+                        <p>Sur un marché, le taux d'échange du bien 1 en bien 2 est égal au rapport des prix.</p>
+                    </div>
+                    
+                    <div class="formula">
+                        t = P₁ / P₂
+                    </div>
+                    
+                    <p>Si P₁ = 4200 dh (stéréo) et P₂ = 4,20 dh (baguette), alors :</p>
+                    <div class="formula">
+                        t = 4200 / 4,20 = 1000
+                    </div>
+                    <p>Une stéréo s'échange contre 1000 baguettes.</p>
+                `
+            },
+            {
+                title: "Offre et demande",
+                content: `
+                    <h3>Définitions</h3>
+                    <p><strong>Marché :</strong> lieu où s'échangent des biens homogènes.</p>
+                    <p><strong>Offre :</strong> quantité de biens proposés par les vendeurs en fonction du prix.</p>
+                    <p><strong>Demande :</strong> quantité de biens que les consommateurs désirent acheter en fonction du prix.</p>
+                    
+                    <h3>Loi de la demande</h3>
+                    <p>La demande diminue quand les prix augmentent (fonction décroissante).</p>
+                    
+                    <h3>Loi de l'offre</h3>
+                    <p>L'offre augmente quand le prix augmente (fonction croissante).</p>
+                `
+            },
+            {
+                title: "Équilibre du marché",
+                content: `
+                    <h3>Rôle des prix</h3>
+                    <p>Les prix coordonnent production et consommation.</p>
+                    
+                    <div class="definition">
+                        <p><strong>Équilibre :</strong> Offre = Demande</p>
+                        <p><strong>Prix d'équilibre (P*) :</strong> prix unique tel que offre = demande</p>
+                        <p><strong>Quantité d'équilibre (Q*) :</strong> quantité offerte et demandée à ce prix</p>
+                    </div>
+                    
+                    <p>Graphiquement, l'équilibre est à l'intersection des courbes d'offre et de demande.</p>
+                `
+            },
+            {
+                title: "Surplus du consommateur",
+                content: `
+                    <div class="definition">
+                        <p><strong>Surplus du consommateur :</strong> différence entre le prix maximum que le consommateur est disposé à payer et le prix effectif.</p>
+                    </div>
+                    
+                    <p>Pour plusieurs unités, le surplus total est la somme des surplus marginaux.</p>
+                    
+                    <div class="formula">
+                        Surplus = aire entre la courbe de demande inverse et la droite horizontale P
+                    </div>
+                `
+            },
+            {
+                title: "Surplus du producteur",
+                content: `
+                    <div class="definition">
+                        <p><strong>Surplus du producteur :</strong> différence entre le prix de vente et le coût réel (profit).</p>
+                    </div>
+                    
+                    <p>Le surplus total est la somme des profits marginaux.</p>
+                    
+                    <div class="formula">
+                        Surplus = aire entre la courbe d'offre inverse et la droite horizontale P
+                    </div>
+                `
+            },
+            {
+                title: "Chocs sur l'offre et la demande",
+                content: `
+                    <h3>Choc d'offre</h3>
+                    <p>Modification de l'environnement qui déplace la courbe d'offre (prix des facteurs, nombre d'entreprises, technologie).</p>
+                    
+                    <h3>Choc de demande</h3>
+                    <p>Modification qui déplace la courbe de demande (revenu, prix des autres biens, goûts).</p>
+                    
+                    <p>Suite à un choc, le point d'équilibre est modifié.</p>
+                `
+            },
+            {
+                title: "Contrainte budgétaire",
+                content: `
+                    <h3>Ensemble budgétaire</h3>
+                    <div class="formula">
+                        p₁x₁ + p₂x₂ ≤ R
+                    </div>
+                    
+                    <h3>Droite de budget</h3>
+                    <p>Ensemble des paniers qui épuisent le revenu :</p>
+                    <div class="formula">
+                        x₂ = -(p₁/p₂)x₁ + R/p₂
+                    </div>
+                    
+                    <p><strong>Pente :</strong> -p₁/p₂<br>
+                    <strong>Ordonnée à l'origine :</strong> R/p₂</p>
+                `
+            },
+            {
+                title: "Variations du revenu et des prix",
+                content: `
+                    <h3>Variation du revenu</h3>
+                    <p>Une augmentation du revenu déplace la droite de budget parallèlement vers la droite (pouvoir d'achat augmente).</p>
+                    
+                    <h3>Variation des prix</h3>
+                    <p>Une augmentation de p₁ (p₂ et R constants) augmente la pente en valeur absolue sans changer l'ordonnée à l'origine.</p>
+                `
+            },
+            {
+                title: "Préférences du consommateur",
+                content: `
+                    <h3>Les trois axiomes</h3>
+                    <ul>
+                        <li><strong>Comparaison :</strong> toute paire de paniers peut être comparée</li>
+                        <li><strong>Transitivité :</strong> si X>Y et Y>Z alors X>Z</li>
+                        <li><strong>Non-saturation :</strong> plus est préféré à moins</li>
+                    </ul>
+                `
+            },
+            {
+                title: "Fonction d'utilité",
+                content: `
+                    <h3>Approche cardinale</h3>
+                    <p>Le consommateur quantifie l'utilité (Walras, Jevons, Menger).</p>
+                    
+                    <h3>Approche ordinale (Pareto)</h3>
+                    <p>Le consommateur classe les paniers par ordre de préférence.</p>
+                    
+                    <div class="formula">
+                        U = U(x₁, x₂)
+                    </div>
+                `
+            },
+            {
+                title: "Courbes d'indifférence",
+                content: `
+                    <div class="definition">
+                        <p><strong>Courbe d'indifférence :</strong> ensemble des combinaisons de biens procurant le même niveau de satisfaction.</p>
+                    </div>
+                    
+                    <h3>Propriétés</h3>
+                    <ul>
+                        <li>Ne se coupent jamais</li>
+                        <li>Pente négative</li>
+                        <li>Plus on s'éloigne de l'origine, plus la satisfaction augmente</li>
+                        <li>Convexes par rapport à l'origine</li>
+                    </ul>
+                `
+            },
+            {
+                title: "Utilité marginale et TMS",
+                content: `
+                    <div class="definition">
+                        <p><strong>Utilité marginale :</strong> variation de l'utilité totale pour une unité supplémentaire du bien.</p>
+                    </div>
+                    
+                    <div class="formula">
+                        dU = (∂U/∂x₁)dx₁ + (∂U/∂x₂)dx₂ = 0
+                    </div>
+                    
+                    <div class="definition">
+                        <p><strong>TMS (Taux Marginal de Substitution) :</strong> opposé de la pente de la courbe d'indifférence. Mesure la quantité de bien 2 qu'on est prêt à céder pour une unité supplémentaire de bien 1, à satisfaction constante.</p>
+                    </div>
+                    
+                    <div class="formula">
+                        TMS = -dx₂/dx₁ = (∂U/∂x₁)/(∂U/∂x₂)
+                    </div>
+                `
+            },
+            {
+                title: "Équilibre du consommateur",
+                content: `
+                    <p>Le consommateur maximise U(x₁, x₂) sous contrainte p₁x₁ + p₂x₂ = R.</p>
+                    
+                    <h3>Condition d'équilibre</h3>
+                    <div class="formula">
+                        (∂U/∂x₁)/(∂U/∂x₂) = p₁/p₂
+                    </div>
+                    <p>Soit : TMS = rapport des prix</p>
+                    
+                    <h3>Graphiquement</h3>
+                    <p>Point de tangence entre courbe d'indifférence et droite de budget.</p>
+                `
+            },
+            {
+                title: "Exemple d'équilibre",
+                content: `
+                    <div class="example">
+                        <p><strong>Énoncé :</strong> U = x₁ × x₂, p₁ = 5 dh, p₂ = 10 dh, R = 100 dh.</p>
+                    </div>
+                    
+                    <h3>Résolution</h3>
+                    <p>Condition d'équilibre : (x₂)/(x₁) = 5/10 = 1/2 → x₂ = x₁/2</p>
+                    <p>Contrainte : 5x₁ + 10x₂ = 100</p>
+                    <p>5x₁ + 10(x₁/2) = 5x₁ + 5x₁ = 10x₁ = 100 → x₁* = 10, x₂* = 5</p>
+                    
+                    <div class="formula">
+                        Panier optimal : (10, 5)
+                    </div>
+                `
+            }
+            
+        ];
+
+        // Timeline pour la synchronisation audio (secondes)
+        const timeline = [
+    97,   // 0: Définitions
+    41,   // 1: Biens économiques
+    39,   // 2: Taux d'échange
+    67,   // 3: Offre et demande
+    44,   // 4: Équilibre
+    13,   // 5: Surplus consommateur
+    57,   // 6: Surplus producteur
+    55,   // 7: Chocs
+    65,   // 8: Contrainte budgétaire
+    31,   // 9: Variations
+    55,   // 10: Préférences
+    65,   // 11: Utilité
+    34,   // 12: Courbes d'indifférence
+    48,   // 13: TMS
+    50,   // 14: Équilibre consommateur
+    63 // 15: Exemple
+    
+];
+
+        // Calcul des temps cumulés
+        const cumulativeTimes = [];
+        let sum = 0;
+        timeline.forEach((time, index) => {
+            cumulativeTimes[index] = sum;
+            sum += time;
+        });
+        const totalDuration = sum;
+
+        // Variables d'état
+        let currentSlide = 0;
+        let isAutoPlaying = false;
+        let autoPlayInterval;
+        let syncInterval;
+        
+        // Éléments DOM
+        const audioPlayer = document.getElementById('audioPlayer');
+        const contentDiv = document.getElementById('content');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const playBtn = document.getElementById('playBtn');
+        const statusDiv = document.getElementById('status');
+        const slideCounter = document.getElementById('slideCounter');
+        const progressFill = document.getElementById('progressFill');
+
+        // ============================================
+        // FONCTIONS D'AFFICHAGE
+        // ============================================
+        function renderSlide(index) {
+            const slide = slides[index];
+            
+            contentDiv.innerHTML = `
+                <div class="slide active">
+                    <h2 class="slide-title">${slide.title}</h2>
+                    <div class="slide-content">${slide.content}</div>
+                </div>
+            `;
+            
+            slideCounter.textContent = `${index + 1}/${slides.length}`;
+            progressFill.style.width = `${((index + 1) / slides.length) * 100}%`;
+            
+            // Mise à jour des boutons de navigation
+            if (!isAutoPlaying) {
+                prevBtn.disabled = index === 0;
+                nextBtn.disabled = index === slides.length - 1;
+            }
+            
+            // Scroll en haut
+            contentDiv.scrollTop = 0;
+        }
+
+        // ============================================
+        // FONCTIONS DE NAVIGATION
+        // ============================================
+        function nextSlide() {
+            if (currentSlide < slides.length - 1) {
+                currentSlide++;
+                renderSlide(currentSlide);
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                renderSlide(currentSlide);
+            }
+        }
+
+        // ============================================
+        // SYNCHRONISATION AUDIO / SLIDES
+        // ============================================
+        function updateTimeDisplay() {
+            const current = audioPlayer.currentTime;
+            const minutes = Math.floor(current / 60);
+            const seconds = Math.floor(current % 60);
+            
+            // Mise à jour de la barre de progression
+            const progress = (current / totalDuration) * 100;
+            progressFill.style.width = `${Math.min(progress, 100)}%`;
+        }
+
+        function checkSync() {
+            if (!isAutoPlaying) return;
+            
+            const currentTime = audioPlayer.currentTime;
+            
+            // Trouver la slide correspondante au temps actuel
+            for (let i = cumulativeTimes.length - 1; i >= 0; i--) {
+                if (currentTime >= cumulativeTimes[i]) {
+                    if (i !== currentSlide) {
+                        currentSlide = i;
+                        renderSlide(currentSlide);
+                    }
+                    break;
+                }
+            }
+            
+            updateTimeDisplay();
+            
+            // Arrêt automatique à la fin
+            if (currentTime >= totalDuration - 1) {
+                stopAutoPlay();
+            }
+        }
+
+        function startAutoPlay() {
+            if (!audioPlayer.src) {
+                alert('Veuillez placer le fichier audio "microeconomie.mp3" dans le même dossier que ce fichier HTML.');
+                return;
+            }
+            
+            isAutoPlaying = true;
+            playBtn.textContent = '⏸ Pause';
+            playBtn.classList.remove('play-btn');
+            playBtn.classList.add('stop-btn');
+            statusDiv.textContent = 'Mode automatique';
+            statusDiv.style.background = 'rgba(40, 167, 69, 0.9)';
+            
+            prevBtn.disabled = true;
+            nextBtn.disabled = true;
+            
+            audioPlayer.play();
+            
+            // Vérifier la synchronisation toutes les 100ms
+            syncInterval = setInterval(checkSync, 100);
+        }
+
+        function stopAutoPlay() {
+            isAutoPlaying = false;
+            playBtn.textContent = '▶ Lecture automatique';
+            playBtn.classList.remove('stop-btn');
+            playBtn.classList.add('play-btn');
+            statusDiv.textContent = 'Mode navigation';
+            statusDiv.style.background = 'rgba(0,0,0,0.8)';
+            
+            audioPlayer.pause();
+            
+            if (syncInterval) {
+                clearInterval(syncInterval);
+            }
+            
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === slides.length - 1;
+        }
+
+        function toggleAutoPlay() {
+            if (isAutoPlaying) {
+                stopAutoPlay();
+            } else {
+                startAutoPlay();
+            }
+        }
+
+        // ============================================
+        // GESTION DES ÉVÉNEMENTS AUDIO
+        // ============================================
+        audioPlayer.addEventListener('ended', function() {
+            stopAutoPlay();
+        });
+
+        audioPlayer.addEventListener('timeupdate', function() {
+            if (!isAutoPlaying) {
+                updateTimeDisplay();
+            }
+        });
+
+        // ============================================
+        // RACCOURCIS CLAVIER
+        // ============================================
+        document.addEventListener('keydown', function(e) {
+            if (isAutoPlaying) return;
+            
+            if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                prevSlide();
+            } else if (e.key === 'ArrowRight') {
+                e.preventDefault();
+                nextSlide();
+            } else if (e.key === ' ') {
+                e.preventDefault();
+                toggleAutoPlay();
+            }
+        });
+
+        // ============================================
+        // INITIALISATION
+        // ============================================
+        renderSlide(0);
+
+        // Vérifier si l'audio existe
+        audioPlayer.addEventListener('error', function() {
+            console.warn('Fichier audio non trouvé. Placez "microeconomie.mp3" dans le même dossier.');
+        });
+    </script>
+</body>
+</html>
