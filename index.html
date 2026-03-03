@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="mobile-web-app-capable" content="yes">
-    <title>MedScroll - Accueil</title>
+    <title>STUDIA - Accueil</title>
     <style>
         /* === STYLE GLOBAL (repris et adapté du fichier partagé) === */
         * {
@@ -394,7 +394,7 @@
     <div class="app-container">
         <!-- Header avec hamburger -->
         <div class="header">
-            <div class="logo">MedScroll</div>
+            <div class="logo">STUDIA</div>
             <button class="hamburger" id="hamburgerBtn">
                 <span></span>
                 <span></span>
@@ -447,9 +447,9 @@
                         <h3> Santé Communautaire V <span class="badge">Premium</span></h3>
                         <div class="description">Cinquième Partie du Cours de Santé Communautaire</div>
                     </div>
-                    <div class="menu-card premium" data-premium="vaccinologie">
-                        <h3>💉 Vaccinologie <span class="badge">Premium</span></h3>
-                        <div class="description">Mécanismes immunitaires</div>
+                    <div class="menu-card premium" data-premium="microeco">
+                        <h3> MicroEconomie II <span class="badge">Premium</span></h3>
+                        <div class="description">Deuxième Partie du Cours de MicroEconomie</div>
                     </div>
                     <div class="menu-card premium" data-premium="medecine">
                         <h3> Anatomie des Mouvements du Tronc<span class="badge">Premium</span></h3>
@@ -519,11 +519,11 @@
                 </div>
 
                 <!-- Carte Premium 2 : Vaccinologie -->
-                <div class="featured-card premium-card premium-pulse" data-premium="vaccinologie">
+                <div class="featured-card premium-card premium-pulse" data-premium="microeco">
                     <div class="card-content">
                         <div class="card-icon">💉</div>
-                        <h3>Vaccinologie 3D <span class="premium-badge">Premium</span></h3>
-                        <p>Mécanismes immunitaires, production d'anticorps, et plus.</p>
+                        <h3> MicroEconomie II <span class="premium-badge">Premium</span></h3>
+                        <p>Partie Finale du Cours de MicroEconomie</p>
                         <div class="card-meta">
                             <span class="card-tag">Cliquez pour accéder</span>
                         </div>
@@ -545,7 +545,7 @@
 
             <!-- Bandeau WhatsApp en bas de la page principale -->
             <div style="text-align: center; margin: 30px 0 20px;">
-                <a href="https://wa.me/243961803375?text=Bonjour%20MedScroll%2C%20je%20suis%20int%C3%A9ress%C3%A9%20par%20le%20contenu%20Premium" 
+                <a href="https://wa.me/243961803375?text=Bonjour%20STUDIA%2C%20je%20suis%20int%C3%A9ress%C3%A9%20par%20le%20contenu%20Premium" 
                    class="whatsapp-link" 
                    target="_blank"
                    rel="noopener noreferrer">
@@ -591,7 +591,7 @@
 
         // Numéro WhatsApp
         const whatsappNumber = '243961803375';
-        const messagePrefix = 'Bonjour MedScroll, je suis intéressé par le contenu Premium';
+        const messagePrefix = 'Bonjour STUDIA, je suis intéressé par le contenu Premium';
         const premiumUsers = [
             "NSIETE BERMIE",
             "KAMBA TRIOMPHE",
@@ -611,8 +611,8 @@
         else if (sujet === "statistique") {
             window.open("Statistiques.html", "_blank");
             } 
-        else if (sujet === "medecine") {
-            window.open("Tronc.html", "_blank");
+        else if (sujet === "microeco") {
+            window.open("MicroEconomie2.html", "_blank");
             }
         }
         else {
