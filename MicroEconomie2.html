@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cours de Microéconomie | Tronc Commun Semestre 1</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1100px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: #f0f0f0;
+            width: 100%;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #1e3c72, #2a5298);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .header {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            color: #1e3c72;
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+
+        .badge {
+            background: #2a5298;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+
+        .content {
+            padding: 30px;
+            min-height: 500px;
+            max-height: 70vh;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            background: #ffffff;
+        }
+
+        .slide {
+            display: none;
+            animation: fadeIn 0.5s ease;
+            margin-bottom: 30px;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide-title {
+            color: #1e3c72;
+            font-size: 2em;
+            margin-bottom: 25px;
+            font-weight: 700;
+            border-left: 5px solid #2a5298;
+            padding-left: 20px;
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 10;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+        }
+
+        .slide-content {
+            color: #2c3e50;
+            line-height: 1.8;
+            font-size: 1.1em;
+        }
+
+        .slide-content h3 {
+            color: #2a5298;
+            margin: 20px 0 10px 0;
+            font-size: 1.4em;
+        }
+
+        .slide-content h4 {
+            color: #1e3c72;
+            margin: 15px 0 8px 0;
+            font-size: 1.2em;
+        }
+
+        .slide-content p {
+            margin: 15px 0;
+        }
+
+        .slide-content ul, .slide-content ol {
+            margin: 15px 0 15px 30px;
+        }
+
+        .slide-content li {
+            margin: 8px 0;
+        }
+
+        .definition {
+            background: #e8f0fe;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #2a5298;
+        }
+
+        .formula {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 1.2em;
+            text-align: center;
+            border-left: 4px solid #1e3c72;
+        }
+
+        .example {
+            background: #fff3e0;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #ff9800;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .table th, .table td {
+            border: 1px solid #dee2e6;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #1e3c72;
+        }
+
+        .table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .controls {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-btn {
+            background: white;
+            color: #2c3e50;
+            border: 1px solid #dee2e6;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            background: #e9ecef;
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .play-btn {
+            background: linear-gradient(90deg, #1e3c72, #2a5298);
+            color: white;
+            box-shadow: 0 4px 15px rgba(42, 82, 152, 0.4);
+        }
+
+        .play-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(42, 82, 152, 0.5);
+        }
+
+        .stop-btn {
+            background: #dc3545;
+            color: white;
+        }
+
+        .stop-btn:hover {
+            background: #c82333;
+        }
+
+        .counter {
+            color: #6c757d;
+            font-size: 0.9em;
+        }
+
+        .status {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 0.9em;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .section-marker {
+            border-bottom: 1px solid #e9ecef;
+            margin: 20px 0;
+            padding-bottom: 10px;
+            color: #2a5298;
+            font-weight: 600;
+            font-size: 1.3em;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                padding: 20px;
+                max-height: 60vh;
+            }
+            
+            .slide-title {
+                font-size: 1.6em;
+            }
+            
+            .controls {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-buttons {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="status" id="status">Mode navigation</div>
+    
+    <div class="container">
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        
+        <div class="header">
+            <h1>📘 Microéconomie - Tronc Commun Semestre 1 </h1>
+            <span class="badge" id="slideCounter">1/32</span>
+        </div>
+
+        <div class="content" id="content">
+            <!-- Slides injectées par JavaScript -->
+        </div>
+
+        <div class="controls">
+            <div class="nav-buttons">
+                <button class="nav-btn" onclick="prevSlide()" id="prevBtn">← Précédent</button>
+                <button class="nav-btn" onclick="nextSlide()" id="nextBtn">Suivant →</button>
+            </div>
+            <button class="play-btn" onclick="toggleAutoPlay()" id="playBtn">▶ Lecture automatique</button>
+        </div>
+    </div>
+
+    <audio id="audioPlayer" src="MicroEco2.mp3" controls style="display: none;"></audio>
+
+    <script>
+        alert("🎓 Astuce: Mettez le cours en pause pour relire les définitions.\nBonne révision !");
+
+        // Données du cours de microéconomie basées sur le PDF
+        const slides = [
+            {
+                title: "Méthode de Lagrange",
+                content: `
+                    <div class="formula">
+                        L = U(x₁, x₂) + λ(R - p₁x₁ - p₂x₂)
+                    </div>
+                    
+                    <h3>Conditions du premier ordre</h3>
+                    <ul>
+                        <li>∂L/∂x₁ = ∂U/∂x₁ - λp₁ = 0</li>
+                        <li>∂L/∂x₂ = ∂U/∂x₂ - λp₂ = 0</li>
+                        <li>∂L/∂λ = R - p₁x₁ - p₂x₂ = 0</li>
+                    </ul>
+                    
+                    <p>On retrouve : (∂U/∂x₁)/(∂U/∂x₂) = p₁/p₂</p>
+                `
+            },
+            {
+                title: "Fonction de demande",
+                content: `
+                    <div class="definition">
+                        <p><strong>Fonction de demande :</strong> quantité optimale consommée en fonction du prix, toutes choses égales par ailleurs.</p>
+                    </div>
+                    
+                    <h3>Effet d'une variation du revenu</h3>
+                    <p>Courbe de consommation-revenu → courbe d'Engel.</p>
+                    
+                    <h3>Effet d'une variation des prix</h3>
+                    <p>Courbe de consommation-prix → courbe de demande.</p>
+                    
+                    <p>En général, la demande est décroissante du prix.</p>
+                `
+            },
+            {
+                title: "Exceptions à la loi de la demande",
+                content: `
+                    <h3>Effet de snobisme</h3>
+                    <p>Biens de luxe ou supérieurs.</p>
+                    
+                    <h3>Effet Giffen</h3>
+                    <p>Biens inférieurs.</p>
+                    
+                    <h3>Effet de spéculation</h3>
+                    
+                    <h3>Décomposition de l'effet d'un prix</h3>
+                    <ul>
+                        <li><strong>Effet substitution :</strong> modification des prix relatifs</li>
+                        <li><strong>Effet revenu :</strong> variation du pouvoir d'achat</li>
+                    </ul>
+                `
+            },
+            {
+                title: "Élasticité-prix",
+                content: `
+                    <div class="definition">
+                        <p>L'élasticité mesure la variation relative de la quantité par rapport à la variation relative du prix.</p>
+                    </div>
+                    
+                    <div class="formula">
+                        ε = (ΔQ/Q) / (ΔP/P) = (dQ/dP) × (P/Q)
+                    </div>
+                    
+                    <h3>Interprétation (en valeur absolue)</h3>
+                    <ul>
+                        <li>|ε| < 1 : demande inélastique</li>
+                        <li>|ε| > 1 : demande élastique</li>
+                        <li>|ε| = 1 : élasticité unitaire</li>
+                    </ul>
+                    
+                    <p>Exemple : |ε| = 1,5 → si P varie de 1%, Q varie de -1,5%.</p>
+                `
+            },
+            {
+                title: "Élasticité croisée et élasticité-revenu",
+                content: `
+                    <h3>Élasticité croisée</h3>
+                    <div class="formula">
+                        εc = (dx₁/dp₂) × (p₂/x₁)
+                    </div>
+                    <ul>
+                        <li>εc > 0 : biens substituables (café/thé)</li>
+                        <li>εc < 0 : biens complémentaires (appareil photo/pellicule)</li>
+                        <li>εc = 0 : biens indépendants</li>
+                    </ul>
+                    
+                    <h3>Élasticité-revenu</h3>
+                    <div class="formula">
+                        εQ/R = (ΔQ/Q) / (ΔR/R)
+                    </div>
+                    <ul>
+                        <li>< 0 : biens inférieurs</li>
+                        <li>0 < ε < 1 : biens normaux</li>
+                        <li>= 1 : proportionnel</li>
+                        <li>> 1 : biens supérieurs</li>
+                    </ul>
+                `
+            },
+            {
+                title: "Théorie de la production",
+                content: `
+                    <h3>Fonction de production</h3>
+                    <div class="formula">
+                        Q = f(L, K)
+                    </div>
+                    <p>L : travail, K : capital</p>
+                    
+                    <h3>Hypothèses</h3>
+                    <ul>
+                        <li>Facteurs homogènes et divisibles</li>
+                        <li>Facteurs interchangeables</li>
+                        <li>Concurrence pure et parfaite</li>
+                        <li>Fonction continue et dérivable</li>
+                    </ul>
+                `
+            },
+            {
+                title: "Court terme : productivités",
+                content: `
+                    <h3>À court terme, K = K₀ (fixe)</h3>
+                    
+                    <div class="formula">
+                        PT = Q = f(L, K₀)
+                    </div>
+                    
+                    <div class="definition">
+                        <p><strong>Productivité moyenne du travail :</strong> PM_L = Q / L</p>
+                        <p><strong>Productivité marginale du travail :</strong> Pm_L = ∂Q / ∂L</p>
+                    </div>
+                    
+                    <h3>Loi des rendements décroissants</h3>
+                    <p>En augmentant L, la production augmente moins que proportionnellement.</p>
+                `
+            },
+            {
+                title: "Phases de production",
+                content: `
+                    <h3>Les 3 phases</h3>
+                    <ul>
+                        <li><strong>Phase I :</strong> rendements croissants (Pm croissante)</li>
+                        <li><strong>Phase II :</strong> rendements décroissants (Pm décroissante mais positive) → zone efficiente</li>
+                        <li><strong>Phase III :</strong> rendements négatifs (PT baisse)</li>
+                    </ul>
+                    
+                    <p>La courbe de Pm passe par le maximum de PM.</p>
+                    <p>Le point d'inflexion de PT correspond au maximum de Pm.</p>
+                `
+            },
+            {
+                title: "Long terme : isoquantes",
+                content: `
+                    <div class="definition">
+                        <p><strong>Isoquante :</strong> ensemble des combinaisons (L, K) produisant une même quantité Q.</p>
+                    </div>
+                    
+                    <h3>TMST (Taux Marginal de Substitution Technique)</h3>
+                    <div class="formula">
+                        TMST_{L/K} = -dK/dL = Pm_L / Pm_K
+                    </div>
+                `
+            },
+            {
+                title: "Rendements d'échelle",
+                content: `
+                    <p>Si on multiplie L et K par m > 0, la production devient :</p>
+                    <div class="formula">
+                        f(mL, mK) = m^n f(L, K)
+                    </div>
+                    
+                    <h3>Interprétation</h3>
+                    <ul>
+                        <li>n = 1 : rendements constants</li>
+                        <li>n > 1 : rendements croissants</li>
+                        <li>n < 1 : rendements décroissants</li>
+                    </ul>
+                    
+                    <h3>Fonction Cobb-Douglas</h3>
+                    <div class="formula">
+                        Q = b L^α K^β
+                    </div>
+                    <p>Homogène de degré α+β.</p>
+                `
+            },
+            {
+                title: "Équilibre du producteur",
+                content: `
+                    <h3>Droite d'isocoût</h3>
+                    <div class="formula">
+                        C = P_L L + P_K K → K = -(P_L/P_K)L + C/P_K
+                    </div>
+                    
+                    <h3>Optimum</h3>
+                    <p>Tangence entre isoquante et isocoût :</p>
+                    <div class="formula">
+                        TMST = P_L/P_K  ⇔  Pm_L/P_L = Pm_K/P_K
+                    </div>
+                    
+                    <h3>Sentier d'expansion</h3>
+                    <p>Courbe reliant les points d'équilibre pour différents niveaux de production.</p>
+                `
+            },
+            {
+                title: "Coûts de court terme",
+                content: `
+                    <h3>Types de coûts</h3>
+                    <ul>
+                        <li><strong>CFT :</strong> coût fixe total (loyer, amortissement)</li>
+                        <li><strong>CVT :</strong> coût variable total (matières premières, salaires)</li>
+                        <li><strong>CT = CFT + CVT</strong></li>
+                    </ul>
+                    
+                    <h3>Coûts moyens et marginaux</h3>
+                    <div class="formula">
+                        CMT = CT/Q = CFM + CVM<br>
+                        Cm = ΔCT/ΔQ = ∂CT/∂Q
+                    </div>
+                `
+            },
+            {
+                title: "Relations productivité-coûts",
+                content: `
+                    <div class="formula">
+                        CVM = P_L / PM_L
+                    </div>
+                    <div class="formula">
+                        Cm = P_L / Pm_L
+                    </div>
+                    
+                    <p>Quand Pm est maximale, Cm est minimale.</p>
+                    <p>Quand PM est maximale, CVM est minimale.</p>
+                    
+                    <p>Le Cm passe par les minimums du CVM et du CMT.</p>
+                `
+            },
+            {
+    title: "Exercice : Calcul des coûts",
+    content: `
+        <div class="example">
+            <p>CT(Q) = 20 + 3Q + 0,2Q²</p>
+        </div>
+        
+        <h3>Calculs</h3>
+        <ul>
+            <li>CF = 20</li>
+            <li>CV = 3Q + 0,2Q²</li>
+            <li>CFM = 20/Q</li>
+            <li>CVM = 3 + 0,2Q</li>
+            <li>CTM = 20/Q + 3 + 0,2Q</li>
+            <li>Cm = 3 + 0,4Q</li>
+        </ul>
+        
+        <h3>Minimums</h3>
+        <ul>
+            <li>Minimum de Cm : Q = 0 → Cm = 3</li>
+            <li>Minimum de CVM : Q = 0 → CVM = 3</li>
+            <li>Minimum de CTM : Q = 10 → CTM = 7</li>
+        </ul>
+    `
+},
+{
+    title: "Coûts de long terme",
+    content: `
+        <h3>Long terme</h3>
+        <p>Tous les facteurs sont variables.</p>
+        
+        <div class="definition">
+            <p><strong>Coût moyen de long terme :</strong> indique le coût moyen minimum pour chaque niveau de production. Il est l'enveloppe des fonctions de coût moyen de court terme.</p>
+        </div>
+        
+        <h3>Économies d'échelle</h3>
+        <p>Lorsqu'une installation de taille importante obtient des coûts unitaires plus faibles, on dit qu'elle réalise des économies d'échelle. Le coût moyen de long terme diminue quand la production augmente.</p>
+        
+        <h3>Déséconomies d'échelle</h3>
+        <p>Le coût moyen de long terme augmente quand la production augmente.</p>
+        
+        <h3>Rendements constants</h3>
+        <p>Le coût moyen de long terme reste constant quand la production augmente.</p>
+    `
+},
+{
+    title: "Marché de concurrence pure et parfaite",
+    content: `
+        <h3>Caractéristique fondamentale</h3>
+        <p>Ni les demandeurs ni les offreurs ne peuvent exercer une action individuelle sur le prix. Ils sont preneurs de prix.</p>
+        
+        <h3>Cinq conditions</h3>
+        <ul>
+            <li>Atomicité du marché</li>
+            <li>Homogénéité du produit</li>
+            <li>Libre entrée dans la branche</li>
+            <li>Information parfaite</li>
+            <li>Mobilité parfaite des facteurs de production</li>
+        </ul>
+        
+        <h3>Équilibre du marché</h3>
+        <p>Le prix est déterminé par la confrontation de l'offre et de la demande.</p>
+    `
+},
+{
+    title: "Surplus du consommateur et du producteur",
+    content: `
+        <div class="definition">
+            <p><strong>Surplus du consommateur :</strong> Les acheteurs seraient disposés à payer un prix plus élevé que le prix d'équilibre pour obtenir les premières unités. Seule la dernière unité est payée au prix que les acheteurs étaient disposés à payer. Cette différence mesure le surplus du consommateur.</p>
+        </div>
+        
+        <div class="definition">
+            <p><strong>Surplus du producteur :</strong> Les producteurs vendent toutes les unités au prix unique, mais ils seraient disposés à accepter un prix inférieur pour les premières unités. Cette différence mesure le surplus du producteur.</p>
+        </div>
+    `
+},
+{
+    title: "Équilibre du producteur de court terme",
+    content: `
+        <div class="definition">
+            <p>L'objectif de l'entreprise est la <strong>maximisation du profit</strong>, différence entre recettes et coûts.</p>
+        </div>
+        
+        <p>Le profit est maximum quand la recette marginale est égale au coût marginal.</p>
+        
+        <div class="formula">
+            En concurrence : Rm = P, donc l'équilibre est P = Cm
+        </div>
+    `
+},
+{
+    title: "Équilibre de longue période",
+    content: `
+        <h3>Caractéristiques</h3>
+        <p>En longue période, tous les facteurs sont variables et les entreprises peuvent entrer et sortir librement.</p>
+        
+        <div class="formula">
+            L'équilibre s'établit quand le prix est égal au coût moyen minimum.
+        </div>
+        
+        <h3>Coûts identiques</h3>
+        <p>Si les coûts de production des entreprises sont identiques, l'entrée de concurrents fait baisser le prix jusqu'au minimum du coût moyen de long terme, où le profit est nul.</p>
+        
+        <h3>Coûts différents</h3>
+        <p>Si les coûts sont différents, le prix se stabilise au minimum du coût moyen de l'entreprise la moins productive.</p>
+    `
+},
+{
+    title: "Exercice : Marché concurrentiel",
+    content: `
+        <div class="example">
+            <p>Soit un marché de concurrence pure et parfaite comprenant 100 firmes ayant les mêmes coûts de production.</p>
+            <p>Fonction de coût d'une firme : C = q² + 40</p>
+            <p>Demande totale : Qd = -100P + 2000</p>
+            <p><strong>Questions :</strong> Déterminer l'équilibre du marché, l'équilibre du producteur de court terme, l'équilibre de longue période et le nombre de nouvelles entreprises entrant dans le marché.</p>
+        </div>
+    `
+},
+{
+    title: "Monopole simple",
+    content: `
+        <h3>Définition</h3>
+        <p>Le monopole est une structure de marché où n'existe qu'une seule firme qui offre un bien ou un service. Cette firme doit satisfaire la totalité de la demande. Le bien offert n'a pas de substitut proche.</p>
+        
+        <h3>Caractéristiques</h3>
+        <ul>
+            <li>Un seul vendeur</li>
+            <li>Pas de substitut proche</li>
+            <li>Face à un très grand nombre d'acheteurs, le monopoleur peut fixer le prix → <strong>faiseur de prix</strong> (price maker)</li>
+        </ul>
+        
+        <h3>Demande et recettes</h3>
+        <p>La demande qui s'adresse au monopoleur est la demande totale du marché. En situation de monopole, le prix dépend de la quantité.</p>
+        
+        <div class="formula">
+            RT(Q) = P(Q) × Q<br>
+            Rm = dRT/dQ = P'(Q) × Q + P(Q)
+        </div>
+        
+        <p><strong>Propriété :</strong> La recette marginale est inférieure au prix (Rm < P).</p>
+        
+        <h3>Équilibre du monopole</h3>
+        <p>L'objectif du monopoleur est de maximiser son profit.</p>
+        
+        <div class="formula">
+            Condition d'équilibre : <strong>Rm = Cm</strong>
+        </div>
+        
+        <p>Graphiquement, l'équilibre est au point où Rm = Cm. La quantité qui maximise le profit est Q*. Le prix d'équilibre est obtenu par projection sur la courbe de demande.</p>
+        
+        <h3>Comparaison avec la concurrence</h3>
+        <p>En concurrence pure et parfaite, le prix serait inférieur et la quantité supérieure à ceux du monopole.</p>
+        
+        <div class="definition">
+            <p><strong>Résultat :</strong> Le prix est supérieur au prix concurrentiel, la quantité est inférieure.</p>
+        </div>
+    `
+},
+{
+    title: "Monopole discriminant",
+    content: `
+        <h3>Définition</h3>
+        <p>La discrimination consiste à appliquer, pour un même produit, des prix différents à des groupes de consommateurs différents.</p>
+        
+        <h3>Conditions</h3>
+        <p>Pour que la discrimination soit possible, il faut que le produit soit vendu sur des marchés séparés.</p>
+        
+        <div class="formula">
+            La répartition de la quantité totale qui maximise le profit se fait en égalisant les recettes marginales sur les deux marchés au coût marginal : Rm₁ = Rm₂ = Cm
+        </div>
+        
+        <h3>Types de discrimination</h3>
+        <ul>
+            <li><strong>1er degré :</strong> Le monopoleur vend chaque unité au prix maximum que le consommateur est prêt à payer, captant tout le surplus.</li>
+            <li><strong>2nd degré :</strong> À partir d'une certaine quantité, le prix baisse pour les ventes supplémentaires.</li>
+            <li><strong>3ème degré :</strong> La plus courante, consiste à vendre à des clients différents à des prix différents.</li>
+        </ul>
+    `
+},
+{
+    title: "Exercice : Monopole discriminant",
+    content: `
+        <div class="example">
+            <p>Une firme en monopole a segmenté son marché en deux groupes : résidentiel et commercial.</p>
+            <p>Fonctions de demande :</p>
+            <ul>
+                <li>Qc = 50 - (1/3)Pc</li>
+                <li>Qr = 80 - (2/3)Pr</li>
+            </ul>
+            <p>Coût total : CT = 1000 + 30Q</p>
+            <p><strong>Questions :</strong></p>
+            <ol>
+                <li>Déterminer les prix et quantités sur chaque marché pour maximiser le profit</li>
+                <li>Calculer le prix et la quantité en l'absence de discrimination</li>
+                <li>Comparer les surplus</li>
+            </ol>
+        </div>
+        
+        <p><em>Ceci conclut le cours de microéconomie.</em></p>
+    `
+}
+        ];
+
+        // Timeline pour la synchronisation audio (secondes)
+        const timeline = [
+    17,   // 16: Lagrange
+    62,   // 17: Demande
+    45,   // 18: Exceptions
+    60,   // 19: Élasticité-prix
+    66,   // 20: Élasticités
+    74,   // 21: Production
+    74,   // 22: Court terme
+    19,   // 23: Phases
+    52,   // 24: Isoquantes
+    35,   // 25: Rendements
+    95,   // 26: Équilibre producteur
+    71,   // 27: Coûts CT
+    11,   // 28: Relations
+    22.5,   // 29: Exercice
+    12,   // 30: CPP
+    20,   // 31: Monopole
+    40,
+    36,
+    34,
+    21,
+    30,
+    26,
+    74,
+    54,
+    40
+];
+
+        // Calcul des temps cumulés
+        const cumulativeTimes = [];
+        let sum = 0;
+        timeline.forEach((time, index) => {
+            cumulativeTimes[index] = sum;
+            sum += time;
+        });
+        const totalDuration = sum;
+
+        // Variables d'état
+        let currentSlide = 0;
+        let isAutoPlaying = false;
+        let autoPlayInterval;
+        let syncInterval;
+        
+        // Éléments DOM
+        const audioPlayer = document.getElementById('audioPlayer');
+        const contentDiv = document.getElementById('content');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const playBtn = document.getElementById('playBtn');
+        const statusDiv = document.getElementById('status');
+        const slideCounter = document.getElementById('slideCounter');
+        const progressFill = document.getElementById('progressFill');
+
+        // ============================================
+        // FONCTIONS D'AFFICHAGE
+        // ============================================
+        function renderSlide(index) {
+            const slide = slides[index];
+            
+            contentDiv.innerHTML = `
+                <div class="slide active">
+                    <h2 class="slide-title">${slide.title}</h2>
+                    <div class="slide-content">${slide.content}</div>
+                </div>
+            `;
+            
+            slideCounter.textContent = `${index + 1}/${slides.length}`;
+            progressFill.style.width = `${((index + 1) / slides.length) * 100}%`;
+            
+            // Mise à jour des boutons de navigation
+            if (!isAutoPlaying) {
+                prevBtn.disabled = index === 0;
+                nextBtn.disabled = index === slides.length - 1;
+            }
+            
+            // Scroll en haut
+            contentDiv.scrollTop = 0;
+        }
+
+        // ============================================
+        // FONCTIONS DE NAVIGATION
+        // ============================================
+        function nextSlide() {
+            if (currentSlide < slides.length - 1) {
+                currentSlide++;
+                renderSlide(currentSlide);
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                renderSlide(currentSlide);
+            }
+        }
+
+        // ============================================
+        // SYNCHRONISATION AUDIO / SLIDES
+        // ============================================
+        function updateTimeDisplay() {
+            const current = audioPlayer.currentTime;
+            const minutes = Math.floor(current / 60);
+            const seconds = Math.floor(current % 60);
+            
+            // Mise à jour de la barre de progression
+            const progress = (current / totalDuration) * 100;
+            progressFill.style.width = `${Math.min(progress, 100)}%`;
+        }
+
+        function checkSync() {
+            if (!isAutoPlaying) return;
+            
+            const currentTime = audioPlayer.currentTime;
+            
+            // Trouver la slide correspondante au temps actuel
+            for (let i = cumulativeTimes.length - 1; i >= 0; i--) {
+                if (currentTime >= cumulativeTimes[i]) {
+                    if (i !== currentSlide) {
+                        currentSlide = i;
+                        renderSlide(currentSlide);
+                    }
+                    break;
+                }
+            }
+            
+            updateTimeDisplay();
+            
+            // Arrêt automatique à la fin
+            if (currentTime >= totalDuration - 1) {
+                stopAutoPlay();
+            }
+        }
+
+        function startAutoPlay() {
+            if (!audioPlayer.src) {
+                alert('Veuillez placer le fichier audio "microeconomie.mp3" dans le même dossier que ce fichier HTML.');
+                return;
+            }
+            
+            isAutoPlaying = true;
+            playBtn.textContent = '⏸ Pause';
+            playBtn.classList.remove('play-btn');
+            playBtn.classList.add('stop-btn');
+            statusDiv.textContent = 'Mode automatique';
+            statusDiv.style.background = 'rgba(40, 167, 69, 0.9)';
+            
+            prevBtn.disabled = true;
+            nextBtn.disabled = true;
+            
+            audioPlayer.play();
+            
+            // Vérifier la synchronisation toutes les 100ms
+            syncInterval = setInterval(checkSync, 100);
+        }
+
+        function stopAutoPlay() {
+            isAutoPlaying = false;
+            playBtn.textContent = '▶ Lecture automatique';
+            playBtn.classList.remove('stop-btn');
+            playBtn.classList.add('play-btn');
+            statusDiv.textContent = 'Mode navigation';
+            statusDiv.style.background = 'rgba(0,0,0,0.8)';
+            
+            audioPlayer.pause();
+            
+            if (syncInterval) {
+                clearInterval(syncInterval);
+            }
+            
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === slides.length - 1;
+        }
+
+        function toggleAutoPlay() {
+            if (isAutoPlaying) {
+                stopAutoPlay();
+            } else {
+                startAutoPlay();
+            }
+        }
+
+        // ============================================
+        // GESTION DES ÉVÉNEMENTS AUDIO
+        // ============================================
+        audioPlayer.addEventListener('ended', function() {
+            stopAutoPlay();
+        });
+
+        audioPlayer.addEventListener('timeupdate', function() {
+            if (!isAutoPlaying) {
+                updateTimeDisplay();
+            }
+        });
+
+        // ============================================
+        // RACCOURCIS CLAVIER
+        // ============================================
+        document.addEventListener('keydown', function(e) {
+            if (isAutoPlaying) return;
+            
+            if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                prevSlide();
+            } else if (e.key === 'ArrowRight') {
+                e.preventDefault();
+                nextSlide();
+            } else if (e.key === ' ') {
+                e.preventDefault();
+                toggleAutoPlay();
+            }
+        });
+
+        // ============================================
+        // INITIALISATION
+        // ============================================
+        renderSlide(0);
+
+        // Vérifier si l'audio existe
+        audioPlayer.addEventListener('error', function() {
+            console.warn('Fichier audio non trouvé. Placez "microeconomie.mp3" dans le même dossier.');
+        });
+    </script>
+</body>
+</html>
