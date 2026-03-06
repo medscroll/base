@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cours DOCOM - Documents d'achat et de vente</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: #f0f0f0;
+            width: 100%;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #2c3e50, #3498db);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .header {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            color: #495057;
+            font-size: 1.2em;
+            font-weight: 500;
+        }
+
+        .badge {
+            background: #3498db;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+
+        .content {
+            padding: 30px;
+            min-height: 450px;
+            max-height: 450px;
+            overflow-y: auto;
+        }
+
+        .slide {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide-title {
+            color: #2c3e50;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            font-weight: 600;
+            border-left: 5px solid #3498db;
+            padding-left: 20px;
+        }
+
+        .slide-content {
+            color: #34495e;
+            line-height: 1.8;
+            font-size: 1.1em;
+        }
+
+        .formula {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 1.2em;
+            text-align: center;
+            border-left: 4px solid #3498db;
+        }
+
+        .definition {
+            background: #e8f4fd;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #3498db;
+        }
+
+        .example {
+            background: #fef9e7;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #f39c12;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+        }
+
+        .table th {
+            background: #2c3e50;
+            color: white;
+            font-weight: 600;
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #34495e;
+        }
+
+        .table td {
+            border: 1px solid #bdc3c7;
+            padding: 10px;
+        }
+
+        .table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .document-box {
+            background: #fff9e6;
+            border: 2px solid #d4a017;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+        }
+
+        .document-box h4 {
+            color: #8B4513;
+            margin-bottom: 15px;
+            border-bottom: 1px dashed #d4a017;
+            padding-bottom: 10px;
+        }
+
+        .highlight {
+            background: #f1c40f;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+
+        .controls {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-btn {
+            background: white;
+            color: #2c3e50;
+            border: 1px solid #bdc3c7;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            background: #e9ecef;
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .play-btn {
+            background: linear-gradient(90deg, #2c3e50, #3498db);
+            color: white;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        .play-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.5);
+        }
+
+        .stop-btn {
+            background: #e67e22;
+            color: white;
+        }
+
+        .counter {
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+
+        .status {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 0.9em;
+            z-index: 1000;
+        }
+
+        .time-display {
+            font-family: monospace;
+            font-size: 1.1em;
+            color: #2c3e50;
+            background: #ecf0f1;
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                padding: 20px;
+            }
+            
+            .slide-title {
+                font-size: 1.4em;
+            }
+            
+            .controls {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="status" id="status">Mode navigation</div>
+    
+    <div class="container">
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        
+        <div class="header">
+            <h1>📄 DOCOM - Documents d'achat et de vente</h1>
+            <div style="display: flex; gap: 15px; align-items: center;">
+                <span class="time-display" id="timeDisplay">0:00 / 0:00</span>
+                <span class="badge" id="slideCounter">1/30</span>
+            </div>
+        </div>
+
+        <div class="content" id="content">
+            <!-- Les slides seront injectées ici -->
+        </div>
+
+        <div class="controls">
+            <div class="nav-buttons">
+                <button class="nav-btn" onclick="prevSlide()" id="prevBtn">← Précédent</button>
+                <button class="nav-btn" onclick="nextSlide()" id="nextBtn">Suivant →</button>
+            </div>
+            <button class="play-btn" onclick="toggleAutoPlay()" id="playBtn">▶ Lecture automatique</button>
+        </div>
+    </div>
+
+    <audio id="audioPlayer" src="docom_cours.mp3" preload="auto"></audio>
+
+    <script>
+        // Données du cours - Slides basées sur le PDF DOCOM
+        const slides = [
+            {
+                title: "Processus d'achat d'un produit",
+                content: `
+                    <div class="definition">
+                        <strong>Étapes du processus d'achat :</strong>
+                    </div>
+                    <ol style="list-style-type: none; counter-reset: item; padding-left: 0;">
+                        <li style="counter-increment: item; margin-bottom: 10px; font-size: 1.1em;">
+                            <span style="background: #3498db; color: white; width: 25px; height: 25px; display: inline-block; text-align: center; border-radius: 50%; margin-right: 10px;">1</span>
+                            <strong>Identification du besoin</strong>
+                        </li>
+                        <li style="counter-increment: item; margin-bottom: 10px; font-size: 1.1em;">
+                            <span style="background: #3498db; color: white; width: 25px; height: 25px; display: inline-block; text-align: center; border-radius: 50%; margin-right: 10px;">2</span>
+                            <strong>Présélection du fournisseur</strong>
+                        </li>
+                        <li style="counter-increment: item; margin-bottom: 10px; font-size: 1.1em;">
+                            <span style="background: #3498db; color: white; width: 25px; height: 25px; display: inline-block; text-align: center; border-radius: 50%; margin-right: 10px;">3</span>
+                            <strong>Sélection du fournisseur</strong>
+                        </li>
+                        <li style="counter-increment: item; margin-bottom: 10px; font-size: 1.1em;">
+                            <span style="background: #3498db; color: white; width: 25px; height: 25px; display: inline-block; text-align: center; border-radius: 50%; margin-right: 10px;">4</span>
+                            <strong>Commande</strong>
+                        </li>
+                        <li style="counter-increment: item; margin-bottom: 10px; font-size: 1.1em;">
+                            <span style="background: #3498db; color: white; width: 25px; height: 25px; display: inline-block; text-align: center; border-radius: 50%; margin-right: 10px;">5</span>
+                            <strong>Livraison et réception</strong>
+                        </li>
+                        <li style="counter-increment: item; margin-bottom: 10px; font-size: 1.1em;">
+                            <span style="background: #3498db; color: white; width: 25px; height: 25px; display: inline-block; text-align: center; border-radius: 50%; margin-right: 10px;">6</span>
+                            <strong>Facturation</strong>
+                        </li>
+                    </ol>
+                `
+            },
+            {
+                title: "Livraison et bon de livraison",
+                content: `
+                    <p>La <strong>livraison</strong> consiste à mettre à la disposition de l'acheteur les biens commandés dans un lieu déterminé et à une date précise.</p>
+                    
+                    <div class="definition">
+                        <p><strong>Bon de livraison (ou bordereau d'expédition) :</strong> Document commercial accompagnant la marchandise lors de la livraison.</p>
+                    </div>
+                    
+                    <div class="document-box">
+                        <h4>📦 BON DE LIVRAISON</h4>
+                        <table class="table">
+                            <tr><td colspan="4"><strong>Nom de l'Entreprise du fournisseur</strong><br>Adresse<br>RCCM, Id Nat</td></tr>
+                            <tr>
+                                <th>Article</th>
+                                <th>Qté</th>
+                                <th>PU</th>
+                                <th>Total</th>
+                            </tr>
+                            <tr>
+                                <td>Ordinateur</td>
+                                <td>2</td>
+                                <td>500$</td>
+                                <td>1000$</td>
+                            </tr>
+                        </table>
+                        <p><strong>Livraison le :</strong> 25/05/2025</p>
+                        <div style="display: flex; justify-content: space-between; margin-top: 15px;">
+                            <span>Pour le vendeur: ________</span>
+                            <span>Pour le transporteur: ________</span>
+                            <span>Pour l'acheteur: ________</span>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                title: "Bon de commande",
+                content: `
+                    <div class="definition">
+                        <p><strong>Bon de commande :</strong> Document mentionnant tous les éléments nécessaires de la vente : délais, montant, lieu, etc.</p>
+                    </div>
+                    
+                    <div class="document-box">
+                        <h4>📋 MODÈLE DE BON DE COMMANDE</h4>
+                        <table class="table">
+                            <tr><td colspan="4"><strong>Nom de l'Entreprise de l'acheteur</strong><br>Adresse<br>RCCM, Id Nat</td></tr>
+                            <tr>
+                                <th>Article</th>
+                                <th>PU</th>
+                                <th>PT</th>
+                                <th>TOTAL</th>
+                            </tr>
+                            <tr>
+                                <td>Ordinateur</td>
+                                <td>500$</td>
+                                <td>2</td>
+                                <td>1000$</td>
+                            </tr>
+                            <tr>
+                                <td>Matériel bureau</td>
+                                <td>200$</td>
+                                <td>3</td>
+                                <td>600$</td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" style="text-align: right;"><strong>TOTAL</strong></td>
+                                <td><strong>1600$</strong></td>
+                            </tr>
+                        </table>
+                        <p><strong>Condition de livraison :</strong> dans 10 jours</p>
+                        <p><strong>Condition de paiement :</strong> 15/05</p>
+                        <p><strong>N° Commande :</strong> 2025-001</p>
+                    </div>
+                `
+            },
+            {
+                title: "La facture - Définition",
+                content: `
+                    <div class="definition">
+                        <p><strong>Facture :</strong> Document commercial par lequel le vendeur demande le paiement relatif aux biens fournis à son client sur base du bon de commande et du bon de livraison.</p>
+                    </div>
+                    
+                    <p><span class="highlight">Important :</span> L'établissement et la remise d'une facture sont <strong>obligatoires</strong> pour toute vente de produits et pour toute prestation de services.</p>
+                    
+                    <h3>Rôles de la facture :</h3>
+                    <ul>
+                        <li>Remplace le bon de commande et le bon d'expédition</li>
+                        <li>Constitue une preuve de paiement en cas de contestation</li>
+                        <li>Sert de base aux opérations comptables et fiscales</li>
+                    </ul>
+                `
+            },
+            {
+                title: "Les types de réduction",
+                content: `
+                    <h3>Les 4 types de réductions :</h3>
+                    
+                    <table class="table">
+                        <tr>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <th>Exemple</th>
+                        </tr>
+                        <tr>
+                            <td><strong>Remise</strong></td>
+                            <td>Réduction pour achat en grande quantité</td>
+                            <td>-10% pour 100 unités</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Ristourne</strong></td>
+                            <td>Réduction pour client fidèle</td>
+                            <td>-5% après 1 an de relation</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Rabais</strong></td>
+                            <td>Réduction sur marchandise de mauvaise qualité</td>
+                            <td>-20% sur article défraîchi</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Escompte</strong></td>
+                            <td>Réduction pour paiement avant échéance</td>
+                            <td>-2% si paiement comptant</td>
+                        </tr>
+                    </table>
+                `
+            },
+            {
+                title: "Catégories de factures",
+                content: `
+                    <h3>1. Factures usuelles (courantes) :</h3>
+                    <ul>
+                        <li><strong>Facture simple</strong> : Pour achat simple en magasin</li>
+                        <li><strong>Facture d'expédition</strong></li>
+                    </ul>
+                    
+                    <h3>2. Factures spéciales :</h3>
+                    <ul>
+                        <li><strong>Facture pro-forma</strong> : Précède une vente, renseigne les informations pour l'achat</li>
+                        <li><strong>Facture à commission</strong> : Établie entre un commissionnaire et le fournisseur</li>
+                        <li><strong>Facture à la condition</strong> : Provisoire, devient ferme si le client ne restitue pas</li>
+                        <li><strong>Facture d'avoir (note de crédit)</strong> : Pour corriger une erreur (surfacturation)</li>
+                    </ul>
+                `
+            },
+            {
+                title: "Facture pro-forma",
+                content: `
+                    <div class="definition">
+                        <p><strong>Facture pro-forma :</strong> Facture qui précède une vente, elle sert à renseigner les informations pour l'achat.</p>
+                    </div>
+                    
+                    <div class="example">
+                        <p><strong>Utilité :</strong> Permet à l'acheteur potentiel de connaître les conditions exactes avant de commander.</p>
+                        <p>Ce n'est pas une facture définitive, mais une proposition commerciale.</p>
+                    </div>
+                `
+            },
+            {
+                title: "Facture d'avoir",
+                content: `
+                    <div class="definition">
+                        <p><strong>Facture d'avoir :</strong> Facture envoyée au client après constatation d'une erreur de calcul ou d'une omission dans la facture initiale.</p>
+                    </div>
+                    
+                    <h3>Deux cas possibles :</h3>
+                    <ul>
+                        <li><strong>Note de crédit</strong> : En cas de surfacturation</li>
+                        <li>Correction d'omission</li>
+                    </ul>
+                    
+                    <div class="example">
+                        <p><strong>Exemple :</strong> Facture initiale de 1000$, erreur constatée (trop facturé de 100$). La facture d'avoir sera de 100$ en faveur du client.</p>
+                    </div>
+                `
+            },
+            {
+                title: "L'acquit",
+                content: `
+                    <div class="definition">
+                        <p><strong>Acquit :</strong> Déclaration par laquelle le créancier certifie sur la facture même le paiement de la dette.</p>
+                    </div>
+                    
+                    <div class="document-box">
+                        <h4>📝 EXEMPLE D'ACQUIT</h4>
+                        <p>FACTURE N° 2025-001</p>
+                        <p>Total à payer : 1500$</p>
+                        <p style="margin-top: 30px; font-size: 1.2em; border-top: 1px dashed #ccc; padding-top: 20px;">
+                            <strong>Pour acquit</strong><br>
+                            Kinshasa, le 25/05/2025<br>
+                            Signature : ____________
+                        </p>
+                    </div>
+                    
+                    <p>L'acquit est porté <strong>directement sur la facture</strong>.</p>
+                `
+            },
+            {
+                title: "La quittance",
+                content: `
+                    <div class="definition">
+                        <p><strong>Quittance :</strong> Document par lequel le créancier reconnaît le paiement fait par le débiteur. Elle est séparée de la facture.</p>
+                    </div>
+                    
+                    <h3>Mentions obligatoires :</h3>
+                    <ul>
+                        <li>Affirmation du paiement : <strong>"Reçu de ..."</strong></li>
+                        <li>Adresse du débiteur</li>
+                        <li>Somme en toutes lettres</li>
+                        <li>Motif (3 possibilités) :</li>
+                        <ul>
+                            <li>En règlement de notre facture n°...</li>
+                            <li>À valoir sur notre facture n°...</li>
+                            <li>Pour solde de notre facture n°...</li>
+                        </ul>
+                        <li>Signature du créancier</li>
+                    </ul>
+                `
+            },
+            {
+                title: "Modèle de quittance",
+                content: `
+                    <div class="document-box">
+                        <h4>📄 QUITTANCE N° 001</h4>
+                        <p>ENTREPRISE XYZ<br>
+                        Adresse: 123 Avenue de la Libération<br>
+                        RCCM: 12345, ID Nat: 67890</p>
+                        
+                        <p style="margin: 25px 0;"><strong>Reçu de Monsieur X</strong></p>
+                        
+                        <p>La somme de <strong>trois cents mille dollars américains (300.000$)</strong></p>
+                        
+                        <p>En règlement de notre facture n° 527</p>
+                        
+                        <p style="margin-top: 30px;">
+                            Kinshasa, le 18 Avril 2025<br><br>
+                            Signature : _________________<br>
+                            (Le créancier)
+                        </p>
+                    </div>
+                `
+            },
+            {
+                title: "Le reçu",
+                content: `
+                    <div class="definition">
+                        <p><strong>Reçu :</strong> Document qui constate le versement d'une somme et qui crée une obligation de la part du débiteur.</p>
+                    </div>
+                    
+                    <h3>Mentions obligatoires :</h3>
+                    <ul>
+                        <li>Affirmation : <strong>"Reçu de ..."</strong></li>
+                        <li>Nom du créancier</li>
+                        <li>Somme en toutes lettres</li>
+                        <li>Motif de l'opération</li>
+                        <li>Date du versement</li>
+                        <li>Signature</li>
+                    </ul>
+                `
+            },
+            {
+                title: "Modèle de reçu",
+                content: `
+                    <div class="document-box">
+                        <h4>📄 REÇU N° 001</h4>
+                        <p>ENTREPRISE ABC<br>
+                        RCCM: 12345, ID Nat: 67890</p>
+                        
+                        <p style="margin: 25px 0;"><strong>Reçu de Monsieur Y (créancier)</strong></p>
+                        
+                        <p>La somme de <strong>trois cents mille dollars (300.000$)</strong></p>
+                        
+                        <p>Pour paiement des frais académiques L1 LMD/FASE</p>
+                        
+                        <p style="margin-top: 30px;">
+                            Kinshasa, le 18 Avril 2025<br><br>
+                            Signature : _________________<br>
+                            (Le débiteur)
+                        </p>
+                    </div>
+                `
+            },
+            {
+                title: "Exercice 1 - Solution",
+                content: `
+                    <div class="example">
+                        <h4>Énoncé :</h4>
+                        <p>Mr TABARO, responsable de la maison LG, reçoit de Mme BUKASA la somme de 980$ pour achat de meuble.</p>
+                    </div>
+                    
+                    <h4>Solutions :</h4>
+                    <div style="background: #e8f4fd; padding: 15px; border-radius: 8px; margin: 15px 0;">
+                        <p><strong>A/ Document à établir :</strong> Reçu</p>
+                        <p><strong>B/ Qualités :</strong></p>
+                        <ul>
+                            <li>Mr TABARO est le <strong class="highlight">débiteur</strong></li>
+                            <li>Mme BUKASA est la <strong class="highlight">créancière</strong></li>
+                        </ul>
+                    </div>
+                `
+            },
+            {
+                title: "Exercice 2 - Paiement partiel",
+                content: `
+                    <div class="example">
+                        <h4>Énoncé :</h4>
+                        <p>Mr NZUZI verse 200.000$ à Mr MUTEBA le 15/01/2025 suite à facture n°527. Dix jours après, il solde sa dette. Montant global : 500.000$.</p>
+                    </div>
+                    
+                    <h4>Solutions :</h4>
+                    <div style="background: #e8f4fd; padding: 15px; border-radius: 8px;">
+                        <p><strong>A/ Qualités :</strong> Mr NZUZI = débiteur, Mr MUTEBA = créancier</p>
+                        <p><strong>B/ Document :</strong> Quittance</p>
+                    </div>
+                    
+                    <div class="document-box" style="margin-top: 15px;">
+                        <h4>QUITTANCE (1er paiement)</h4>
+                        <p>Reçu de Mr NZUZI<br>
+                        La somme de deux cents mille dollars<br>
+                        À valoir sur notre facture n°527<br>
+                        Kinshasa, 15/01/2025<br>
+                        Mr MUTEBA</p>
+                    </div>
+                `
+            },
+            {
+                title: "Exercice 2 - Suite (Solde)",
+                content: `
+                    <div class="document-box">
+                        <h4>QUITTANCE (Solde)</h4>
+                        <p>Ese Adresse</p>
+                        <p><strong>Reçu de Monsieur NZUZI</strong></p>
+                        <p>La somme de <strong>trois cents mille dollars américains</strong></p>
+                        <p><strong>Pour solde de notre facture n°527</strong></p>
+                        <p>Kinshasa, le 25 Janvier 2025</p>
+                        <p>Mr. MUTEBA<br>Signature : _____________</p>
+                    </div>
+                `
+            },
+            {
+                title: "Exercice 3 - Bail",
+                content: `
+                    <div class="example">
+                        <h4>Énoncé :</h4>
+                        <p>30/05/2024 : Mr BOB signe bail avec Mr YELI<br>
+                        150$/mois, 3 mois payables anticipativement<br>
+                        Paiement le lendemain</p>
+                    </div>
+                    
+                    <h4>Solutions :</h4>
+                    <div style="background: #e8f4fd; padding: 15px; border-radius: 8px;">
+                        <p><strong>A/ Date versement :</strong> 31 mai 2024</p>
+                        <p><strong>B/ Mr BOB :</strong> débiteur</p>
+                        <p><strong>C/ Mr YELI :</strong> créancier</p>
+                        <p><strong>D/ Document :</strong> Reçu</p>
+                    </div>
+                `
+            },
+            {
+                title: "Le chèque - Définitions",
+                content: `
+                    <h3>Comptes préalables :</h3>
+                    <ul>
+                        <li><strong>Compte à vue/à terme :</strong> Compte d'épargne avec intérêts en contrepartie d'indisponibilité temporaire</li>
+                        <li><strong>Compte courant :</strong> Dispositif bancaire standard</li>
+                    </ul>
+                    
+                    <div class="definition">
+                        <p><strong>Chèque :</strong> Document par lequel une personne (tireur) donne l'ordre à une institution financière (tiré) de payer à vue une somme déterminée à un bénéficiaire.</p>
+                    </div>
+                    
+                    <h3>Les 3 intervenants :</h3>
+                    <table class="table">
+                        <tr><th>Intervenant</th><th>Rôle</th></tr>
+                        <tr><td>Tireur</td><td>Titulaire du compte</td></tr>
+                        <tr><td>Tiré</td><td>Banque</td></tr>
+                        <tr><td>Bénéficiaire</td><td>Celui qui profite du chèque</td></tr>
+                    </table>
+                `
+            },
+            {
+                title: "Mentions d'un chèque",
+                content: `
+                    <h3>Les 7 mentions obligatoires :</h3>
+                    <ol>
+                        <li>Le numéro du chèque</li>
+                        <li>La somme à payer (en lettres et en chiffres)</li>
+                        <li>Le nom du tiré (banque)</li>
+                        <li>L'ordre de payer</li>
+                        <li>Le nom du bénéficiaire</li>
+                        <li>La date</li>
+                        <li>La signature du tireur</li>
+                    </ol>
+                    
+                    <div class="document-box">
+                        <p>Le chèque est accompagné d'un <strong>carnet à souche</strong>.</p>
+                    </div>
+                `
+            },
+            {
+                title: "Types de chèques",
+                content: `
+                    <table class="table">
+                        <tr>
+                            <th>Type</th>
+                            <th>Caractéristique</th>
+                        </tr>
+                        <tr>
+                            <td><strong>Chèque nominatif</strong></td>
+                            <td>Porte le nom du bénéficiaire</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Chèque blanc</strong></td>
+                            <td>Sans nom de bénéficiaire</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Chèque au porteur</strong></td>
+                            <td>Payable à toute personne qui le présente</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Chèque au guichet</strong></td>
+                            <td>Réservé à une banque spécifique</td>
+                        </tr>
+                    </table>
+                `
+            },
+            {
+                title: "Provision du chèque",
+                content: `
+                    <div class="definition">
+                        <p><strong>Provision :</strong> Montant du solde disponible du compte sur lequel le chèque a été émis.</p>
+                    </div>
+                    
+                    <h3>Caractéristiques de la provision :</h3>
+                    <ul>
+                        <li>Doit être <strong>préalable</strong> (exister avant l'émission)</li>
+                        <li>Doit être <strong>disponible</strong> (liquide et exigible)</li>
+                    </ul>
+                `
+            },
+            {
+                title: "Calcul de provision - Exemple 1",
+                content: `
+                    <div class="example">
+                        <h4>Données :</h4>
+                        <ul>
+                            <li>Solde créditeur : 2.800.000$</li>
+                            <li>Découvert bancaire : 10.000.000$</li>
+                            <li>Tirage chèque : 12.000.000$</li>
+                        </ul>
+                        
+                        <div class="formula">
+                            Solde disponible = Solde créditeur + Découvert<br>
+                            = 2.800.000 + 10.000.000 = 12.800.000$
+                        </div>
+                        
+                        <p><strong>Comparaison :</strong> 12.800.000$ > 12.000.000$</p>
+                        <p style="color: green; font-weight: bold;">✓ Chèque provisionné</p>
+                    </div>
+                `
+            },
+            {
+                title: "Calcul de provision - Exemple 2",
+                content: `
+                    <div class="example">
+                        <h4>Données :</h4>
+                        <ul>
+                            <li>Solde débiteur : 3.000.000$ (négatif)</li>
+                            <li>Découvert bancaire : 10.000.000$</li>
+                            <li>Tirage chèque : 8.000.000$</li>
+                        </ul>
+                        
+                        <div class="formula">
+                            Solde disponible = Solde débiteur + Découvert<br>
+                            = -3.000.000 + 10.000.000 = 7.000.000$
+                        </div>
+                        
+                        <p><strong>Comparaison :</strong> 7.000.000$ < 8.000.000$</p>
+                        <p style="color: red; font-weight: bold;">✗ Chèque non provisionné</p>
+                    </div>
+                `
+            },
+            {
+                title: "Validité du chèque",
+                content: `
+                    <table class="table">
+                        <tr>
+                            <th>Lieu d'émission</th>
+                            <th>Validité</th>
+                        </tr>
+                        <tr>
+                            <td>République Démocratique du Congo</td>
+                            <td><strong>60 jours</strong> calendrier</td>
+                        </tr>
+                        <tr>
+                            <td>À l'extérieur du pays</td>
+                            <td><strong>120 jours</strong></td>
+                        </tr>
+                    </table>
+                    
+                    <div class="definition">
+                        <p>En cas de jour férié, on compte le <strong>jour suivant</strong>.</p>
+                    </div>
+                `
+            },
+            {
+                title: "Endossement du chèque",
+                content: `
+                    <div class="definition">
+                        <p><strong>Endossement :</strong> Le bénéficiaire d'un chèque le cède à une autre personne.</p>
+                    </div>
+                    
+                    <ul>
+                        <li><strong>Cédant (endosseur)</strong> : celui qui cède le chèque</li>
+                        <li><strong>Endossataire</strong> : celui qui reçoit le chèque</li>
+                    </ul>
+                    
+                    <h3>Deux types :</h3>
+                    <ol>
+                        <li>Endossement à titre de propriété</li>
+                        <li>Endossement par encaissement</li>
+                    </ol>
+                    
+                    <p>L'endossement se fait au <strong>verso</strong> du chèque par la mention <strong>"ENDOS"</strong>.</p>
+                `
+            },
+            {
+                title: "Modèle d'endossement",
+                content: `
+                    <div class="document-box">
+                        <h4>VERSO DU CHÈQUE</h4>
+                        <p style="font-family: monospace; font-size: 1.2em; border: 1px dashed #333; padding: 20px;">
+                            ENDOS<br><br>
+                            Payer à l'ordre de la RAWBANK,<br>
+                            pour encaissement n°001-526-01 USD<br><br>
+                            Kinshasa, le _______________<br><br>
+                            À porter en compte n° __________<br><br>
+                            Signature : _________________
+                        </p>
+                    </div>
+                `
+            },
+            {
+                title: "Barrement du chèque",
+                content: `
+                    <div class="definition">
+                        <p><strong>Chèque barré :</strong> Chèque sur lequel deux barres parallèles sont apposées au recto.</p>
+                    </div>
+                    
+                    <div style="text-align: center; margin: 30px 0;">
+                        <div style="display: inline-block; border: 2px solid #333; padding: 20px; background: #f8f9fa;">
+                            <div style="width: 300px; height: 150px; border: 2px solid #2c3e50; position: relative; background: white;">
+                                <div style="position: absolute; top: 50%; left: 0; width: 100%; height: 2px; background: #333; transform: rotate(20deg);"></div>
+                                <div style="position: absolute; top: 50%; left: 0; width: 100%; height: 2px; background: #333; transform: rotate(-20deg);"></div>
+                                <div style="position: absolute; bottom: 10px; right: 10px;">CHÈQUE</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <p style="text-align: center;">Exemple de chèque barré (deux barres parallèles)</p>
+                `
+            },
+            {
+                title: "Résumé - Documents de paiement",
+                content: `
+                    <table class="table">
+                        <tr>
+                            <th>Document</th>
+                            <th>Caractéristique</th>
+                            <th>Support</th>
+                        </tr>
+                        <tr>
+                            <td><strong>Acquit</strong></td>
+                            <td>Certificat sur la facture</td>
+                            <td>Sur la facture</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Quittance</strong></td>
+                            <td>Reconnaissance de paiement</td>
+                            <td>Document séparé</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Reçu</strong></td>
+                            <td>Constate un versement</td>
+                            <td>Document séparé</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Chèque</strong></td>
+                            <td>Ordre de paiement</td>
+                            <td>Carnet à souche</td>
+                        </tr>
+                    </table>
+                `
+            },
+            {
+                title: "Récapitulatif - Processus complet",
+                content: `
+                    <div style="display: flex; flex-direction: column; gap: 20px;">
+                        <div style="background: #e8f4fd; padding: 15px; border-radius: 8px;">
+                            <h3>Étape 1 : Commande</h3>
+                            <p>Bon de commande → Document préalable</p>
+                        </div>
+                        
+                        <div style="background: #e8f4fd; padding: 15px; border-radius: 8px;">
+                            <h3>Étape 2 : Livraison</h3>
+                            <p>Bon de livraison → Accompagne la marchandise</p>
+                        </div>
+                        
+                        <div style="background: #e8f4fd; padding: 15px; border-radius: 8px;">
+                            <h3>Étape 3 : Facturation</h3>
+                            <p>Facture → Demande de paiement</p>
+                            <p>↓ Réductions éventuelles (remise, rabais, ristourne, escompte)</p>
+                        </div>
+                        
+                        <div style="background: #d5f5e3; padding: 15px; border-radius: 8px;">
+                            <h3>Étape 4 : Paiement</h3>
+                            <p>Chèque (bancaire) ou Reçu/Quittance (espèces)</p>
+                        </div>
+                    </div>
+                `
+            }
+        ];
+
+        // Timeline pour synchronisation audio (en secondes)
+        // Basé sur le script avec ~150 mots/minute
+        const timeline = [
+    31,20,25,22,27.5,79,1,14,
+    25,36,21.5,26,16.5,23,
+    21.5,17,33,53,
+    22,18,14,26,22,14,25, 
+    10,10,30,30
+];
+
+        // Calcul des temps cumulés
+        const cumulativeTimes = [];
+        let sum = 0;
+        timeline.forEach((time, index) => {
+            cumulativeTimes[index] = sum;
+            sum += time;
+        });
+        const totalDuration = sum;
+
+        // Variables d'état
+        let currentSlide = 0;
+        let isAutoPlaying = false;
+        let syncInterval;
+        
+        // Éléments DOM
+        const audioPlayer = document.getElementById('audioPlayer');
+        const contentDiv = document.getElementById('content');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const playBtn = document.getElementById('playBtn');
+        const statusDiv = document.getElementById('status');
+        const slideCounter = document.getElementById('slideCounter');
+        const progressFill = document.getElementById('progressFill');
+        const timeDisplay = document.getElementById('timeDisplay');
+
+        // ============================================
+        // FONCTIONS D'AFFICHAGE
+        // ============================================
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        function renderSlide(index) {
+            const slide = slides[index];
+            
+            contentDiv.innerHTML = `
+                <div class="slide active">
+                    <h2 class="slide-title">${slide.title}</h2>
+                    <div class="slide-content">${slide.content}</div>
+                </div>
+            `;
+            
+            slideCounter.textContent = `${index + 1}/${slides.length}`;
+            progressFill.style.width = `${((index + 1) / slides.length) * 100}%`;
+            
+            // Mise à jour des boutons de navigation
+            if (!isAutoPlaying) {
+                prevBtn.disabled = index === 0;
+                nextBtn.disabled = index === slides.length - 1;
+            }
+            
+            // Scroll en haut
+            contentDiv.scrollTop = 0;
+        }
+
+        function updateTimeDisplay() {
+            const current = audioPlayer.currentTime || 0;
+            timeDisplay.textContent = `${formatTime(current)} / ${formatTime(totalDuration)}`;
+            
+            const progress = (current / totalDuration) * 100;
+            progressFill.style.width = `${Math.min(progress, 100)}%`;
+        }
+
+        // ============================================
+        // FONCTIONS DE NAVIGATION
+        // ============================================
+        function nextSlide() {
+            if (currentSlide < slides.length - 1) {
+                currentSlide++;
+                renderSlide(currentSlide);
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                renderSlide(currentSlide);
+            }
+        }
+
+        // ============================================
+        // SYNCHRONISATION AUDIO
+        // ============================================
+        function checkSync() {
+            if (!isAutoPlaying) return;
+            
+            const currentTime = audioPlayer.currentTime;
+            
+            // Trouver la slide correspondante
+            for (let i = cumulativeTimes.length - 1; i >= 0; i--) {
+                if (currentTime >= cumulativeTimes[i]) {
+                    if (i !== currentSlide) {
+                        currentSlide = i;
+                        renderSlide(currentSlide);
+                    }
+                    break;
+                }
+            }
+            
+            updateTimeDisplay();
+            
+            // Arrêt automatique à la fin
+            if (currentTime >= totalDuration - 1) {
+                stopAutoPlay();
+            }
+        }
+
+        function startAutoPlay() {
+            if (!audioPlayer.src) {
+                alert('Veuillez placer le fichier "docom_cours.mp3" dans le même dossier.');
+                return;
+            }
+            
+            isAutoPlaying = true;
+            playBtn.textContent = '⏸ Pause';
+            playBtn.classList.remove('play-btn');
+            playBtn.classList.add('stop-btn');
+            statusDiv.textContent = 'Mode automatique';
+            statusDiv.style.background = '#27ae60';
+            
+            prevBtn.disabled = true;
+            nextBtn.disabled = true;
+            
+            audioPlayer.play();
+            
+            syncInterval = setInterval(checkSync, 100);
+        }
+
+        function stopAutoPlay() {
+            isAutoPlaying = false;
+            playBtn.textContent = '▶ Lecture automatique';
+            playBtn.classList.remove('stop-btn');
+            playBtn.classList.add('play-btn');
+            statusDiv.textContent = 'Mode navigation';
+            statusDiv.style.background = 'rgba(0,0,0,0.8)';
+            
+            audioPlayer.pause();
+            
+            if (syncInterval) {
+                clearInterval(syncInterval);
+            }
+            
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === slides.length - 1;
+        }
+
+        function toggleAutoPlay() {
+            if (isAutoPlaying) {
+                stopAutoPlay();
+            } else {
+                startAutoPlay();
+            }
+        }
+
+        // ============================================
+        // GESTION DES ÉVÉNEMENTS
+        // ============================================
+        audioPlayer.addEventListener('ended', function() {
+            stopAutoPlay();
+        });
+
+        audioPlayer.addEventListener('timeupdate', function() {
+            if (!isAutoPlaying) {
+                updateTimeDisplay();
+            }
+        });
+
+        // Raccourcis clavier
+        document.addEventListener('keydown', function(e) {
+            if (isAutoPlaying) return;
+            
+            if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                prevSlide();
+            } else if (e.key === 'ArrowRight') {
+                e.preventDefault();
+                nextSlide();
+            } else if (e.key === ' ') {
+                e.preventDefault();
+                toggleAutoPlay();
+            }
+        });
+
+        // Initialisation
+        renderSlide(0);
+
+        // Vérification audio
+        audioPlayer.addEventListener('error', function() {
+            console.warn('Fichier audio non trouvé. Placez "docom_cours.mp3" dans le même dossier.');
+        });
+    </script>
+</body>
+</html>
