@@ -519,7 +519,7 @@
         <button class="close-message" onclick="this.parentElement.classList.remove('show')">✕</button>
     </div>
 
-    <script>
+    <script src="EcoUsers.js">
         // Gestion du menu hamburger
         const hamburgerBtn = document.getElementById('hamburgerBtn');
         const menuOverlay = document.getElementById('menuOverlay');
@@ -549,13 +549,7 @@
         // Numéro WhatsApp
         const whatsappNumber = '243961803375';
         const messagePrefix = 'Bonjour STUDIA, je suis intéressé par le contenu Premium';
-        const premiumUsers = [
-            "NSIETE BERMIE",
-            "KAMBA TRIOMPHE",
-            "MED SCROLL",
-            "NZINGA EMMANUEL",
-            "ILUNGA GRACE"
-            ];
+        
 
         function checkPremiumAccess(sujet) {
         let userName = prompt("ENTREZ VOTRE NOM ET PRÉNOM EN LETTRES MAJUSCULES");
