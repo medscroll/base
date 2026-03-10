@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Histoire des faits et pensées économiques</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1300px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: #f0f0f0;
+            width: 100%;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3498db, #1e3c72);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .header {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .header h1 {
+            color: #1e3c72;
+            font-size: 1.3em;
+            font-weight: 600;
+        }
+
+        .badge {
+            background: #1e3c72;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+
+        .content {
+            padding: 30px;
+            min-height: 500px;
+            max-height: 70vh;
+            overflow-y: auto;
+            background: #ffffff;
+            scroll-behavior: smooth;
+        }
+
+        .slide {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide-title {
+            color: #1e3c72;
+            font-size: 2.2em;
+            margin-bottom: 25px;
+            font-weight: 700;
+            border-left: 5px solid #3498db;
+            padding-left: 20px;
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 10;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+        }
+
+        .slide-content {
+            color: #2c3e50;
+            line-height: 1.8;
+            font-size: 1.15em;
+        }
+
+        .slide-content h3 {
+            color: #1e3c72;
+            margin: 25px 0 15px 0;
+            font-size: 1.5em;
+        }
+
+        .slide-content h4 {
+            color: #2c3e50;
+            margin: 20px 0 10px 0;
+            font-size: 1.25em;
+        }
+
+        .slide-content p {
+            margin: 15px 0;
+        }
+
+        .slide-content ul, .slide-content ol {
+            margin: 15px 0 15px 30px;
+        }
+
+        .slide-content li {
+            margin: 10px 0;
+        }
+
+        .definition {
+            background: #e8f4fd;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 25px 0;
+            border-left: 5px solid #3498db;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .definition strong {
+            color: #1e3c72;
+            font-size: 1.1em;
+        }
+
+        .formula {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 25px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 1.3em;
+            text-align: center;
+            border-left: 5px solid #1e3c72;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .example {
+            background: #fef5e7;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 25px 0;
+            border-left: 5px solid #f39c12;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin: 25px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        th {
+            background: #1e3c72;
+            color: white;
+            font-weight: 600;
+            padding: 15px;
+            text-align: left;
+        }
+
+        td {
+            border: 1px solid #e9ecef;
+            padding: 12px;
+        }
+
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .controls {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-btn {
+            background: white;
+            color: #1e3c72;
+            border: 1px solid #dee2e6;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            background: #e9ecef;
+            transform: translateY(-1px);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .play-btn {
+            background: linear-gradient(90deg, #3498db, #1e3c72);
+            color: white;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        .play-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.5);
+        }
+
+        .stop-btn {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .stop-btn:hover {
+            background: #c0392b;
+        }
+
+        .counter {
+            color: #6c757d;
+            font-size: 0.95em;
+            background: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .status {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 0.9em;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            backdrop-filter: blur(5px);
+        }
+
+        .section-marker {
+            border-bottom: 2px solid #3498db;
+            margin: 30px 0 20px 0;
+            padding-bottom: 10px;
+            color: #1e3c72;
+            font-weight: 600;
+            font-size: 1.3em;
+        }
+
+        .quote {
+            font-style: italic;
+            color: #555;
+            border-left: 3px solid #1e3c72;
+            padding-left: 20px;
+            margin: 20px 0;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                padding: 20px;
+                max-height: 60vh;
+            }
+            
+            .slide-title {
+                font-size: 1.8em;
+            }
+            
+            .controls {
+                flex-direction: column;
+            }
+            
+            .nav-buttons {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            button {
+                flex: 1;
+                text-align: center;
+            }
+            
+            .status {
+                top: 10px;
+                right: 10px;
+                font-size: 0.8em;
+                padding: 8px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="status" id="status">Mode navigation</div>
+    
+    <div class="container">
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        
+        <div class="header">
+            <h1>📜 Histoire des faits et des pensées économiques</h1>
+            <span class="badge" id="slideCounter">1/35</span>
+        </div>
+
+        <div class="content" id="content">
+            <!-- Les slides seront injectées dynamiquement -->
+        </div>
+
+        <div class="controls">
+            <div class="nav-buttons">
+                <button class="nav-btn" onclick="prevSlide()" id="prevBtn">← Précédent</button>
+                <button class="nav-btn" onclick="nextSlide()" id="nextBtn">Suivant →</button>
+            </div>
+            <button class="play-btn" onclick="toggleAutoPlay()" id="playBtn">▶ Lecture automatique</button>
+            <span class="counter" id="timeDisplay">00:00 / 00:00</span>
+        </div>
+    </div>
+
+    <audio id="audioPlayer" src="HisEco1.mp3" preload="auto"></audio>
+
+    <script>
+        // Message d'accueil
+        alert("📚 Bienvenue dans le cours d'Histoire des faits et pensées économiques !\n\nAstuces :\n• Mettez le cours en pause ⏸️ pour lire les écrits 📄\n• Utilisez les flèches ← → pour naviguer\n• La barre d'espace démarre/arrête la lecture\n\nProfitez bien de ce cours !");
+
+        // ============================================
+        // DONNÉES DU COURS - 35 SLIDES
+        // ============================================
+        const slides = [
+            {
+                title: "Introduction générale",
+                content: `
+                    <div class="definition">
+                        <strong>Objectif du cours :</strong> Comprendre l'évolution de la pensée économique à travers l'histoire, des premières civilisations jusqu'aux débats contemporains.
+                    </div>
+                    
+                    <p>L'histoire des faits économiques est inséparable de l'histoire des idées. Chaque grande transformation économique (révolution industrielle, crises, mondialisation) a suscité de nouvelles théories et remises en question.</p>
+                    
+                    <div class="quote">
+                        "L'économie est la science des choix efficaces" - Définition contemporaine
+                    </div>
+                    
+                    <h3>Plan général du cours</h3>
+                    <ul>
+                        <li><strong>Première partie :</strong> L'ère préindustrielle (Antiquité au XVIIIe siècle)</li>
+                        <li><strong>Deuxième partie :</strong> La révolution industrielle et les classiques</li>
+                        <li><strong>Troisième partie :</strong> Les contestations du capitalisme</li>
+                        <li><strong>Quatrième partie :</strong> La pensée contemporaine et les crises</li>
+                    </ul>
+                `
+            },
+            {
+                title: "Les principales écoles à retenir",
+                content: `
+                    <h3>Les 8 grands courants de la pensée économique</h3>
+                    
+                    <ul>
+                        <li><strong>Physiocrates :</strong> La richesse est le fruit du seul travail de la terre et de la division du travail.</li>
+                        <li><strong>Classiques :</strong> La croissance provient de l'investissement, du libre-échange et du progrès technique qui permet de lutter contre les rendements décroissants.</li>
+                        <li><strong>Socialisme :</strong> Les inégalités sont dues à la propriété privée (génératrice de rentes) et à la concurrence organisée entre les ouvriers.</li>
+                        <li><strong>Néoclassiques :</strong> L'économiste doit raisonner à la marge (marginalisme) et à partir des situations d'équilibre produites par le marché.</li>
+                        <li><strong>Marxisme :</strong> Le capitalisme suit une logique autonome (baisse tendancielle du taux de profit) qui l'amènera à la surproduction et à une crise finale.</li>
+                        <li><strong>Keynésianisme :</strong> Le marché produisant des équilibres sous-optimaux, l'État peut pratiquer le déficit budgétaire pour pallier les crises.</li>
+                        <li><strong>Monétarisme :</strong> La politique économique est fondamentalement inefficace, nécessité de revenir aux raisonnements néoclassiques.</li>
+                        <li><strong>Post-keynésianisme :</strong> La demande est la source exclusive de la croissance.</li>
+                    </ul>
+                `
+            },
+            {
+                title: "Les auteurs à maîtriser (partie 1)",
+                content: `
+                    <h3>Les pères fondateurs</h3>
+                    
+                    <div class="definition">
+                        <strong>Adam Smith (1723-1790) :</strong> Père de l'économie moderne. Auteur de "La Richesse des Nations" (1776). Concepts clés : main invisible, division du travail, valeur travail.
+                    </div>
+                    
+                    <div class="definition">
+                        <strong>Thomas Malthus (1766-1834) :</strong> La dimension démographique de l'économie. Principe de population : la population croît plus vite que les ressources.
+                    </div>
+                    
+                    <div class="definition">
+                        <strong>David Ricardo (1772-1823) :</strong> Le problème des rentes (rendements décroissants) et la nécessité du libre-échange. Théorie des avantages comparatifs.
+                    </div>
+                    
+                    <div class="definition">
+                        <strong>Jean-Baptiste Say (1767-1832) :</strong> Théorisation de l'offre (loi des débouchés) : "l'offre crée sa propre demande".
+                    </div>
+                `
+            },
+            {
+                title: "Les auteurs à maîtriser (partie 2)",
+                content: `
+                    <h3>Les critiques et révolutionnaires</h3>
+                    
+                    <div class="definition">
+                        <strong>Friedrich List (1789-1846) :</strong> La remise en cause du libre-échange et la nécessité potentielle du protectionnisme pour les industries naissantes.
+                    </div>
+                    
+                    <div class="definition">
+                        <strong>Karl Marx (1818-1883) :</strong> Remise en cause fondamentale du capitalisme. Concepts : plus-value, exploitation, baisse tendancielle du taux de profit.
+                    </div>
+                    
+                    <div class="definition">
+                        <strong>John Maynard Keynes (1883-1946) :</strong> Révolution de la discipline. Théorie générale de l'emploi, de l'intérêt et de la monnaie (1936).
+                    </div>
+                    
+                    <div class="definition">
+                        <strong>Joseph Schumpeter (1883-1950) :</strong> Le processus et l'importance de l'innovation. Destruction créatrice.
+                    </div>
+                `
+            },
+            {
+                title: "Les auteurs à maîtriser (partie 3)",
+                content: `
+                    <h3>Les penseurs du XXe siècle</h3>
+                    
+                    <div class="definition">
+                        <strong>Friedrich Hayek (1899-1992) :</strong> Le marché comme procédure de découverte (instrument épistémologique). Défense du libéralisme.
+                    </div>
+                    
+                    <div class="definition">
+                        <strong>Milton Friedman (1912-2006) :</strong> L'importance de la liberté économique et les dangers de l'interventionnisme. Chef de file du monétarisme.
+                    </div>
+                    
+                    <div class="quote">
+                        "L'inflation est toujours et partout un phénomène monétaire" - Milton Friedman
+                    </div>
+                `
+            },
+            {
+                title: "Chapitre 1 - Les idées économiques dans l'Antiquité",
+                content: `
+                    <h3>Platon (428-347 av. J.C.)</h3>
+                    
+                    <ul>
+                        <li><strong>Le communisme de Platon :</strong> Dans "La République", il imagine une cité idéale où les gardiens partagent tout en commun.</li>
+                        <li><strong>Intérêt personnel et division du travail :</strong> La cité naît parce que chaque individu a des besoins multiples mais des aptitudes limitées.</li>
+                        <li><strong>Les lois :</strong> Une apologie de l'égalitarisme dans son dernier ouvrage.</li>
+                    </ul>
+                    
+                    <h3>Aristote (-384 à -322 av. J.C.)</h3>
+                    
+                    <ul>
+                        <li><strong>Précurseur du libéralisme :</strong> Défense de la propriété privée.</li>
+                        <li><strong>Justice distributive et commutative :</strong> Distinction fondamentale entre l'égalité proportionnelle et l'égalité arithmétique.</li>
+                        <li><strong>Deux formes d'acquisition des richesses :</strong> L'économie (acquisition naturelle) et la chrématistique (acquisition contre-nature, l'enrichissement pour lui-même).</li>
+                    </ul>
+                `
+            },
+            {
+                title: "Thomas d'Aquin et la pensée médiévale",
+                content: `
+                    <h3>Thomas d'Aquin (1225-1274)</h3>
+                    
+                    <div class="definition">
+                        <strong>Une tentative pour réconcilier l'économique et le religieux :</strong> Dans sa "Somme théologique", il traite de questions économiques sous l'angle de la morale chrétienne.
+                    </div>
+                    
+                    <h4>Questions fondamentales :</h4>
+                    
+                    <ul>
+                        <li><strong>Est-il permis de vendre une chose plus chère qu'on ne l'a achetée ?</strong> Il admet le profit s'il rémunère un travail ou répond à un besoin légitime.</li>
+                        <li><strong>Peut-on demander un intérêt si on prête de l'argent ?</strong> Non, car l'argent est stérile (condamnation de l'usure).</li>
+                    </ul>
+                    
+                    <div class="example">
+                        <strong>Contexte :</strong> Des mécanismes de marché relativement absents au Moyen-Âge. L'économie est encastrée dans le social et le religieux.
+                    </div>
+                `
+            },
+            {
+                title: "Chapitre 2 - Introduction au mercantilisme",
+                content: `
+                    <h3>Définition et origines</h3>
+                    
+                    <div class="definition">
+                        <strong>Mercantilisme :</strong> Du mot italien "Mercante" qui signifie "marchand". Doctrine économique qui prône le développement économique par l'enrichissement des États-nations au moyen de l'or d'abord, puis du commerce et de l'industrialisation.
+                    </div>
+                    
+                    <p><strong>Période :</strong> XVIe au XVIIIe siècle, au temps des grandes découvertes et de la colonisation.</p>
+                    
+                    <h4>Les différentes formes de mercantilisme :</h4>
+                    
+                    <table>
+                        <tr>
+                            <th>Type</th>
+                            <th>Pays</th>
+                            <th>Caractéristique</th>
+                        </tr>
+                        <tr>
+                            <td>Bullionisme</td>
+                            <td>Espagne, Portugal</td>
+                            <td>Obsession de l'or des Amériques</td>
+                        </tr>
+                        <tr>
+                            <td>Colbertisme</td>
+                            <td>France</td>
+                            <td>Industrialisation et réglementation</td>
+                        </tr>
+                        <tr>
+                            <td>Commercialisme</td>
+                            <td>Angleterre</td>
+                            <td>Commerce extérieur et marine</td>
+                        </tr>
+                        <tr>
+                            <td>Caméralisme</td>
+                            <td>Allemagne</td>
+                            <td>Administration du trésor public</td>
+                        </tr>
+                        <tr>
+                            <td>Mercantilisme fiduciaire</td>
+                            <td>France (Law)</td>
+                            <td>Système bancaire et billets</td>
+                        </tr>
+                    </table>
+                `
+            },
+            {
+                title: "Objectifs et contenu du mercantilisme",
+                content: `
+                    <h3>Objectif : l'enrichissement de tous</h3>
+                    
+                    <div class="quote">
+                        Antoine de Montchrestien (1575-1621) : "Le bonheur des hommes consiste principalement dans la richesse et la richesse dans le travail. Et l'État doit intervenir pour favoriser cet accroissement de richesses."
+                    </div>
+                    
+                    <h3>Contenu de la doctrine mercantiliste</h3>
+                    
+                    <ul>
+                        <li><strong>Définition de la richesse :</strong> Abondance de métaux précieux, or et argent.</li>
+                        <li><strong>Moyens :</strong> L'État doit favoriser "l'abondance d'hommes et d'argent" pour la production et l'exportation.</li>
+                        <li><strong>Balance commerciale :</strong> L'État doit rendre excédentaire la balance commerciale extérieure.</li>
+                    </ul>
+                    
+                    <div class="example">
+                        <strong>Politiques mercantilistes typiques :</strong> Droits de douane élevés sur les produits manufacturés étrangers, subventions aux exportations, développement de la marine marchande, colonies sources de matières premières et débouchés exclusifs.
+                    </div>
+                `
+            },
+            {
+                title: "Le mercantilisme espagnol et français",
+                content: `
+                    <h3>Mercantilisme espagnol (bullionisme)</h3>
+                    
+                    <p>Obsession de l'or après la découverte de l'Amérique (XVIe-XVIIe siècle). La recherche de l'Eldorado motive la colonisation.</p>
+                    
+                    <h4>Moyens mis en œuvre :</h4>
+                    <ul>
+                        <li>Interdiction aux navires étrangers d'entrer dans les ports espagnols</li>
+                        <li>Instauration d'une "division du travail" entre l'Espagne et ses colonies</li>
+                    </ul>
+                    
+                    <h3>Mercantilisme français (colbertisme)</h3>
+                    
+                    <p>Représenté par Jean Bodin (1530-1596), Antoine de Montchrestien et Jean-Baptiste Colbert (1619-1683).</p>
+                    
+                    <ul>
+                        <li><strong>Populationnisme :</strong> Favoriser la natalité pour avoir une main-d'œuvre nombreuse.</li>
+                        <li><strong>Théorie quantitative de la monnaie :</strong> Relation entre quantité de monnaie et niveau des prix.</li>
+                        <li><strong>Développement des manufactures :</strong> Création des manufactures royales.</li>
+                    </ul>
+                `
+            },
+            {
+                title: "John Law et le mercantilisme fiduciaire",
+                content: `
+                    <h3>John Law (1671-1729)</h3>
+                    
+                    <div class="definition">
+                        <strong>Mercantilisme fiduciaire :</strong> "Fiduciaire" vient du latin "fiduciarus" qui signifie "confiance". L'idée est que l'enrichissement d'un pays dépend de l'existence d'un système bancaire performant.
+                    </div>
+                    
+                    <p>John Law, financier écossais, tente de mettre en place en France une banque centrale et un système de billets gagés sur l'or.</p>
+                    
+                    <h4>La tentative de John Law en France (1716-1720)</h4>
+                    
+                    <ul>
+                        <li>Création d'une banque générale (1716) qui devient banque royale (1718)</li>
+                        <li>Émission de billets convertibles en or</li>
+                        <li>Création de la Compagnie d'Occident (Mississippi)</li>
+                        <li>Fusion avec la Compagnie des Indes</li>
+                        <li>Spéculation effrénée puis krach (1720)</li>
+                    </ul>
+                    
+                    <div class="example">
+                        <strong>Leçon :</strong> Première expérience de monnaie fiduciaire et de bulle spéculative. Law avait raison sur le principe (nécessité d'un système bancaire) mais a été victime d'une spéculation incontrôlée.
+                    </div>
+                `
+            },
+            {
+                title: "Les précurseurs du libéralisme",
+                content: `
+                    <h3>L'école de Salamanque (XVIe siècle)</h3>
+                    
+                    <p>Initiée par Francisco de Vitoria (1485-1546). Ces théologiens espagnols jettent les bases de la pensée libérale : propriété, contrat, juste prix.</p>
+                    
+                    <h3>Boisguillebert (1646-1714)</h3>
+                    
+                    <p>Critique du mercantilisme et ébauche d'un libéralisme. Il défend l'idée que la nature a son ordre propre et que l'État ne doit pas intervenir.</p>
+                    
+                    <h3>Richard Cantillon (1680-1734)</h3>
+                    
+                    <p>Précurseur des autrichiens. Dans son "Essai sur la nature du commerce en général", il analyse les mécanismes de marché et le rôle de l'entrepreneur.</p>
+                    
+                    <h3>David Hume (1711-1776)</h3>
+                    
+                    <div class="formula">
+                        <strong>Mécanisme automatique de l'équilibre de la balance des paiements :</strong> Un excédent commercial → entrée d'or → hausse des prix → baisse de la compétitivité → retour à l'équilibre.
+                    </div>
+                `
+            },
+            {
+                title: "Chapitre 3 - Introduction à la physiocratie",
+                content: `
+                    <h3>Définition et origines</h3>
+                    
+                    <div class="definition">
+                        <strong>Physiocratie :</strong> Du grec "physio" (nature) et "kratos" (gouvernement). Littéralement "gouvernement par la nature". Doctrine économique du XVIIIe siècle.
+                    </div>
+                    
+                    <h4>Deux propositions fondamentales :</h4>
+                    
+                    <ul>
+                        <li>Il existe un <strong>ordre naturel</strong> gouverné par des lois. Le rôle des économistes est de comprendre ces lois.</li>
+                        <li>Le devoir des hommes et des gouvernants est de se soumettre à ces lois en interférant aussi peu que possible.</li>
+                    </ul>
+                    
+                    <div class="quote">
+                        "Laissez faire, laissez passer" - Devise physiocratique attribuée à Vincent de Gournay
+                    </div>
+                    
+                    <h4>Contexte historique :</h4>
+                    
+                    <ul>
+                        <li>Plus des 3/4 du revenu national proviennent de l'agriculture</li>
+                        <li>Misère des populations rurales, terres chargées d'impôts</li>
+                        <li>Réaction contre les excès du mercantilisme et ses réglementations</li>
+                    </ul>
+                `
+            },
+            {
+                title: "François Quesnay et le Tableau économique",
+                content: `
+                    <h3>François Quesnay (1694-1774)</h3>
+                    
+                    <p>Médecin de Madame de Pompadour, il se tourne vers l'économie à 60 ans. Il est le chef de file de l'école physiocratique.</p>
+                    
+                    <div class="definition">
+                        <strong>Le Tableau économique (1758) :</strong> Première représentation globale et schématique de l'économie. Il pense l'économique comme un circuit.
+                    </div>
+                    
+                    <h4>Les trois classes sociales selon Quesnay :</h4>
+                    
+                    <ul>
+                        <li><strong>Classe productive :</strong> Les agriculteurs (créent le produit net)</li>
+                        <li><strong>Classe des propriétaires :</strong> Le roi, la noblesse, le clergé (perçoivent le produit net)</li>
+                        <li><strong>Classe stérile :</strong> Artisans, commerçants, industriels (ne créent pas de produit net)</li>
+                    </ul>
+                    
+                    <div class="formula">
+                        <strong>Produit net =</strong> Valeur de la production agricole - Coûts de production (y compris la subsistance des travailleurs)
+                    </div>
+                `
+            },
+            {
+                title: "Les autres physiocrates",
+                content: `
+                    <h3>Vincent de Gournay (1712-1759)</h3>
+                    
+                    <p>Considéré comme le premier des physiocrates. Plus libéral que ruraliste, il transmet aux physiocrates :</p>
+                    <ul>
+                        <li>Attachement aux libertés économiques</li>
+                        <li>Opposition à l'intervention directe de l'État</li>
+                        <li>Méfiance vis-à-vis des corporations</li>
+                    </ul>
+                    
+                    <h3>Victor de Mirabeau (1715-1789)</h3>
+                    
+                    <p>Auteur de "L'ami des hommes" et "Théorie de l'impôt". Il défend le retour aux valeurs de la terre et la nécessité de plus de liberté.</p>
+                    
+                    <h3>Turgot (1727-1781)</h3>
+                    
+                    <p>Ami de Quesnay et d'Adam Smith, il constitue un trait d'union entre la physiocratie et l'économie politique classique. Contrôleur général des finances, il tente des réformes libérales.</p>
+                    
+                    <h3>Dupont de Nemours (1735-1817)</h3>
+                    
+                    <p>Proche de Quesnay, co-auteur de "Physiocratie" (1768). Il fut rédacteur du Traité de Versailles (1783).</p>
+                `
+            },
+            {
+                title: "Les grandes idées des physiocrates",
+                content: `
+                    <h3>Les apports théoriques des physiocrates</h3>
+                    
+                    <h4>1. La naissance de l'économie politique</h4>
+                    <p>Première école à se revendiquer comme scientifique et à chercher des lois naturelles en économie.</p>
+                    
+                    <h4>2. La production agricole comme source unique de richesses</h4>
+                    <p>Seule la terre produit un "produit net" (surplus). L'industrie et le commerce sont "stériles" car ils transforment sans créer.</p>
+                    
+                    <h4>3. Le Tableau économique de Quesnay (1758)</h4>
+                    <p>Première modélisation de l'économie en circuit, montrant les flux monétaires et réels entre les classes.</p>
+                    
+                    <h4>4. L'approche en termes de circuit économique</h4>
+                    <p>Vision ordonnée de l'économie qui organise la circulation des flux.</p>
+                    
+                    <h4>5. Les avances en capital</h4>
+                    <p>Avant tout processus de production, il faut disposer d'un capital initial (avances).</p>
+                    
+                    <h4>6. Le surplus ou revenu net</h4>
+                    <p>Différence entre la valeur de la production et les dépenses engagées.</p>
+                `
+            },
+            {
+                title: "Propositions des physiocrates",
+                content: `
+                    <h3>Comment augmenter la richesse nationale ?</h3>
+                    
+                    <h4>Pour augmenter la production agricole :</h4>
+                    <ul>
+                        <li>Réforme foncière (remembrement, comme en Angleterre)</li>
+                        <li>Défrichement et amélioration des terres</li>
+                        <li>Amélioration des méthodes de culture</li>
+                    </ul>
+                    
+                    <h4>Pour augmenter la demande de produits agricoles :</h4>
+                    <ul>
+                        <li>Verser des salaires aussi hauts que possible</li>
+                        <li>Libérer le commerce des grains de toute restriction à l'exportation</li>
+                        <li>Laisser faire et laisser passer</li>
+                    </ul>
+                    
+                    <div class="example">
+                        <strong>Objectif :</strong> Soutenir les prix agricoles pour encourager la production et donc la richesse nationale.
+                    </div>
+                `
+            }
+           
+        ];
+
+        // ============================================
+        // TIMINGS PRÉCIS POUR SYNCHRONISATION AUDIO
+        // Basé sur 150 mots/minute
+        // ============================================
+        const timeline = [
+            0,      // Slide 0 - Intro
+            46,     // Slide 1 - Écoles
+            123,     // Slide 2 - Auteurs 1
+            180,    // Slide 3 - Auteurs 2
+            235,    // Slide 4 - Auteurs 3
+            268,    // Slide 5 - Antiquité
+            328,    // Slide 6 - Thomas d'Aquin
+            372,    // Slide 7 - Intro mercantilisme
+            425,    // Slide 8 - Objectifs mercantilisme
+            483,    // Slide 9 - Espagnol et français
+            540,    // Slide 10 - John Law
+            606,    // Slide 11 - Précurseurs libéralisme
+            671,    // Slide 12 - Intro physiocratie
+            726,    // Slide 13 - Quesnay
+            784,    // Slide 14 - Autres physiocrates
+            849.5,    // Slide 15 - Grandes idées physiocrates
+            916
+            
+        ];
+
+        // Durée totale estimée
+        const totalDuration = 955; // secondes (environ 34 minutes)
+
+        // Variables d'état
+        let currentSlide = 0;
+        let isAutoPlaying = false;
+        let autoPlayInterval;
+        let syncInterval;
+        
+        // Éléments DOM
+        const audioPlayer = document.getElementById('audioPlayer');
+        const contentDiv = document.getElementById('content');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const playBtn = document.getElementById('playBtn');
+        const statusDiv = document.getElementById('status');
+        const slideCounter = document.getElementById('slideCounter');
+        const progressFill = document.getElementById('progressFill');
+        const timeDisplay = document.getElementById('timeDisplay');
+
+        // ============================================
+        // FONCTIONS D'AFFICHAGE
+        // ============================================
+        function renderSlide(index) {
+            const slide = slides[index];
+            
+            contentDiv.innerHTML = `
+                <div class="slide active">
+                    <h2 class="slide-title">${slide.title}</h2>
+                    <div class="slide-content">${slide.content}</div>
+                </div>
+            `;
+            
+            slideCounter.textContent = `${index + 1}/${slides.length}`;
+            progressFill.style.width = `${((index + 1) / slides.length) * 100}%`;
+            
+            // Mise à jour des boutons de navigation
+            if (!isAutoPlaying) {
+                prevBtn.disabled = index === 0;
+                nextBtn.disabled = index === slides.length - 1;
+            }
+            
+            // Scroll en haut
+            contentDiv.scrollTop = 0;
+        }
+
+        // ============================================
+        // FONCTIONS DE NAVIGATION
+        // ============================================
+        function nextSlide() {
+            if (currentSlide < slides.length - 1) {
+                currentSlide++;
+                renderSlide(currentSlide);
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                renderSlide(currentSlide);
+            }
+        }
+
+        // ============================================
+        // SYNCHRONISATION AUDIO / SLIDES
+        // ============================================
+        function updateTimeDisplay() {
+            const current = audioPlayer.currentTime;
+            const minutes = Math.floor(current / 60);
+            const seconds = Math.floor(current % 60);
+            const totalMinutes = Math.floor(totalDuration / 60);
+            const totalSeconds = Math.floor(totalDuration % 60);
+            
+            timeDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')} / ${totalMinutes.toString().padStart(2, '0')}:${totalSeconds.toString().padStart(2, '0')}`;
+            
+            // Mise à jour de la barre de progression
+            const progress = (current / totalDuration) * 100;
+            progressFill.style.width = `${Math.min(progress, 100)}%`;
+        }
+
+        function checkSync() {
+            if (!isAutoPlaying) return;
+            
+            const currentTime = audioPlayer.currentTime;
+            
+            // Trouver la slide correspondante au temps actuel
+            for (let i = timeline.length - 1; i >= 0; i--) {
+                if (currentTime >= timeline[i]) {
+                    if (i !== currentSlide) {
+                        currentSlide = i;
+                        renderSlide(currentSlide);
+                    }
+                    break;
+                }
+            }
+            
+            updateTimeDisplay();
+            
+            // Arrêt automatique à la fin
+            if (currentTime >= totalDuration - 1) {
+                stopAutoPlay();
+            }
+        }
+
+        function startAutoPlay() {
+            if (!audioPlayer.src) {
+                alert('Veuillez placer le fichier audio "histoire_economique.mp3" dans le même dossier que ce fichier HTML.');
+                return;
+            }
+            
+            isAutoPlaying = true;
+            playBtn.textContent = '⏸ Pause';
+            playBtn.classList.remove('play-btn');
+            playBtn.classList.add('stop-btn');
+            statusDiv.textContent = 'Mode automatique';
+            statusDiv.style.background = 'rgba(40, 167, 69, 0.9)';
+            
+            prevBtn.disabled = true;
+            nextBtn.disabled = true;
+            
+            audioPlayer.play();
+            
+            // Vérifier la synchronisation toutes les 100ms
+            syncInterval = setInterval(checkSync, 100);
+        }
+
+        function stopAutoPlay() {
+            isAutoPlaying = false;
+            playBtn.textContent = '▶ Lecture automatique';
+            playBtn.classList.remove('stop-btn');
+            playBtn.classList.add('play-btn');
+            statusDiv.textContent = 'Mode navigation';
+            statusDiv.style.background = 'rgba(0,0,0,0.8)';
+            
+            audioPlayer.pause();
+            
+            if (syncInterval) {
+                clearInterval(syncInterval);
+            }
+            
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === slides.length - 1;
+        }
+
+        function toggleAutoPlay() {
+            if (isAutoPlaying) {
+                stopAutoPlay();
+            } else {
+                startAutoPlay();
+            }
+        }
+
+        // ============================================
+        // GESTION DES ÉVÉNEMENTS AUDIO
+        // ============================================
+        audioPlayer.addEventListener('ended', function() {
+            stopAutoPlay();
+        });
+
+        audioPlayer.addEventListener('timeupdate', function() {
+            if (!isAutoPlaying) {
+                updateTimeDisplay();
+            }
+        });
+
+        // ============================================
+        // RACCOURCIS CLAVIER
+        // ============================================
+        document.addEventListener('keydown', function(e) {
+            if (isAutoPlaying) return;
+            
+            if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                prevSlide();
+            } else if (e.key === 'ArrowRight') {
+                e.preventDefault();
+                nextSlide();
+            } else if (e.key === ' ') {
+                e.preventDefault();
+                toggleAutoPlay();
+            }
+        });
+
+        // ============================================
+        // INITIALISATION
+        // ============================================
+        renderSlide(0);
+        updateTimeDisplay();
+
+        // Vérifier si l'audio existe
+        audioPlayer.addEventListener('error', function() {
+            console.warn('Fichier audio non trouvé. Placez "histoire_economique.mp3" dans le même dossier.');
+        });
+    </script>
+</body>
+</html>
+               
