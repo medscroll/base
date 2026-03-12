@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Histoire des faits et pensées économiques</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1300px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: #f0f0f0;
+            width: 100%;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3498db, #1e3c72);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .header {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .header h1 {
+            color: #1e3c72;
+            font-size: 1.3em;
+            font-weight: 600;
+        }
+
+        .badge {
+            background: #1e3c72;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+
+        .content {
+            padding: 30px;
+            min-height: 500px;
+            max-height: 70vh;
+            overflow-y: auto;
+            background: #ffffff;
+            scroll-behavior: smooth;
+        }
+
+        .slide {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide-title {
+            color: #1e3c72;
+            font-size: 2.2em;
+            margin-bottom: 25px;
+            font-weight: 700;
+            border-left: 5px solid #3498db;
+            padding-left: 20px;
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 10;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+        }
+
+        .slide-content {
+            color: #2c3e50;
+            line-height: 1.8;
+            font-size: 1.15em;
+        }
+
+        .slide-content h3 {
+            color: #1e3c72;
+            margin: 25px 0 15px 0;
+            font-size: 1.5em;
+        }
+
+        .slide-content h4 {
+            color: #2c3e50;
+            margin: 20px 0 10px 0;
+            font-size: 1.25em;
+        }
+
+        .slide-content p {
+            margin: 15px 0;
+        }
+
+        .slide-content ul, .slide-content ol {
+            margin: 15px 0 15px 30px;
+        }
+
+        .slide-content li {
+            margin: 10px 0;
+        }
+
+        .definition {
+            background: #e8f4fd;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 25px 0;
+            border-left: 5px solid #3498db;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .definition strong {
+            color: #1e3c72;
+            font-size: 1.1em;
+        }
+
+        .formula {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 25px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 1.3em;
+            text-align: center;
+            border-left: 5px solid #1e3c72;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .example {
+            background: #fef5e7;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 25px 0;
+            border-left: 5px solid #f39c12;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin: 25px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        th {
+            background: #1e3c72;
+            color: white;
+            font-weight: 600;
+            padding: 15px;
+            text-align: left;
+        }
+
+        td {
+            border: 1px solid #e9ecef;
+            padding: 12px;
+        }
+
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .controls {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-btn {
+            background: white;
+            color: #1e3c72;
+            border: 1px solid #dee2e6;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            background: #e9ecef;
+            transform: translateY(-1px);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .play-btn {
+            background: linear-gradient(90deg, #3498db, #1e3c72);
+            color: white;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        .play-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.5);
+        }
+
+        .stop-btn {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .stop-btn:hover {
+            background: #c0392b;
+        }
+
+        .counter {
+            color: #6c757d;
+            font-size: 0.95em;
+            background: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .status {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 0.9em;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            backdrop-filter: blur(5px);
+        }
+
+        .section-marker {
+            border-bottom: 2px solid #3498db;
+            margin: 30px 0 20px 0;
+            padding-bottom: 10px;
+            color: #1e3c72;
+            font-weight: 600;
+            font-size: 1.3em;
+        }
+
+        .quote {
+            font-style: italic;
+            color: #555;
+            border-left: 3px solid #1e3c72;
+            padding-left: 20px;
+            margin: 20px 0;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                padding: 20px;
+                max-height: 60vh;
+            }
+            
+            .slide-title {
+                font-size: 1.8em;
+            }
+            
+            .controls {
+                flex-direction: column;
+            }
+            
+            .nav-buttons {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            button {
+                flex: 1;
+                text-align: center;
+            }
+            
+            .status {
+                top: 10px;
+                right: 10px;
+                font-size: 0.8em;
+                padding: 8px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="status" id="status">Mode navigation</div>
+    
+    <div class="container">
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        
+        <div class="header">
+            <h1>📜 Histoire des faits et des pensées économiques</h1>
+            <span class="badge" id="slideCounter">1/35</span>
+        </div>
+
+        <div class="content" id="content">
+            <!-- Les slides seront injectées dynamiquement -->
+        </div>
+
+        <div class="controls">
+            <div class="nav-buttons">
+                <button class="nav-btn" onclick="prevSlide()" id="prevBtn">← Précédent</button>
+                <button class="nav-btn" onclick="nextSlide()" id="nextBtn">Suivant →</button>
+            </div>
+            <button class="play-btn" onclick="toggleAutoPlay()" id="playBtn">▶ Lecture automatique</button>
+            <span class="counter" id="timeDisplay">00:00 / 00:00</span>
+        </div>
+    </div>
+
+    <audio id="audioPlayer" src="HisEco3.mp3" preload="auto"></audio>
+
+    <script>
+        // Message d'accueil
+        alert("📚 Bienvenue dans le cours d'Histoire des faits et pensées économiques !\n\nAstuces :\n• Mettez le cours en pause ⏸️ pour lire les écrits 📄\n• Utilisez les flèches ← → pour naviguer\n• La barre d'espace démarre/arrête la lecture\n\nProfitez bien de ce cours !");
+
+        // ============================================
+        // DONNÉES DU COURS - 35 SLIDES
+        // ============================================
+        const slides = [
+            
+            {
+                title: "Chapitre 8 - La crise du capitalisme (1929)",
+                content: `
+                    <h3>La Belle Époque et l'étalon-or</h3>
+                    
+                    <h4>L'apogée de l'Europe :</h4>
+                    <p>Fin XIXe - début XXe, l'Europe domine technologiquement et économiquement le monde.</p>
+                    
+                    <h4>L'étalon-or (Gold Standard) :</h4>
+                    <ul>
+                        <li>L'or sert d'unité de compte et d'étalon monétaire</li>
+                        <li>Les monnaies sont définies par un poids fixe d'or</li>
+                        <li>Les billets sont convertibles en or</li>
+                        <li>Taux de change fixes</li>
+                    </ul>
+                    
+                    <h4>Avantages :</h4>
+                    <p>Stabilité des taux de change, équilibre automatique des balances de paiements (mécanisme Hume).</p>
+                    
+                    <h4>Inconvénients :</h4>
+                    <p>Inadéquation possible entre quantité de monnaie et besoins de l'économie.</p>
+                `
+            },
+            {
+                title: "Le jeudi noir et la Grande Dépression",
+                content: `
+                    <h3>Le krach de 1929</h3>
+                    
+                    <h4>Jeudi 24 octobre 1929 ("Jeudi noir") :</h4>
+                    <p>Wall Street s'effondre. Le 8 juillet 1932, le Dow Jones atteint 41,22 (plus bas niveau depuis 1896). Il ne retrouvera son niveau d'avant-crise que le 23 novembre 1954.</p>
+                    
+                    <h4>Causes :</h4>
+                    <ul>
+                        <li>Spéculation boursière effrénée</li>
+                        <li>Achat à crédit d'actions</li>
+                        <li>Bulles spéculatives</li>
+                    </ul>
+                    
+                    <h4>Conséquences :</h4>
+                    <ul>
+                        <li>Perte de confiance généralisée</li>
+                        <li>Faillites bancaires en chaîne</li>
+                        <li>Contraction du crédit</li>
+                        <li>Chômage massif</li>
+                    </ul>
+                    
+                    <h4>Extension mondiale :</h4>
+                    <ul>
+                        <li>Interdépendance des banques internationales</li>
+                        <li>Loi Hawley-Smoot (1930) - protectionnisme américain</li>
+                        <li>Cercle vicieux du protectionnisme généralisé</li>
+                    </ul>
+                `
+            },
+            {
+                title: "Les analyses de la crise de 1929",
+                content: `
+                    <h3>Deux grandes thèses</h3>
+                    
+                    <h4>1. Thèse marxiste de la surproduction :</h4>
+                    <p>La crise révèle les contradictions internes du capitalisme. Crises de plus en plus violentes jusqu'à la destruction du capitalisme.</p>
+                    
+                    <h4>2. Thèse keynésienne de l'insuffisance de la demande globale :</h4>
+                    <p>L'économie peut être "coincée" dans une situation de sous-emploi. L'investissement privé est insuffisant (pessimisme). Nécessité d'une intervention de l'État pour relancer la demande.</p>
+                    
+                    <div class="example">
+                        <strong>New Deal (1933-1938) :</strong> Programme de Roosevelt inspiré des idées keynésiennes (travaux publics, réformes financières, sécurité sociale).
+                    </div>
+                    
+                    <p>Ce n'est finalement que la Seconde Guerre mondiale et le Plan Marshall qui remettront l'économie sur le sentier de la croissance.</p>
+                `
+            },
+            {
+                title: "Chapitre 9 - Keynes et l'entre-deux-guerres",
+                content: `
+                    <h3>John Maynard Keynes (1883-1946)</h3>
+                    
+                    <h4>Biographie :</h4>
+                    <ul>
+                        <li>Élève de Marshall à Cambridge</li>
+                        <li>Fonctionnaire à l'India Office</li>
+                        <li>Conseiller du Trésor britannique</li>
+                        <li>Participant à la conférence de Versailles (1919)</li>
+                        <li>Auteur des "Conséquences économiques de la paix" (critique des réparations imposées à l'Allemagne)</li>
+                    </ul>
+                    
+                    <h4>Œuvres majeures :</h4>
+                    <ul>
+                        <li>"Traité sur la monnaie" (1930)</li>
+                        <li>"Théorie générale de l'emploi, de l'intérêt et de la monnaie" (1936) - révolution keynésienne</li>
+                    </ul>
+                `
+            },
+            {
+                title: "Les idées de Keynes",
+                content: `
+                    <h3>Principaux apports théoriques</h3>
+                    
+                    <h4>1. Transformation de l'épargne en investissement :</h4>
+                    <p>Problème fondamental : comment faire en sorte que l'argent épargné soit réinjecté productivement ?</p>
+                    
+                    <h4>2. La dépense, moteur de l'activité :</h4>
+                    <p>Contrairement à la loi de Say, la demande peut être insuffisante. Le "moral" des agents (confiance) est crucial.</p>
+                    
+                    <h4>3. Refus de l'automaticité du retour à l'équilibre :</h4>
+                    <p>La baisse du taux d'intérêt ne suffit pas à relancer l'investissement en période de crise.</p>
+                    
+                    <div class="definition">
+                        <strong>Chômage involontaire :</strong> Existe "si, en cas d'une légère hausse du prix des biens de consommation ouvrière par rapport aux salaires nominaux, l'offre globale de main-d'œuvre et la demande globale s'établissent toutes deux au-dessus du niveau antérieur de l'emploi".
+                    </div>
+                    
+                    <h4>4. Équilibre de sous-emploi :</h4>
+                    <p>L'économie peut rester durablement dans une situation de sous-emploi sans tendance marquée à la reprise.</p>
+                    
+                    <h4>5. Nécessité de l'intervention publique :</h4>
+                    <p>L'État doit soutenir la demande globale par le déficit budgétaire.</p>
+                `
+            },
+            {
+                title: "Hayek et Schumpeter",
+                content: `
+                    <h3>Friedrich Hayek (1899-1992)</h3>
+                    
+                    <h4>Chef de file de l'école autrichienne</h4>
+                    <ul>
+                        <li><strong>Ordre spontané (Kosmos) :</strong> La société et l'économie se construisent seules par expérimentations successives, sans architecte.</li>
+                        <li><strong>Marché comme processus de découverte :</strong> Les prix révèlent l'information.</li>
+                        <li><strong>Critique de l'intervention de l'État :</strong> Conduit au totalitarisme ("La route de la servitude", 1944).</li>
+                        <li><strong>Théorie des cycles :</strong> Les crises viennent du surinvestissement et de la distribution excessive de crédit.</li>
+                    </ul>
+                    
+                    <h3>Joseph Schumpeter (1883-1950)</h3>
+                    
+                    <h4>La destruction créatrice :</h4>
+                    <div class="definition">
+                        L'innovation perturbe les équilibres anciens, accélère l'obsolescence des produits et méthodes. C'est la donnée fondamentale du capitalisme.
+                    </div>
+                    
+                    <h4>Cycles de Kondratiev :</h4>
+                    <p>Les innovations apparaissent par grappes et gouvernent les cycles longs de l'économie.</p>
+                    
+                    <h4>Entrepreneur vs inventeur :</h4>
+                    <p>L'entrepreneur est celui qui transforme l'invention en succès commercial.</p>
+                `
+            },
+            {
+                title: "Chapitre 10 - De l'État-providence à la mondialisation",
+                content: `
+                    <h3>L'État-providence (1945-1973)</h3>
+                    
+                    <div class="definition">
+                        <strong>État-providence :</strong> Organisation sociale dans laquelle l'État joue un rôle central de régulation de l'économie et de redistribution des richesses (Beveridge).
+                    </div>
+                    
+                    <h4>Le Plan Marshall (1948-1951) :</h4>
+                    <p>14 milliards de dollars d'aide américaine pour la reconstruction de l'Europe. Condition : ne pas avoir opté pour l'allégeance à l'URSS.</p>
+                    
+                    <h4>Les Trente Glorieuses (1945-1973) :</h4>
+                    <p>Période de croissance exceptionnelle :</p>
+                    <ul>
+                        <li>Baby-boom</li>
+                        <li>Leadership américain</li>
+                        <li>Essor du commerce international (GATT)</li>
+                        <li>Stabilité monétaire (Bretton Woods)</li>
+                        <li>Construction européenne</li>
+                    </ul>
+                `
+            },
+            {
+                title: "Des chocs pétroliers à la mondialisation",
+                content: `
+                    <h3>La fin des Trente Glorieuses</h3>
+                    
+                    <h4>1971 : Fin du système de Bretton Woods</h4>
+                    <p>Nixon suspend la convertibilité du dollar en or. Fin des taux de change fixes.</p>
+                    
+                    <h4>1973 : Premier choc pétrolier</h4>
+                    <p>Quadruplement du prix du pétrole par l'OPEP.</p>
+                    
+                    <h4>1979 : Deuxième choc pétrolier</h4>
+                    
+                    <h4>Stagflation :</h4>
+                    <p>Coexistence de l'inflation et du chômage.</p>
+                    
+                    <h3>La contre-révolution libérale (années 1980)</h3>
+                    
+                    <ul>
+                        <li><strong>Reagan (États-Unis) :</strong> "Reaganomics" - baisse d'impôts, déréglementation, libre-entreprise</li>
+                        <li><strong>Thatcher (Royaume-Uni) :</strong> Démantèlement du Welfare State, réduction du pouvoir des syndicats</li>
+                        <li><strong>Chine :</strong> Réformes économiques à partir de 1978, croissance à deux chiffres</li>
+                        <li><strong>Inde :</strong> Abandon de la planification étatique</li>
+                    </ul>
+                `
+            },
+            {
+                title: "La nouvelle économie et la crise de 2008",
+                content: `
+                    <h3>La révolution numérique</h3>
+                    
+                    <ul>
+                        <li><strong>1993 :</strong> Mosaic (premier navigateur grand public)</li>
+                        <li><strong>Loi de Moore :</strong> La puissance de calcul double tous les 18 mois</li>
+                        <li><strong>Nouvelle économie :</strong> Capitalisme cognitif, basé sur la connaissance</li>
+                        <li><strong>2000 :</strong> Explosion de la bulle Internet</li>
+                    </ul>
+                    
+                    <h3>La crise financière de 2008</h3>
+                    
+                    <h4>Causes macroéconomiques :</h4>
+                    <ul>
+                        <li>Taux d'intérêt très faibles (politique accommodante de la Fed)</li>
+                        <li>Déséquilibres mondiaux (Chine, pays émergents)</li>
+                    </ul>
+                    
+                    <h4>Causes microéconomiques :</h4>
+                    <ul>
+                        <li>Crédits subprimes (prêts hypothécaires risqués)</li>
+                        <li>Titrisation des créances</li>
+                        <li>Régulation inadaptée</li>
+                    </ul>
+                    
+                    <h4>Déroulement :</h4>
+                    <ul>
+                        <li>Hausse des taux (2004-2006) → explosion de la bulle immobilière</li>
+                        <li>Défauts de paiement en chaîne</li>
+                        <li>Crise de liquidité bancaire</li>
+                        <li>Contagion mondiale</li>
+                    </ul>
+                `
+            },
+            {
+                title: "Conclusion et perspectives",
+                content: `
+                    <h3>Synthèse de l'histoire de la pensée économique</h3>
+                    
+                    <p>L'économie a évolué de la morale antique à une science mathématisée, en passant par la recherche de lois naturelles et les débats sur le rôle de l'État.</p>
+                    
+                    <h4>Les grands débats qui persistent :</h4>
+                    
+                    <ul>
+                        <li><strong>État vs marché :</strong> Jusqu'où doit aller l'intervention publique ?</li>
+                        <li><strong>Libre-échange vs protectionnisme :</strong> Dans quelles conditions protéger ?</li>
+                        <li><strong>Croissance vs environnement :</strong> La prise de conscience écologique (rapport Stern, 2006)</li>
+                        <li><strong>Régulation financière :</strong> Comment éviter les crises systémiques ?</li>
+                        <li><strong>Inégalités :</strong> Jusqu'à quel point sont-elles acceptables ?</li>
+                    </ul>
+                    
+                    <div class="quote">
+                        "Les économistes et les philosophes politiques ont eu raison tous les deux, ou tous les deux tort. Ni l'État ni le marché ne suffisent à créer une société bonne et juste." - Albert Hirschman
+                    </div>
+                    
+                    <p>Le XXIe siècle pose de nouveaux défis : changement climatique, transition énergétique, révolution numérique, vieillissement démographique, qui appelleront de nouvelles synthèses théoriques.</p>
+                    
+                    <div class="definition">
+                        <strong>À retenir :</strong> Chaque grande école a apporté des concepts essentiels : circuit des physiocrates, main invisible des classiques, plus-value de Marx, utilité marginale des néoclassiques, demande effective de Keynes, destruction créatrice de Schumpeter.
+                    </div>
+                `
+            }
+        ];
+
+        // ============================================
+        // TIMINGS PRÉCIS POUR SYNCHRONISATION AUDIO
+        // Basé sur 150 mots/minute
+        // ============================================
+        const timeline = [
+             0,
+            42,   // Slide 35 - Crise 1929 contexte
+            97,   // Slide 36 - Jeudi noir
+            152,   // Slide 37 - Analyses crise
+            190,   // Slide 38 - Keynes biographie
+            261,   // Slide 39 - Idées Keynes
+            332,   // Slide 40 - Hayek et Schumpeter
+            385,   // Slide 41 - État-providence
+            444,   // Slide 42 - Chocs pétroliers
+            504   // Slide 43 - Nouvelle économie et 2008
+            
+        ];
+
+        // Durée totale estimée
+        const totalDuration = 595; // secondes (environ 10 minutes)
+
+        // Variables d'état
+        let currentSlide = 0;
+        let isAutoPlaying = false;
+        let autoPlayInterval;
+        let syncInterval;
+        
+        // Éléments DOM
+        const audioPlayer = document.getElementById('audioPlayer');
+        const contentDiv = document.getElementById('content');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const playBtn = document.getElementById('playBtn');
+        const statusDiv = document.getElementById('status');
+        const slideCounter = document.getElementById('slideCounter');
+        const progressFill = document.getElementById('progressFill');
+        const timeDisplay = document.getElementById('timeDisplay');
+
+        // ============================================
+        // FONCTIONS D'AFFICHAGE
+        // ============================================
+        function renderSlide(index) {
+            const slide = slides[index];
+            
+            contentDiv.innerHTML = `
+                <div class="slide active">
+                    <h2 class="slide-title">${slide.title}</h2>
+                    <div class="slide-content">${slide.content}</div>
+                </div>
+            `;
+            
+            slideCounter.textContent = `${index + 1}/${slides.length}`;
+            progressFill.style.width = `${((index + 1) / slides.length) * 100}%`;
+            
+            // Mise à jour des boutons de navigation
+            if (!isAutoPlaying) {
+                prevBtn.disabled = index === 0;
+                nextBtn.disabled = index === slides.length - 1;
+            }
+            
+            // Scroll en haut
+            contentDiv.scrollTop = 0;
+        }
+
+        // ============================================
+        // FONCTIONS DE NAVIGATION
+        // ============================================
+        function nextSlide() {
+            if (currentSlide < slides.length - 1) {
+                currentSlide++;
+                renderSlide(currentSlide);
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                renderSlide(currentSlide);
+            }
+        }
+
+        // ============================================
+        // SYNCHRONISATION AUDIO / SLIDES
+        // ============================================
+        function updateTimeDisplay() {
+            const current = audioPlayer.currentTime;
+            const minutes = Math.floor(current / 60);
+            const seconds = Math.floor(current % 60);
+            const totalMinutes = Math.floor(totalDuration / 60);
+            const totalSeconds = Math.floor(totalDuration % 60);
+            
+            timeDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')} / ${totalMinutes.toString().padStart(2, '0')}:${totalSeconds.toString().padStart(2, '0')}`;
+            
+            // Mise à jour de la barre de progression
+            const progress = (current / totalDuration) * 100;
+            progressFill.style.width = `${Math.min(progress, 100)}%`;
+        }
+
+        function checkSync() {
+            if (!isAutoPlaying) return;
+            
+            const currentTime = audioPlayer.currentTime;
+            
+            // Trouver la slide correspondante au temps actuel
+            for (let i = timeline.length - 1; i >= 0; i--) {
+                if (currentTime >= timeline[i]) {
+                    if (i !== currentSlide) {
+                        currentSlide = i;
+                        renderSlide(currentSlide);
+                    }
+                    break;
+                }
+            }
+            
+            updateTimeDisplay();
+            
+            // Arrêt automatique à la fin
+            if (currentTime >= totalDuration - 1) {
+                stopAutoPlay();
+            }
+        }
+
+        function startAutoPlay() {
+            if (!audioPlayer.src) {
+                alert('Veuillez placer le fichier audio "histoire_economique.mp3" dans le même dossier que ce fichier HTML.');
+                return;
+            }
+            
+            isAutoPlaying = true;
+            playBtn.textContent = '⏸ Pause';
+            playBtn.classList.remove('play-btn');
+            playBtn.classList.add('stop-btn');
+            statusDiv.textContent = 'Mode automatique';
+            statusDiv.style.background = 'rgba(40, 167, 69, 0.9)';
+            
+            prevBtn.disabled = true;
+            nextBtn.disabled = true;
+            
+            audioPlayer.play();
+            
+            // Vérifier la synchronisation toutes les 100ms
+            syncInterval = setInterval(checkSync, 100);
+        }
+
+        function stopAutoPlay() {
+            isAutoPlaying = false;
+            playBtn.textContent = '▶ Lecture automatique';
+            playBtn.classList.remove('stop-btn');
+            playBtn.classList.add('play-btn');
+            statusDiv.textContent = 'Mode navigation';
+            statusDiv.style.background = 'rgba(0,0,0,0.8)';
+            
+            audioPlayer.pause();
+            
+            if (syncInterval) {
+                clearInterval(syncInterval);
+            }
+            
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === slides.length - 1;
+        }
+
+        function toggleAutoPlay() {
+            if (isAutoPlaying) {
+                stopAutoPlay();
+            } else {
+                startAutoPlay();
+            }
+        }
+
+        // ============================================
+        // GESTION DES ÉVÉNEMENTS AUDIO
+        // ============================================
+        audioPlayer.addEventListener('ended', function() {
+            stopAutoPlay();
+        });
+
+        audioPlayer.addEventListener('timeupdate', function() {
+            if (!isAutoPlaying) {
+                updateTimeDisplay();
+            }
+        });
+
+        // ============================================
+        // RACCOURCIS CLAVIER
+        // ============================================
+        document.addEventListener('keydown', function(e) {
+            if (isAutoPlaying) return;
+            
+            if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                prevSlide();
+            } else if (e.key === 'ArrowRight') {
+                e.preventDefault();
+                nextSlide();
+            } else if (e.key === ' ') {
+                e.preventDefault();
+                toggleAutoPlay();
+            }
+        });
+
+        // ============================================
+        // INITIALISATION
+        // ============================================
+        renderSlide(0);
+        updateTimeDisplay();
+
+        // Vérifier si l'audio existe
+        audioPlayer.addEventListener('error', function() {
+            console.warn('Fichier audio non trouvé. Placez "histoire_economique.mp3" dans le même dossier.');
+        });
+    </script>
+</body>
+</html>
+               
