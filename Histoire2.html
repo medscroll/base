@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Histoire des faits et pensées économiques</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1300px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: #f0f0f0;
+            width: 100%;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3498db, #1e3c72);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .header {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .header h1 {
+            color: #1e3c72;
+            font-size: 1.3em;
+            font-weight: 600;
+        }
+
+        .badge {
+            background: #1e3c72;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+
+        .content {
+            padding: 30px;
+            min-height: 500px;
+            max-height: 70vh;
+            overflow-y: auto;
+            background: #ffffff;
+            scroll-behavior: smooth;
+        }
+
+        .slide {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide-title {
+            color: #1e3c72;
+            font-size: 2.2em;
+            margin-bottom: 25px;
+            font-weight: 700;
+            border-left: 5px solid #3498db;
+            padding-left: 20px;
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 10;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+        }
+
+        .slide-content {
+            color: #2c3e50;
+            line-height: 1.8;
+            font-size: 1.15em;
+        }
+
+        .slide-content h3 {
+            color: #1e3c72;
+            margin: 25px 0 15px 0;
+            font-size: 1.5em;
+        }
+
+        .slide-content h4 {
+            color: #2c3e50;
+            margin: 20px 0 10px 0;
+            font-size: 1.25em;
+        }
+
+        .slide-content p {
+            margin: 15px 0;
+        }
+
+        .slide-content ul, .slide-content ol {
+            margin: 15px 0 15px 30px;
+        }
+
+        .slide-content li {
+            margin: 10px 0;
+        }
+
+        .definition {
+            background: #e8f4fd;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 25px 0;
+            border-left: 5px solid #3498db;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .definition strong {
+            color: #1e3c72;
+            font-size: 1.1em;
+        }
+
+        .formula {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 25px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 1.3em;
+            text-align: center;
+            border-left: 5px solid #1e3c72;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .example {
+            background: #fef5e7;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 25px 0;
+            border-left: 5px solid #f39c12;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin: 25px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        th {
+            background: #1e3c72;
+            color: white;
+            font-weight: 600;
+            padding: 15px;
+            text-align: left;
+        }
+
+        td {
+            border: 1px solid #e9ecef;
+            padding: 12px;
+        }
+
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .controls {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-btn {
+            background: white;
+            color: #1e3c72;
+            border: 1px solid #dee2e6;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            background: #e9ecef;
+            transform: translateY(-1px);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .play-btn {
+            background: linear-gradient(90deg, #3498db, #1e3c72);
+            color: white;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        .play-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.5);
+        }
+
+        .stop-btn {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .stop-btn:hover {
+            background: #c0392b;
+        }
+
+        .counter {
+            color: #6c757d;
+            font-size: 0.95em;
+            background: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .status {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 0.9em;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            backdrop-filter: blur(5px);
+        }
+
+        .section-marker {
+            border-bottom: 2px solid #3498db;
+            margin: 30px 0 20px 0;
+            padding-bottom: 10px;
+            color: #1e3c72;
+            font-weight: 600;
+            font-size: 1.3em;
+        }
+
+        .quote {
+            font-style: italic;
+            color: #555;
+            border-left: 3px solid #1e3c72;
+            padding-left: 20px;
+            margin: 20px 0;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                padding: 20px;
+                max-height: 60vh;
+            }
+            
+            .slide-title {
+                font-size: 1.8em;
+            }
+            
+            .controls {
+                flex-direction: column;
+            }
+            
+            .nav-buttons {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            button {
+                flex: 1;
+                text-align: center;
+            }
+            
+            .status {
+                top: 10px;
+                right: 10px;
+                font-size: 0.8em;
+                padding: 8px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="status" id="status">Mode navigation</div>
+    
+    <div class="container">
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        
+        <div class="header">
+            <h1>📜 Histoire des faits et des pensées économiques</h1>
+            <span class="badge" id="slideCounter">1/35</span>
+        </div>
+
+        <div class="content" id="content">
+            <!-- Les slides seront injectées dynamiquement -->
+        </div>
+
+        <div class="controls">
+            <div class="nav-buttons">
+                <button class="nav-btn" onclick="prevSlide()" id="prevBtn">← Précédent</button>
+                <button class="nav-btn" onclick="nextSlide()" id="nextBtn">Suivant →</button>
+            </div>
+            <button class="play-btn" onclick="toggleAutoPlay()" id="playBtn">▶ Lecture automatique</button>
+            <span class="counter" id="timeDisplay">00:00 / 00:00</span>
+        </div>
+    </div>
+
+    <audio id="audioPlayer" src="HisEco2.mp3" preload="auto"></audio>
+
+    <script>
+        // Message d'accueil
+        alert("📚 Bienvenue dans le cours d'Histoire des faits et pensées économiques !\n\nAstuces :\n• Mettez le cours en pause ⏸️ pour lire les écrits 📄\n• Utilisez les flèches ← → pour naviguer\n• La barre d'espace démarre/arrête la lecture\n\nProfitez bien de ce cours !");
+
+        // ============================================
+        // DONNÉES DU COURS - 35 SLIDES
+        // ============================================
+        const slides = [
+            
+            {
+                title: "Chapitre 4 - La révolution industrielle",
+                content: `
+                    <h3>Les débuts de la révolution industrielle anglaise</h3>
+                    
+                    <h4>Les industries motrices :</h4>
+                    <ul>
+                        <li><strong>Textile :</strong> Métiers à tisser mécaniques, coton</li>
+                        <li><strong>Énergie :</strong> Machine à vapeur (Watt, 1769)</li>
+                        <li><strong>Métallurgie :</strong> Hauts fourneaux au coke</li>
+                    </ul>
+                    
+                    <h4>Le mouvement des enclosures</h4>
+                    <p>Les gros propriétaires terriens font voter des lois pour clôturer leurs terres (enclosures). Cela aboutit à :</p>
+                    <ul>
+                        <li>Concentration des terres</li>
+                        <li>Exode rural massif</li>
+                        <li>Main-d'œuvre disponible pour l'industrie</li>
+                    </ul>
+                    
+                    <h4>Conséquences démographiques :</h4>
+                    <p>Augmentation de la population des villes industrielles, déclin de la population des campagnes.</p>
+                `
+            },
+            {
+                title: "La révolution industrielle dans le monde",
+                content: `
+                    <h3>Diffusion de la révolution industrielle</h3>
+                    
+                    <table>
+                        <tr>
+                            <th>Pays</th>
+                            <th>Caractéristiques</th>
+                        </tr>
+                        <tr>
+                            <td>États-Unis</td>
+                            <td>Émancipation progressive de l'empire britannique, industrialisation rapide</td>
+                        </tr>
+                        <tr>
+                            <td>France</td>
+                            <td>Lente industrialisation, poids de l'agriculture, révolutions politiques</td>
+                        </tr>
+                        <tr>
+                            <td>Allemagne</td>
+                            <td>Zollverein (union douanière, 1834) comme socle de l'industrialisation</td>
+                        </tr>
+                        <tr>
+                            <td>Russie</td>
+                            <td>Industrialisation dirigée par l'État, tardive</td>
+                        </tr>
+                        <tr>
+                            <td>Japon</td>
+                            <td>Ère Meiji (1868) : modernisation volontariste par l'État</td>
+                        </tr>
+                    </table>
+                    
+                    <h3>Origines profondes de la révolution industrielle</h3>
+                    
+                    <ul>
+                        <li>L'imprimerie et diffusion du savoir</li>
+                        <li>Progrès des règles du droit de la propriété</li>
+                        <li>Éthique protestante (thèse de Max Weber)</li>
+                    </ul>
+                `
+            },
+            {
+                title: "La seconde révolution industrielle",
+                content: `
+                    <h3>Nouvelles innovations (fin XIXe - début XXe)</h3>
+                    
+                    <div class="definition">
+                        <strong>Seconde révolution industrielle :</strong> Nouvelle série d'innovations centrées sur l'électricité, le pétrole et la chimie.
+                    </div>
+                    
+                    <h4>Innovations majeures :</h4>
+                    
+                    <ul>
+                        <li><strong>Électricité :</strong> Nouvelle forme d'énergie supérieure à la vapeur (dynamo, moteur électrique, éclairage)</li>
+                        <li><strong>Pétrole :</strong> Source d'énergie électrique, développement de l'industrie automobile et de l'aviation</li>
+                        <li><strong>Chimie :</strong> Colorants synthétiques, engrais, explosifs</li>
+                        <li><strong>Moteur à explosion :</strong> Automobile (Ford, 1908)</li>
+                        <li><strong>Téléphone, télégraphe :</strong> Révolutions des communications</li>
+                    </ul>
+                    
+                    <h4>Facteurs propices à l'industrialisation :</h4>
+                    <ul>
+                        <li>Liberté du travail</li>
+                        <li>Croissance démographique</li>
+                        <li>Prospérité de l'agriculture</li>
+                        <li>Esprit d'entreprise</li>
+                    </ul>
+                `
+            },
+            {
+                title: "Chapitre 5 - Les économistes classiques",
+                content: `
+                    <h3>Les propositions fondamentales de l'école classique</h3>
+                    
+                    <ul>
+                        <li><strong>Concurrence :</strong> Base du fonctionnement efficace des économies.</li>
+                        <li><strong>Non-intervention de l'État :</strong> Les décisions sont plus efficaces prises par les acteurs privés.</li>
+                        <li><strong>Propriété privée :</strong> Condition d'un fonctionnement efficace des marchés.</li>
+                        <li><strong>Activités productives vs improductives :</strong> Les activités productives engendrent un surplus net.</li>
+                        <li><strong>Croissance :</strong> Dépend du réinvestissement du surplus.</li>
+                        <li><strong>Population :</strong> Croît quand le salaire est suffisant.</li>
+                    </ul>
+                    
+                    <div class="quote">
+                        "Ce qui est prudence dans la conduite d'un foyer ne peut être folie dans la conduite d'une grande nation" - Adam Smith
+                    </div>
+                `
+            },
+            {
+                title: "Adam Smith (1723-1790)",
+                content: `
+                    <h3>Le père de l'économie moderne</h3>
+                    
+                    <h4>Concepts clés :</h4>
+                    
+                    <div class="definition">
+                        <strong>La main invisible :</strong> La poursuite de l'intérêt individuel conduit à l'intérêt collectif, comme guidé par une main invisible.
+                    </div>
+                    
+                    <div class="definition">
+                        <strong>La division du travail :</strong> Source principale de l'accroissement de la productivité. Exemple de la manufacture d'épingles.
+                    </div>
+                    
+                    <div class="definition">
+                        <strong>Valeur d'usage et valeur d'échange :</strong> Paradoxe de l'eau et du diamant : l'eau a plus de valeur d'usage mais moins de valeur d'échange.
+                    </div>
+                    
+                    <div class="definition">
+                        <strong>Capital fixe et capital circulant :</strong> Distinction fondamentale reprise ensuite par toute l'économie.
+                    </div>
+                    
+                    <div class="definition">
+                        <strong>Loi d'airain des salaires :</strong> Les salaires tendent vers le minimum de subsistance.
+                    </div>
+                `
+            },
+            {
+                title: "David Ricardo (1772-1823)",
+                content: `
+                    <h3>L'économiste de la répartition</h3>
+                    
+                    <h4>Théorie de la valeur travail :</h4>
+                    <p>La valeur d'un bien dépend de la quantité de travail nécessaire à sa production.</p>
+                    
+                    <h4>Théorie des avantages comparatifs :</h4>
+                    <div class="formula">
+                        Même si un pays est moins productif dans tous les domaines, il a intérêt à se spécialiser là où son désavantage est le plus faible.
+                    </div>
+                    
+                    <h4>Théorie de la répartition :</h4>
+                    <p>Le produit se répartit entre trois classes : les capitalistes (profit), les propriétaires fonciers (rente), les travailleurs (salaire).</p>
+                    
+                    <h4>Rendements décroissants :</h4>
+                    <p>Sur une terre donnée, chaque travailleur supplémentaire produit moins que le précédent.</p>
+                    
+                    <div class="example">
+                        <strong>Exemple du vin et du drap :</strong> Portugal a avantage absolu dans les deux, mais avantage comparatif dans le vin; Angleterre dans le drap. Le libre-échange profite aux deux.
+                    </div>
+                `
+            },
+            {
+                title: "Malthus, Say, Stuart Mill",
+                content: `
+                    <h3>Thomas Malthus (1766-1834)</h3>
+                    
+                    <div class="definition">
+                        <strong>Principe de population :</strong> La population croît en progression géométrique (1, 2, 4, 8...), les ressources en progression arithmétique (1, 2, 3, 4...). D'où la nécessité de "freins" (guerres, épidémies, etc.).
+                    </div>
+                    
+                    <div class="definition">
+                        <strong>Théorie de la sous-consommation :</strong> L'épargne excessive peut mener à une surproduction générale.
+                    </div>
+                    
+                    <h3>Jean-Baptiste Say (1767-1832)</h3>
+                    
+                    <div class="definition">
+                        <strong>Loi des débouchés :</strong> "L'offre crée sa propre demande." Tout produit trouve toujours des acheteurs car la production crée le revenu qui permet de l'acheter.
+                    </div>
+                    
+                    <h3>John Stuart Mill (1806-1873)</h3>
+                    
+                    <p>Courant utilitariste. Synthèse des classiques. Distinction entre lois de la production (naturelles) et lois de la répartition (sociales).</p>
+                `
+            },
+            {
+                title: "Chapitre 6 - Les économistes socialistes",
+                content: `
+                    <h3>Introduction au socialisme</h3>
+                    
+                    <h4>Deux grandes branches :</h4>
+                    
+                    <ul>
+                        <li><strong>Socialistes "utopistes" (avant Marx) :</strong> Fourier, Saint-Simon, Proudhon. Propositions diverses mais souvent peu réalistes.</li>
+                        <li><strong>Socialisme "scientifique" de Marx :</strong> Analyse systématique du capitalisme.</li>
+                    </ul>
+                    
+                    <h4>Charles Fourier (1772-1837)</h4>
+                    
+                    <div class="definition">
+                        <strong>Phalanstère :</strong> Communauté idéale de 1620 personnes (810 hommes, 810 femmes) vivant en harmonie, combinant agriculture et industrie.
+                    </div>
+                    
+                    <h4>Saint-Simon (1760-1825)</h4>
+                    
+                    <p>Vision dichotomique de la société : exploiteurs (oisifs, rentiers) vs exploités (producteurs). Élitisme : direction naturelle par les chefs d'industrie.</p>
+                `
+            },
+            {
+                title: "Sismondi et Proudhon",
+                content: `
+                    <h3>Sismonde de Sismondi (1773-1842)</h3>
+                    
+                    <p>Économiste suisse, auteur des "Nouveaux Principes d'économie politique" (1819).</p>
+                    
+                    <ul>
+                        <li><strong>Concurrence destructrice :</strong> Elle pousse à baisser les salaires et à remplacer les ouvriers par des machines.</li>
+                        <li><strong>Anti-industrialisme :</strong> Il voudrait ralentir le progrès technique.</li>
+                        <li><strong>Exploitation :</strong> Il utilise le terme "plus-value" avant Marx.</li>
+                        <li><strong>Propositions :</strong> Accès des travailleurs à la propriété, assurance maladie, allocation chômage.</li>
+                    </ul>
+                    
+                    <h3>Pierre-Joseph Proudhon (1802-1864)</h3>
+                    
+                    <div class="quote">
+                        "La propriété, c'est le vol" (1840)
+                    </div>
+                    
+                    <ul>
+                        <li><strong>Primauté de l'égalité :</strong> Toutes les fonctions sociales sont interdépendantes.</li>
+                        <li><strong>Critique de la propriété capitaliste :</strong> Le propriétaire s'approprie le fruit du travail collectif.</li>
+                        <li><strong>Mutualisme bancaire :</strong> Banque du peuple (1849, échec).</li>
+                        <li><strong>Contre l'intérêt :</strong> Polémique avec Bastiat.</li>
+                    </ul>
+                `
+            },
+            {
+                title: "Karl Marx - Le matérialisme historique",
+                content: `
+                    <h3>Karl Marx (1818-1883)</h3>
+                    
+                    <h4>Le matérialisme historique</h4>
+                    
+                    <div class="definition">
+                        <strong>Infrastructure :</strong> Les structures de production et les modes de production (les faits économiques). C'est la base réelle.
+                    </div>
+                    
+                    <div class="definition">
+                        <strong>Superstructure :</strong> Les institutions, les idées, la culture, la religion, le droit. Elles sont déterminées par l'infrastructure.
+                    </div>
+                    
+                    <p>Marx retourne Hegel : ce n'est pas la conscience qui détermine l'être, mais l'être social qui détermine la conscience.</p>
+                    
+                    <h4>Les modes de production successifs :</h4>
+                    <ul>
+                        <li>Communisme primitif</li>
+                        <li>Esclavagisme</li>
+                        <li>Féodalisme</li>
+                        <li>Capitalisme</li>
+                        <li>Socialisme (futur)</li>
+                    </ul>
+                `
+            },
+            {
+                title: "Marx - Exploitation et plus-value",
+                content: `
+                    <h3>L'exploitation de la force de travail</h3>
+                    
+                    <h4>Division de la société :</h4>
+                    <ul>
+                        <li><strong>Bourgeoisie :</strong> Possède les moyens de production</li>
+                        <li><strong>Prolétariat :</strong> Ne possède que sa force de travail</li>
+                    </ul>
+                    
+                    <div class="definition">
+                        <strong>Plus-value :</strong> Différence entre la valeur créée par le travailleur et le salaire qui lui est versé.
+                    </div>
+                    
+                    <div class="formula">
+                        Valeur d'une marchandise = Capital constant (machines) + Capital variable (salaires) + Plus-value
+                    </div>
+                    
+                    <h4>Taux d'exploitation :</h4>
+                    <div class="formula">
+                        Taux de plus-value = Plus-value / Capital variable
+                    </div>
+                    
+                    <h4>Composition organique du capital :</h4>
+                    <div class="formula">
+                        c = Capital constant / (Capital constant + Capital variable)
+                    </div>
+                `
+            },
+            {
+                title: "Marx - Les contradictions du capitalisme",
+                content: `
+                    <h3>Les crises du capitalisme</h3>
+                    
+                    <h4>Baisse tendancielle du taux de profit :</h4>
+                    <div class="formula">
+                        Taux de profit = Plus-value / (Capital constant + Capital variable)
+                    </div>
+                    
+                    <p>La composition organique du capital augmentant (plus de machines), le taux de profit tend à baisser.</p>
+                    
+                    <h4>Moyens de compenser cette baisse :</h4>
+                    <ul>
+                        <li>Augmentation de l'exploitation (plus-value absolue ou relative)</li>
+                        <li>Paupérisation de la classe ouvrière</li>
+                    </ul>
+                    
+                    <h4>Crises de surproduction :</h4>
+                    <p>Les travailleurs paupérisés ne peuvent acheter ce qu'ils produisent → surproduction → crises de plus en plus graves.</p>
+                    
+                    <h4>Concentration des entreprises :</h4>
+                    <p>Les fusions-acquisitions réduisent le nombre d'entreprises. Les "derniers loups se mangent entre eux".</p>
+                    
+                    <h4>Issue :</h4>
+                    <p>Révolution, dictature du prolétariat, puis société sans classes.</p>
+                `
+            },
+            {
+                title: "Chapitre 7 - Les néoclassiques (introduction)",
+                content: `
+                    <h3>La révolution marginaliste (1870)</h3>
+                    
+                    <div class="definition">
+                        <strong>Nouveau paradigme :</strong> Les économistes néoclassiques renouvellent profondément l'analyse économique. Leur approche domine encore aujourd'hui.
+                    </div>
+                    
+                    <h4>Les six écoles néoclassiques :</h4>
+                    
+                    <table>
+                        <tr>
+                            <th>École</th>
+                            <th>Principaux auteurs</th>
+                        </tr>
+                        <tr>
+                            <td>Autrichienne</td>
+                            <td>Menger, Wieser, Böhm-Bawerk, Mises, Hayek</td>
+                        </tr>
+                        <tr>
+                            <td>Lausanne</td>
+                            <td>Walras, Pareto</td>
+                        </tr>
+                        <tr>
+                            <td>Anglaise</td>
+                            <td>Jevons, Edgeworth, Marshall, Pigou</td>
+                        </tr>
+                        <tr>
+                            <td>Française</td>
+                            <td>Cournot, Dupuit, Bertrand</td>
+                        </tr>
+                        <tr>
+                            <td>Suédoise</td>
+                            <td>Wicksell, Heckscher, Ohlin, Myrdal</td>
+                        </tr>
+                        <tr>
+                            <td>Américaine</td>
+                            <td>J.B. Clark, I. Fisher</td>
+                        </tr>
+                    </table>
+                `
+            },
+            {
+                title: "Caractéristiques de l'approche néoclassique",
+                content: `
+                    <h3>Le noyau commun</h3>
+                    
+                    <h4>1. Définition restrictive du champ :</h4>
+                    <p>Préférences, technologie et ressources sont considérées comme des données ("De Gustibus Non Est Disputandum").</p>
+                    
+                    <h4>2. Science de l'allocation optimale :</h4>
+                    <p>Concentration sur le mécanisme de l'allocation des ressources entre leurs usages alternatifs.</p>
+                    
+                    <h4>3. Théorie quantitative de la monnaie :</h4>
+                    <p>Héritée des classiques.</p>
+                    
+                    <h4>4. Raisonnement à la marge :</h4>
+                    <p>Décisions prises en comparant les bénéfices et coûts marginaux.</p>
+                    
+                    <h4>5. Utilité marginale :</h4>
+                    <p>Fondement de la demande.</p>
+                    
+                    <div class="quote">
+                        "Une chose n'a pas une valeur parce qu'elle coûte; elle coûte parce qu'elle a une valeur" - Condillac
+                    </div>
+                `
+            },
+            {
+                title: "L'utilité marginale et la demande",
+                content: `
+                    <h3>Les précurseurs</h3>
+                    
+                    <h4>Daniel Bernoulli (1700-1782)</h4>
+                    <p>Résout le "paradoxe de Saint-Pétersbourg" en introduisant l'idée d'utilité marginale décroissante.</p>
+                    
+                    <h4>Hermann Gossen (1810-1858)</h4>
+                    <p>Énonce les deux lois de Gossen :</p>
+                    <ul>
+                        <li>L'utilité marginale décroît avec la consommation</li>
+                        <li>L'individu maximise son utilité en égalisant les utilités marginales pondérées par les prix</li>
+                    </ul>
+                    
+                    <h4>Augustin Cournot (1801-1877)</h4>
+                    <p>Premier à formuler une fonction de demande D = F(p). Analyse du monopole, duopole, concurrence.</p>
+                    
+                    <h4>Jevons et Menger :</h4>
+                    <p>Généralisent la seconde loi de Gossen à l'échange entre agents.</p>
+                `
+            },
+            {
+                title: "Théories néoclassiques de la production",
+                content: `
+                    <h3>Production et répartition</h3>
+                    
+                    <h4>Principes :</h4>
+                    
+                    <ul>
+                        <li>Les prix et quantités sont déterminés simultanément par l'offre et la demande de facteurs.</li>
+                        <li>Tous les facteurs (travail, terre, capital) sont disponibles en quantité fixe.</li>
+                    </ul>
+                    
+                    <h4>Concepts clés :</h4>
+                    
+                    <div class="definition">
+                        <strong>Rente :</strong> Paiement à un facteur qui ne correspond pas à la rémunération de son service.
+                    </div>
+                    
+                    <div class="definition">
+                        <strong>Coût d'opportunité :</strong> Revenu économique = ce que le facteur gagnerait dans son meilleur usage alternatif.
+                    </div>
+                    
+                    <div class="definition">
+                        <strong>Théorème de l'épuisement du produit (J.B. Clark) :</strong> Si chaque facteur est payé à sa productivité marginale, la somme des rémunérations épuise exactement le produit.
+                    </div>
+                `
+            },
+            {
+                title: "Walras et l'équilibre général",
+                content: `
+                    <h3>Léon Walras (1834-1910)</h3>
+                    
+                    <div class="definition">
+                        <strong>Équilibre général :</strong> Existe-t-il un ensemble de prix permettant simultanément à tous les producteurs de maximiser leurs profits et à tous les consommateurs de maximiser leurs utilités, compte tenu de l'interdépendance générale ?
+                    </div>
+                    
+                    <p>Walras démontre que dans un système complexe, le nombre d'équations est suffisant pour déterminer l'ensemble des inconnues.</p>
+                    
+                    <h4>Le tâtonnement walrasien :</h4>
+                    <p>Processus par lequel les prix s'ajustent pour équilibrer l'offre et la demande sur tous les marchés.</p>
+                    
+                    <h3>Vilfredo Pareto (1848-1923)</h3>
+                    
+                    <ul>
+                        <li><strong>Utilité ordinale :</strong> L'individu peut seulement hiérarchiser ses préférences.</li>
+                        <li><strong>Optimum de Pareto :</strong> Situation dans laquelle on ne peut améliorer le bien-être de personne sans diminuer celui d'un autre.</li>
+                    </ul>
+                `
+            },
+            {
+                title: "Marshall et l'équilibre partiel",
+                content: `
+                    <h3>Alfred Marshall (1842-1924)</h3>
+                    
+                    <p>Professeur à Cambridge, maître de Keynes. Auteur des "Principles of Economics".</p>
+                    
+                    <h4>Économies d'échelle :</h4>
+                    
+                    <ul>
+                        <li><strong>Internes :</strong> Réalisées au sein de l'entreprise du fait de la production de masse.</li>
+                        <li><strong>Externes :</strong> Bénéfices liés à la situation géographique ou sectorielle.</li>
+                    </ul>
+                    
+                    <h4>Distinction temporelle :</h4>
+                    
+                    <ul>
+                        <li><strong>Très courte période :</strong> Offre fixe (marché)</li>
+                        <li><strong>Courte période :</strong> Capacité de production fixe, facteurs variables</li>
+                        <li><strong>Longue période :</strong> Tous les facteurs varient</li>
+                        <li><strong>Très longue période :</strong> Population, technologie varient</li>
+                    </ul>
+                    
+                    <div class="quote">
+                        "L'offre et la demande ressemblent à deux branches d'une paire de ciseaux. Il est aussi vain de se demander laquelle régularise les prix que de se demander quelle branche coupe."
+                    </div>
+                `
+            }
+            
+        ];
+
+        // ============================================
+        // TIMINGS PRÉCIS POUR SYNCHRONISATION AUDIO
+        // Basé sur 150 mots/minute
+        // ============================================
+        const timeline = [
+             0,
+            44,    // Slide 17 - Révolution industrielle
+            96,    // Slide 18 - RI dans le monde
+            1)55,    // Slide 19 - Seconde RI
+            199,    // Slide 20 - Introduction classiques
+            245,    // Slide 21 - Adam Smith
+            303,    // Slide 22 - Ricardo
+            365.5,   // Slide 23 - Malthus, Say, Mill
+            421,   // Slide 24 - Introduction socialistes
+            489,   // Slide 25 - Sismondi et Proudhon
+            537,   // Slide 26 - Marx matérialisme
+            579,   // Slide 27 - Marx exploitation
+            632.6,   // Slide 28 - Marx contradictions
+            681,   // Slide 29 - Intro néoclassiques
+            728,   // Slide 30 - Caractéristiques néoclassiques
+            778,   // Slide 31 - Utilité marginale
+            822,   // Slide 32 - Théories production
+            879,   // Slide 33 - Walras et 
+        ];
+
+        // Durée totale estimée
+        const totalDuration = 940; // secondes (environ 16 minutes)
+
+        // Variables d'état
+        let currentSlide = 0;
+        let isAutoPlaying = false;
+        let autoPlayInterval;
+        let syncInterval;
+        
+        // Éléments DOM
+        const audioPlayer = document.getElementById('audioPlayer');
+        const contentDiv = document.getElementById('content');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const playBtn = document.getElementById('playBtn');
+        const statusDiv = document.getElementById('status');
+        const slideCounter = document.getElementById('slideCounter');
+        const progressFill = document.getElementById('progressFill');
+        const timeDisplay = document.getElementById('timeDisplay');
+
+        // ============================================
+        // FONCTIONS D'AFFICHAGE
+        // ============================================
+        function renderSlide(index) {
+            const slide = slides[index];
+            
+            contentDiv.innerHTML = `
+                <div class="slide active">
+                    <h2 class="slide-title">${slide.title}</h2>
+                    <div class="slide-content">${slide.content}</div>
+                </div>
+            `;
+            
+            slideCounter.textContent = `${index + 1}/${slides.length}`;
+            progressFill.style.width = `${((index + 1) / slides.length) * 100}%`;
+            
+            // Mise à jour des boutons de navigation
+            if (!isAutoPlaying) {
+                prevBtn.disabled = index === 0;
+                nextBtn.disabled = index === slides.length - 1;
+            }
+            
+            // Scroll en haut
+            contentDiv.scrollTop = 0;
+        }
+
+        // ============================================
+        // FONCTIONS DE NAVIGATION
+        // ============================================
+        function nextSlide() {
+            if (currentSlide < slides.length - 1) {
+                currentSlide++;
+                renderSlide(currentSlide);
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                renderSlide(currentSlide);
+            }
+        }
+
+        // ============================================
+        // SYNCHRONISATION AUDIO / SLIDES
+        // ============================================
+        function updateTimeDisplay() {
+            const current = audioPlayer.currentTime;
+            const minutes = Math.floor(current / 60);
+            const seconds = Math.floor(current % 60);
+            const totalMinutes = Math.floor(totalDuration / 60);
+            const totalSeconds = Math.floor(totalDuration % 60);
+            
+            timeDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')} / ${totalMinutes.toString().padStart(2, '0')}:${totalSeconds.toString().padStart(2, '0')}`;
+            
+            // Mise à jour de la barre de progression
+            const progress = (current / totalDuration) * 100;
+            progressFill.style.width = `${Math.min(progress, 100)}%`;
+        }
+
+        function checkSync() {
+            if (!isAutoPlaying) return;
+            
+            const currentTime = audioPlayer.currentTime;
+            
+            // Trouver la slide correspondante au temps actuel
+            for (let i = timeline.length - 1; i >= 0; i--) {
+                if (currentTime >= timeline[i]) {
+                    if (i !== currentSlide) {
+                        currentSlide = i;
+                        renderSlide(currentSlide);
+                    }
+                    break;
+                }
+            }
+            
+            updateTimeDisplay();
+            
+            // Arrêt automatique à la fin
+            if (currentTime >= totalDuration - 1) {
+                stopAutoPlay();
+            }
+        }
+
+        function startAutoPlay() {
+            if (!audioPlayer.src) {
+                alert('Veuillez placer le fichier audio "histoire_economique.mp3" dans le même dossier que ce fichier HTML.');
+                return;
+            }
+            
+            isAutoPlaying = true;
+            playBtn.textContent = '⏸ Pause';
+            playBtn.classList.remove('play-btn');
+            playBtn.classList.add('stop-btn');
+            statusDiv.textContent = 'Mode automatique';
+            statusDiv.style.background = 'rgba(40, 167, 69, 0.9)';
+            
+            prevBtn.disabled = true;
+            nextBtn.disabled = true;
+            
+            audioPlayer.play();
+            
+            // Vérifier la synchronisation toutes les 100ms
+            syncInterval = setInterval(checkSync, 100);
+        }
+
+        function stopAutoPlay() {
+            isAutoPlaying = false;
+            playBtn.textContent = '▶ Lecture automatique';
+            playBtn.classList.remove('stop-btn');
+            playBtn.classList.add('play-btn');
+            statusDiv.textContent = 'Mode navigation';
+            statusDiv.style.background = 'rgba(0,0,0,0.8)';
+            
+            audioPlayer.pause();
+            
+            if (syncInterval) {
+                clearInterval(syncInterval);
+            }
+            
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === slides.length - 1;
+        }
+
+        function toggleAutoPlay() {
+            if (isAutoPlaying) {
+                stopAutoPlay();
+            } else {
+                startAutoPlay();
+            }
+        }
+
+        // ============================================
+        // GESTION DES ÉVÉNEMENTS AUDIO
+        // ============================================
+        audioPlayer.addEventListener('ended', function() {
+            stopAutoPlay();
+        });
+
+        audioPlayer.addEventListener('timeupdate', function() {
+            if (!isAutoPlaying) {
+                updateTimeDisplay();
+            }
+        });
+
+        // ============================================
+        // RACCOURCIS CLAVIER
+        // ============================================
+        document.addEventListener('keydown', function(e) {
+            if (isAutoPlaying) return;
+            
+            if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                prevSlide();
+            } else if (e.key === 'ArrowRight') {
+                e.preventDefault();
+                nextSlide();
+            } else if (e.key === ' ') {
+                e.preventDefault();
+                toggleAutoPlay();
+            }
+        });
+
+        // ============================================
+        // INITIALISATION
+        // ============================================
+        renderSlide(0);
+        updateTimeDisplay();
+
+        // Vérifier si l'audio existe
+        audioPlayer.addEventListener('error', function() {
+            console.warn('Fichier audio non trouvé. Placez "histoire_economique.mp3" dans le même dossier.');
+        });
+    </script>
+</body>
+</html>
+               
