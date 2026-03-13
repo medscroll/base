@@ -434,14 +434,15 @@
 
             <div class="menu-section">
                 <h2>⭐ Premium</h2>
-                <div class="menu-items">                                     
-                    <div class="menu-card premium" data-premium="anatomie">
+                <div class="menu-items">
+                    
+                    <div class="menu-card premium" data-premium="saco5">
                         <h3> Santé Communautaire V <span class="badge">Premium</span></h3>
                         <div class="description">Cinquième Partie du Cours de Santé Communautaire</div>
                     </div>
-                    <div class="menu-card premium" data-premium="medecine">
-                        <h3> Anatomie des Mouvements du Tronc<span class="badge">Premium</span></h3>
-                        <div class="description">Description des mouvements du tronc</div>
+                    <div class="menu-card premium" data-premium="hismed">
+                        <h3> Histoire de la Médecine<span class="badge">Premium</span></h3>
+                        <div class="description">Découvrez l'origine de la médecine</div>
                     </div>
                 </div>
             </div>
@@ -495,7 +496,7 @@
             <div class="section-title">⭐ Premium <span class="premium-badge">(contactez-nous)</span></div>
             <div class="cards-grid">
                 <!-- Carte Premium 1 : Anatomie -->
-                <div class="featured-card premium-card premium-pulse" data-premium="anatomie">
+                <div class="featured-card premium-card premium-pulse" data-premium="saco5">
                     <div class="card-content">
                         <div class="card-icon">🔬</div>
                         <h3> Santé Communautaire V <span class="premium-badge">Premium</span></h3>
@@ -583,7 +584,7 @@
         if (!userName) return;
         userName = userName.trim().toUpperCase();
         if (premiumUsers.includes(userName)) {
-        if (sujet === "anatomie") {
+        if (sujet === "saco5") {
             window.open("Saco5.html", "_blank");
             } 
         else if (sujet === "statistique") {
@@ -591,6 +592,9 @@
             } 
         else if (sujet === "microeco") {
             window.open("MicroEconomie2.html", "_blank");
+            }
+        else if (sujet === "hismed") {
+            window.open("Histoire_Medecine.html", "_blank");
             }
         }
         else {
