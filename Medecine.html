@@ -435,7 +435,10 @@
             <div class="menu-section">
                 <h2>⭐ Premium</h2>
                 <div class="menu-items">
-                    
+                    <div class="menu-card premium" data-premium="saco4">
+                        <h3> Santé Communautaire IV <span class="badge">Premium</span></h3>
+                        <div class="description">Quatrième Partie du Cours de Santé Communautaire</div>
+                    </div>
                     <div class="menu-card premium" data-premium="saco5">
                         <h3> Santé Communautaire V <span class="badge">Premium</span></h3>
                         <div class="description">Cinquième Partie du Cours de Santé Communautaire</div>
@@ -495,6 +498,17 @@
             <!-- Section Premium -->
             <div class="section-title">⭐ Premium <span class="premium-badge">(contactez-nous)</span></div>
             <div class="cards-grid">
+                <!-- Carte Premium 3 : Médecine interne -->
+                <div class="featured-card premium-card premium-pulse" data-premium="saco4">
+                    <div class="card-content">
+                        <div class="card-icon">🏥</div>
+                        <h3> Santé Communautaire IV <span class="premium-badge">Premium</span></h3>
+                        <p> Quatrième Partie du Cours de Santé Communautaire</p>
+                        <div class="card-meta">
+                            <span class="card-tag">Cliquez pour accéder</span>
+                        </div>
+                    </div>
+                </div>
                 <!-- Carte Premium 1 : Anatomie -->
                 <div class="featured-card premium-card premium-pulse" data-premium="saco5">
                     <div class="card-content">
@@ -509,17 +523,7 @@
 
                 
 
-                <!-- Carte Premium 3 : Médecine interne -->
-                <div class="featured-card premium-card premium-pulse" data-premium="medecine">
-                    <div class="card-content">
-                        <div class="card-icon">🏥</div>
-                        <h3> Anatomie des Mouvements du Tronc<span class="premium-badge">Premium</span></h3>
-                        <p> Description Nerf-Muscle-Os-Artère des mouvements du Tronc</p>
-                        <div class="card-meta">
-                            <span class="card-tag">Cliquez pour accéder</span>
-                        </div>
-                    </div>
-                </div>
+                
             </div>
 
             <!-- Bandeau WhatsApp en bas de la page principale -->
@@ -586,7 +590,10 @@
         if (premiumUsers.includes(userName)) {
         if (sujet === "saco5") {
             window.open("Saco5.html", "_blank");
-            } 
+            }
+        else if (sujet === "saco4") {
+            window.open("Saco4.html", "_blank");
+        }
         else if (sujet === "statistique") {
             window.open("Statistiques.html", "_blank");
             } 
