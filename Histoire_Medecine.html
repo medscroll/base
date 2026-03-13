@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Histoire de la Médecine</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #5D3A1A 0%, #8B5A2B 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+        .container {
+            width: 100%;
+            max-width: 1300px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: #f0f0f0;
+            width: 100%;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3498db, #5D3A1A);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .header {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .header h1 {
+            color: #5D3A1A;
+            font-size: 1.3em;
+            font-weight: 600;
+        }
+
+        .badge {
+            background: #5D3A1A;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+
+        .content {
+            padding: 30px;
+            min-height: 500px;
+            max-height: 70vh;
+            overflow-y: auto;
+            background: #ffffff;
+            scroll-behavior: smooth;
+        }
+
+        .slide {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide-title {
+        color: #5D3A1A;
+    border-left: 5px solid #8B4513;  /* Marron plus chaud */
+            
+            font-size: 2.2em;
+            margin-bottom: 25px;
+            font-weight: 700;
+            border-left: 5px solid #3498db;
+            padding-left: 20px;
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 10;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+        }
+
+        .slide-content {
+            color: #2c3e50;
+            line-height: 1.8;
+            font-size: 1.15em;
+        }
+
+        .slide-content h3 {
+            color: #5D3A1A;
+            margin: 25px 0 15px 0;
+            font-size: 1.5em;
+        }
+
+        .slide-content h4 {
+            color: #2c3e50;
+            margin: 20px 0 10px 0;
+            font-size: 1.25em;
+        }
+
+        .slide-content p {
+            margin: 15px 0;
+        }
+
+        .slide-content ul, .slide-content ol {
+            margin: 15px 0 15px 30px;
+        }
+
+        .slide-content li {
+            margin: 10px 0;
+        }
+
+        .definition {
+            background: #e8f4fd;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 25px 0;
+            border-left: 5px solid #3498db;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .definition strong {
+            color: #5D3A1A;
+            font-size: 1.1em;
+        }
+
+        .quote {
+            font-style: italic;
+            color: #555;
+            border-left: 3px solid #5D3A1A;
+            padding-left: 20px;
+            margin: 20px 0;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin: 25px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        th {
+            background: #5D3A1A;
+            color: white;
+            font-weight: 600;
+            padding: 15px;
+            text-align: left;
+        }
+
+        td {
+            border: 1px solid #e9ecef;
+            padding: 12px;
+        }
+
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .controls {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-btn {
+            background: white;
+            color: #5D3A1A;
+            border: 1px solid #dee2e6;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            background: #e9ecef;
+            transform: translateY(-1px);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .play-btn {
+            background: linear-gradient(90deg, #3498db, #5D3A1A);
+            color: white;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        .play-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.5);
+        }
+
+        .stop-btn {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .stop-btn:hover {
+            background: #c0392b;
+        }
+
+        .counter {
+            color: #6c757d;
+            font-size: 0.95em;
+            background: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .status {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 0.9em;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            backdrop-filter: blur(5px);
+        }
+
+        .section-marker {
+            border-bottom: 2px solid #3498db;
+            margin: 30px 0 20px 0;
+            padding-bottom: 10px;
+            color: #5D3A1A;
+            font-weight: 600;
+            font-size: 1.3em;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                padding: 20px;
+                max-height: 60vh;
+            }
+            
+            .slide-title {
+                font-size: 1.8em;
+            }
+            
+            .controls {
+                flex-direction: column;
+            }
+            
+            .nav-buttons {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            button {
+                flex: 1;
+                text-align: center;
+            }
+            
+            .status {
+                top: 10px;
+                right: 10px;
+                font-size: 0.8em;
+                padding: 8px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="status" id="status">Mode navigation</div>
+    
+    <div class="container">
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        
+        <div class="header">
+            <h1>📜 Histoire de la Médecine</h1>
+            <span class="badge" id="slideCounter">1/25</span>
+        </div>
+
+        <div class="content" id="content">
+            <!-- Slides injectées dynamiquement -->
+        </div>
+
+        <div class="controls">
+            <div class="nav-buttons">
+                <button class="nav-btn" onclick="prevSlide()" id="prevBtn">← Précédent</button>
+                <button class="nav-btn" onclick="nextSlide()" id="nextBtn">Suivant →</button>
+            </div>
+            <button class="play-btn" onclick="toggleAutoPlay()" id="playBtn">▶ Lecture automatique</button>
+            <span class="counter" id="timeDisplay">00:00 / 00:00</span>
+        </div>
+    </div>
+
+    <audio id="audioPlayer" src="histoire_medecine.mp3" preload="auto"></audio>
+
+    <script>
+        // Message d'accueil
+        alert("📚 Bienvenue dans le cours d'Histoire de la Médecine !\n\nAstuces :\n• Mettez le cours en pause ⏸️ pour lire les écrits 📄\n• Utilisez les flèches ← → pour naviguer\n• La barre d'espace démarre/arrête la lecture\n\nProfitez bien de ce cours !");
+
+        // ============================================
+        // DONNÉES DU COURS - 25 SLIDES
+        // ============================================
+        const slides = [
+            {
+                title: "Introduction",
+                content: `
+                    <div class="definition">
+                        <strong>Importance de l'histoire de la médecine :</strong> "Un peuple sans histoire est un peuple sans âme". Une corporation médicale ignorante de son histoire est vouée à la désorganisation.
+                    </div>
+                    
+                    <p>Ce cours permettra à l'étudiant, futur médecin, d'apprécier à leur juste valeur les notions essentielles des sciences bio-médicales.</p>
+                    
+                    <h3>Plan général du cours</h3>
+                    <ul>
+                        <li>I. La médecine égyptienne</li>
+                        <li>II. La médecine chez les Hébreux</li>
+                        <li>III. La médecine chez les Grecs</li>
+                        <li>IV. La médecine latine</li>
+                        <li>V. Les médecins grecs de Galien à 1453</li>
+                        <li>VI. Les premiers siècles du christianisme</li>
+                        <li>VII. Histoire de la microbiologie</li>
+                        <li>VIII. Histoire de la médecine en RDC</li>
+                    </ul>
+                `
+            },
+            {
+                title: "I. La Médecine Égyptienne",
+                content: `
+                    <h3>Connaissances anatomiques</h3>
+                    <p>Les Égyptiens avaient une certaine connaissance de l'anatomie humaine, notamment grâce à la momification. Ils savaient introduire un crochet par une narine pour extraire le cerveau.</p>
+                    
+                    <h3>Imhotep (27ème siècle av. J.-C.)</h3>
+                    <p>Premier médecin connu à avoir posé par écrit les bases du système médical égyptien.</p>
+                    
+                    <h3>Concept de la maladie</h3>
+                    <p>La maladie était vue comme une prise de possession du corps par des entités surnaturelles (ennemi, défunt mécontent, divinité fâchée).</p>
+                    
+                    <h3>Recettes médicinales</h3>
+                    <ul>
+                        <li><strong>Végétaux :</strong> pavot, ail, oignon, résine d'acacia</li>
+                        <li><strong>Produits animaux :</strong> miel (antiseptique), cire, toiles d'araignée (désinfectant), graisse de bœuf, lait d'ânesse</li>
+                    </ul>
+                    
+                    <h3>Spécialisation précoce</h3>
+                    <p>Les médecins soignant les hémorroïdes du pharaon étaient appelés "Gardiens de l'anus du Pharaon" (premier titre de spécialiste connu).</p>
+                    
+                    <p>Premières interventions chirurgicales connues : -2750 av. J.-C. La circoncision était pratiquée.</p>
+                `
+            },
+            {
+                title: "II. La Médecine chez les Hébreux",
+                content: `
+                    <h3>Sources</h3>
+                    <p>La Torah (Genèse, Exode, Lévitique, Nombres, Deutéronome) contient des prescriptions médicales et hygiéniques.</p>
+                    
+                    <h3>Conception de la maladie</h3>
+                    <p>La maladie a une origine spirituelle. Dieu est la source de guérison.</p>
+                    
+                    <h3>Prescriptions hygiéniques</h3>
+                    <p>Lévitique 11:29-40 : règles sur les aliments purs et impurs.</p>
+                    <p>Lévitique 13 : description des dermatoses et de la lèpre, moyens diagnostiques.</p>
+                    
+                    <h3>Plantes médicinales utilisées</h3>
+                    <ul>
+                        <li><strong>Aloès :</strong> purgatif, aménorrhées, hémorroïdes, brûlures</li>
+                        <li><strong>Armoise :</strong> riche en tanin, aménorrhées</li>
+                        <li><strong>Balsamodendron :</strong> astringent, antiseptique (gingivite)</li>
+                        <li><strong>Cassier :</strong> troubles hépatiques, flatulence</li>
+                        <li><strong>Coloquinte + huile de ricin :</strong> purgation</li>
+                        <li><strong>Fenouil :</strong> tonique</li>
+                        <li><strong>Grenade :</strong> chasse les démons (flatulences)</li>
+                        <li><strong>Hysope :</strong> antiseptique, expectorant, vermifuge</li>
+                        <li><strong>Myrte :</strong> astringent</li>
+                        <li><strong>Thym :</strong> propriétés antibiotiques</li>
+                    </ul>
+                `
+            },
+            {
+                title: "III. La Médecine chez les Grecs - Homère",
+                content: `
+                    <h3>Homère (vers 900 av. J.-C.)</h3>
+                    <p>L'Iliade et l'Odyssée constituent les premiers documents indiscutables d'histoire de la médecine.</p>
+                    
+                    <div class="definition">
+                        <strong>Innovation majeure :</strong> Les médecins décrits par Homère ne sont pas des prêtres, mais des praticiens. La profession médicale est née à l'époque homérique.
+                    </div>
+                    
+                    <h3>Personnages médicaux dans l'Iliade</h3>
+                    <ul>
+                        <li><strong>Asclépios :</strong> décrit comme un roi thessalien et médecin irréprochable</li>
+                        <li><strong>Machaon et Podalire :</strong> ses fils, médecins militaires</li>
+                        <li><strong>Achille et Patrocle :</strong> également médecins</li>
+                        <li><strong>Femmes médecins :</strong> Hécamède, Agamède ("connaissait toutes les herbes"), Polydamma (égyptienne)</li>
+                    </ul>
+                    
+                    <h3>Connaissances anatomiques</h3>
+                    <p>Élémentaires, basées sur l'examen des victimes, les soins aux blessés et les sacrifices humains.</p>
+                `
+            },
+            {
+                title: "Les écoles de médecine grecques",
+                content: `
+                    <h3>L'école de Cos</h3>
+                    <p>La plus fameuse, notamment grâce à Hippocrate. Débuta au VIème siècle av. J.-C.</p>
+                    
+                    <h3>Types de médecins</h3>
+                    <ul>
+                        <li><strong>Médecin civil :</strong> s'installait sur des tréteaux aux carrefours, distribuait des drogues moyennant salaire.</li>
+                        <li><strong>Médecin public :</strong> exerçait pour le compte de l'État, soignait aux frais de l'État, soumis à des règles et responsabilités.</li>
+                        <li><strong>À Athènes :</strong> les jeunes médecins devaient obtenir une autorisation par un discours public présentant leurs titres et leurs cures.</li>
+                    </ul>
+                    
+                    <h3>Formation</h3>
+                    <p>D'abord familiale (grand-père ou parent), puis enseignement structuré : physique, histoire naturelle, astronomie, origine des maladies, régime.</p>
+                    
+                    <h3>Ateliers médicaux</h3>
+                    <p>Vastes bâtiments dans les rues principales, bien éclairés, avec des chambres pour malades et des boutiques pour remèdes.</p>
+                `
+            },
+            {
+                title: "Hippocrate - Le Père de la Médecine",
+                content: `
+                    <div class="definition">
+                        <strong>Hippocrate (460 - 370 av. J.-C.) :</strong> Né dans l'île de Cos. Aristote l'appelait "le grand", Appolonius "l'Admirable", Galien "l'admirable inventeur de tout ce qui est beau".
+                    </div>
+                    
+                    <h3>Formation et voyages</h3>
+                    <p>Études laïques et sacerdotales (4 ans), puis séjour en Égypte (4 ans), retour à Cos, initiation par Pythagore. Voyages d'études dans les îles de la mer Égée, à Rhodes, Cnide, Délos, Thessalie.</p>
+                    
+                    <h3>Méthode</h3>
+                    <p>Attentif à l'examen des signes généraux, observation des moindres symptômes.</p>
+                    
+                    <h3>Héritage</h3>
+                    <p>La médecine occidentale est restée sous l'influence d'Hippocrate jusqu'aux temps modernes. Le médecin d'aujourd'hui se réclame encore disciple d'Hippocrate.</p>
+                `
+            },
+            {
+                title: "La Collection Hippocratique",
+                content: `
+                    <h3>Corpus Hippocraticum</h3>
+                    <p>Constituée au IVème siècle av. J.-C. à la bibliothèque d'Alexandrie. Environ 72 livres et 59 traités.</p>
+                    
+                    <h3>Anatomie</h3>
+                    <p>Pas de présentation systématique. Le cœur est traité de manière complète : péricarde, ventricules, valves, temps de contraction, grands vaisseaux. Les nerfs sont confondus avec les ligaments. Pas de distinction artères/veines.</p>
+                    
+                    <h3>Physiologie</h3>
+                    <p>La chaleur naturelle du corps provient du "pneuma" de l'air, absorbé par les poumons. L'air est le sang remplissant les artères.</p>
+                    
+                    <h3>Pathologie générale</h3>
+                    <p>Causes immédiates (internes) et lointaines (climat, hygiène, régime, activité). Trois phases : dégénérescence des humeurs, coction, crise avec évacuation.</p>
+                    
+                    <h3>Thérapie</h3>
+                    <p>Ne pas intervenir sur le cours de la maladie, seconder la nature. "La timidité est un signe d'incapacité ; l'impétuosité démontre le manque d'habilité."</p>
+                `
+            },
+            {
+                title: "Le Serment d'Hippocrate",
+                content: `
+                    <div class="quote">
+                        "Au moment d'être admis au nombre des membres de la profession médicale, je prends l'engagement solennel de consacrer ma vie au service de l'humanité.<br><br>
+                        Je garderai à mes maîtres le respect et la reconnaissance qui leur sont dus.<br><br>
+                        J'exercerai mon art avec conscience et dignité.<br><br>
+                        Je considérerai la santé de mon patient comme mon premier souci.<br><br>
+                        Je respecterai le secret de celui qui se sera confié à moi.<br><br>
+                        Je maintiendrai, dans toute la mesure de mes moyens, l'honneur et les nobles traditions de la profession médicale.<br><br>
+                        Mes collègues seront mes frères.<br><br>
+                        Je ne permettrai pas que des considérations de religion, de nation, de race, de parti ou classe sociale, viennent s'interposer entre mon devoir et mon patient.<br><br>
+                        Je garderai le respect absolu de la vie humaine, dès la conception.<br><br>
+                        Même sous menace, je n'admettrai pas de faire l'usage de mes connaissances médicales contre les lois de l'humanité.<br><br>
+                        Je fais ces promesses solennellement, librement, sur l'honneur."
+                    </div>
+                `
+            },
+            {
+                title: "Principes de la méthode hippocratique",
+                content: `
+                    <h3>1. Tout observer</h3>
+                    <p>Le médecin utilise tous ses sens : vue, ouïe, odorat, goût, toucher.</p>
+                    
+                    <h3>2. Étudier le patient plutôt que la maladie</h3>
+                    <p>L'accent est mis sur la façon dont le patient réagit à la maladie.</p>
+                    
+                    <h3>3. Se livrer à une estimation honnête</h3>
+                    <p>Le pronostic a une place importante.</p>
+                    
+                    <h3>4. Seconder la nature</h3>
+                    <div class="quote">
+                        "Quant aux maladies, il faut prendre l'habitude de deux choses : aider, ou tout au moins, ne pas nuire."
+                    </div>
+                    <p>La fonction du médecin est de réaliser les conditions qui permettent aux forces naturelles du corps de rétablir la santé.</p>
+                `
+            },
+            {
+                title: "IV. La Médecine Latine - Époque étrusque et romaine",
+                content: `
+                    <h3>Époque étrusque (VIIIe - Ve siècle)</h3>
+                    <p>Médecine primitive : pensée magique, mythologie, plantes médicinales, chirurgie rudimentaire. Début d'hygiène publique : "cloaca maxima" (égouts de Rome), assèchement des marais.</p>
+                    
+                    <h3>Époque romaine (jusqu'au IIIe siècle av. J.-C.)</h3>
+                    <p>Guérison affaire de divinités : Minerve, Diane, Hygie, Salus, Castor et Pollux. Termes dérivés : minerve, hygiène, salubrité, pollution.</p>
+                    
+                    <h3>Statut du médecin</h3>
+                    <p>La médecine était considérée comme indigne d'un citoyen romain. Seuls les étrangers (grecs, esclaves, affranchis) l'exerçaient. Souvent des charlatans.</p>
+                    
+                    <h3>Archagatos (219 av. J.-C.)</h3>
+                    <p>Chirurgien grec venu du Péloponnèse, premier médecin grec établi à Rome.</p>
+                `
+            },
+            {
+                title: "Évolution de la médecine latine",
+                content: `
+                    <h3>Catons l'Ancien</h3>
+                    <p>Considérait les médecins grecs comme une "race perverse et indocile" cherchant à exterminer les Romains. Proposait le chou et des incantations pour tous les maux.</p>
+                    
+                    <h3>Reconnaissance</h3>
+                    <p>46 av. J.-C. : Jules César accorde la citoyenneté romaine aux médecins. Création d'écoles médicales : Lyon, Saragosse, Antioche, Marseille.</p>
+                    
+                    <h3>Deux écoles concurrentes</h3>
+                    <ul>
+                        <li><strong>Dogmatistes :</strong> soigner rationnellement, nécessité de connaître l'anatomie, recherche des "causes cachées".</li>
+                        <li><strong>Empiristes :</strong> le raisonnement est inutile, seule l'expérience compte. "Il importe peu de connaître ce qui fait maladie que ce qui la guérit."</li>
+                    </ul>
+                `
+            },
+            {
+                title: "Asclépiade et Celse",
+                content: `
+                    <h3>Asclépiade (91 av. J.-C.)</h3>
+                    <p>Professeur de rhétorique devenu médecin. Ami de Cicéron et Marc Antoine. Clientèle riche.</p>
+                    <p><strong>Atomisme :</strong> le corps est composé d'atomes en mouvement, les maladies résultent d'obstruction ou relâchement des pores.</p>
+                    <p>S'élevait contre l'abus de médicaments, vomitifs, purgatifs. Utilisait : massages, gymnastique, "gestation" (secouer le malade en voiture/bateau), bains, lavements, régime, bon vin.</p>
+                    
+                    <h3>Celse (vers 30-35 ap. J.-C.)</h3>
+                    <p>Auteur du "De re media", premier traité méthodique de médecine en latin. Référence constante à la médecine grecque.</p>
+                    
+                    <h3>Division de la médecine</h3>
+                    <ul>
+                        <li>Maladies guérissant par le régime</li>
+                        <li>Maladies guérissant par les médicaments</li>
+                        <li>Maladies guérissant par la chirurgie</li>
+                    </ul>
+                    
+                    <h3>Signes de l'inflammation</h3>
+                    <p>Rubor (rougeur), tumor (tuméfaction), calor (chaleur), dolor (douleur).</p>
+                `
+            },
+            {
+                title: "Claude Galien",
+                content: `
+                    <div class="definition">
+                        <strong>Galien (131 - vers 201 ap. J.-C.) :</strong> Né à Pergame. Homme très cultivé (grec, mathématiques, philosophie). Formé à Pergame, Smyrne, Corinthe, Alexandrie.
+                    </div>
+                    
+                    <h3>Carrière</h3>
+                    <ul>
+                        <li>158 : médecin des gladiateurs à Pergame</li>
+                        <li>163 : professeur d'anatomie et physiologie à Rome, sous Marc Aurèle</li>
+                        <li>Voyages : Syrie, Phénicie, Palestine, Chypre (rapporte remèdes et plantes)</li>
+                    </ul>
+                    
+                    <h3>Méthode</h3>
+                    <p>Dissection d'animaux (vivants parfois). Étude des nerfs récurrents (chèvre), ligature des uretères (chien), section de la moelle. Recherche des preuves de chaque fonction.</p>
+                    
+                    <h3>Diagnostic</h3>
+                    <p>Trois étapes : siège du mal (topographique), nature du processus (histo-anatomopathologique), cause (étiologique).</p>
+                `
+            },
+            {
+                title: "V. Les Médecins Grecs de Galien à 1453",
+                content: `
+                    <h3>Caractéristiques</h3>
+                    <ul>
+                        <li>Connaissance approfondie de la science médicale grecque</li>
+                        <li>Inspiration d'Hippocrate, Celse, Rufus, Arétée, Galien</li>
+                        <li>Rapprochement avec mondes asiatique et africain</li>
+                        <li>Influence du christianisme</li>
+                        <li>Développement des institutions hospitalières</li>
+                    </ul>
+                    
+                    <h3>Institutions</h3>
+                    <p>Hôpitaux, asiles pour vieillards, infirmeries, orphelinats, léproseries, hôtels-Dieu, hospices d'incurables.</p>
+                    
+                    <h3>Médecins célèbres</h3>
+                    <ul>
+                        <li><strong>Alexandre de Tralles :</strong> auteur d'un traité de pathologie de référence pendant dix siècles</li>
+                        <li><strong>Oribase :</strong> chirurgien, auteur d'un livre sur les bandages</li>
+                        <li><strong>Paul d'Égine :</strong> auteur d'un grand ouvrage sur la chirurgie</li>
+                    </ul>
+                    
+                    <p>Ces ouvrages furent prescrits pour l'enseignement par la Faculté de Médecine de Paris en 1607, étudiés officiellement pendant 11 siècles.</p>
+                `
+            },
+            {
+                title: "VI. Les Premiers Siècles du Christianisme",
+                content: `
+                    <h3>Conception de la maladie</h3>
+                    <p>La maladie était assimilée au châtiment des péchés ou à la disgrâce divine. La seule attitude était la souffrance (à la manière de Job) et le recours à la grâce de Dieu.</p>
+                    
+                    <h3>Évolution</h3>
+                    <p>Avec l'éloignement de la fin du monde, retour aux problèmes quotidiens. La parabole du Bon Samaritain devient une explication chrétienne des soins médicaux.</p>
+                    
+                    <h3>Institutions charitables</h3>
+                    <ul>
+                        <li><strong>Ptachia :</strong> pour les pauvres</li>
+                        <li><strong>Geronthocie :</strong> pour les vieillards</li>
+                        <li><strong>Xénodoche :</strong> pour les étrangers</li>
+                        <li><strong>Brephotrophia :</strong> pour les enfants trouvés</li>
+                        <li><strong>Orphanotrophia :</strong> pour les orphelins</li>
+                        <li><strong>Nosocomia :</strong> pour les malades</li>
+                    </ul>
+                    
+                    <h3>Ordres religieux</h3>
+                    <p>Saint Benoît de Nursie encourage les soins aux malades. Cassiodore (bénédictin) favorise le maintien de la médecine.</p>
+                `
+            },
+            {
+                title: "VII. Histoire de la Microbiologie - Avant Pasteur",
+                content: `
+                    <h3>Van Leeuwenhoek</h3>
+                    <p>Microscope révélant l'existence de "diertjers" (animalcules).</p>
+                    
+                    <h3>Davaine (1850)</h3>
+                    <p>Entrevoit la bactérie charbonneuse.</p>
+                    
+                    <h3>Invention du mot "Microbe" (1878)</h3>
+                    <p>Par Charles-Emmanuel Sédillot, approuvé par Littré. "Plus court et d'une signification plus générale".</p>
+                    
+                    <h3>Louis Pasteur (1822-1895)</h3>
+                    <p>Né à Dôle. Baccalauréat "médiocre" en chimie. Admis à l'École Normale de Paris. Thèses de physique et chimie.</p>
+                    
+                    <h3>Dissymétrie moléculaire</h3>
+                    <p>"Seuls les produits de la nature vivante sont actifs sur la lumière polarisée" - base de la stéréochimie.</p>
+                `
+            },
+            {
+                title: "Les Découvertes de Pasteur",
+                content: `
+                    <h3>Principales découvertes</h3>
+                    <ul>
+                        <li>Les fermentations sont dues à des organismes vivants (ferments)</li>
+                        <li>Certains ferments ont des formes de résistance (spores)</li>
+                        <li>Fermentation lactique (contrecarre la fermentation alcoolique)</li>
+                        <li>Vie en aérobiose et anaérobiose</li>
+                        <li>Les micro-organismes sont à l'origine du passage de la vie à la mort</li>
+                    </ul>
+                    
+                    <h3>Pasteurisation</h3>
+                    <p>Destruction par chauffage rapide des microbes contaminant une solution.</p>
+                    
+                    <h3>Découvertes médicales (1880)</h3>
+                    <ul>
+                        <li>Staphylocoque</li>
+                        <li>Streptocoque</li>
+                        <li>Bacille du choléra des poules</li>
+                    </ul>
+                    
+                    <h3>Vaccination</h3>
+                    <p>Notamment contre la rage, malgré une hémiplégie depuis 1868.</p>
+                    
+                    <div class="quote">
+                        "Par l'étendue et l'importance de l'œuvre accompli, aucun homme ne peut se vanter d'avoir exercé une influence aussi grande que Louis Pasteur."
+                    </div>
+                `
+            },
+            {
+                title: "Bactériologie et Virologie",
+                content: `
+                    <h3>Principales découvertes</h3>
+                    <table>
+                        <tr><th>Découvreur</th><th>Micro-organisme</th><th>Année</th></tr>
+                        <tr><td>Pasteur</td><td>Staphylocoques, Streptocoques</td><td>1880</td></tr>
+                        <tr><td>Talamon</td><td>Pneumocoques</td><td>1882</td></tr>
+                        <tr><td>Weichselbaum</td><td>Méningocoques</td><td>1887</td></tr>
+                        <tr><td>Neisser</td><td>Gonocoques</td><td>1879</td></tr>
+                        <tr><td>Yersin</td><td>Pasteurella pestis</td><td>1891</td></tr>
+                        <tr><td>David Bruce</td><td>Brucella melitensis</td><td>1887</td></tr>
+                        <tr><td>Bordet-Gengou</td><td>Bacille de Bordet</td><td>1906</td></tr>
+                        <tr><td>Eberth</td><td>Salmonella</td><td>1880</td></tr>
+                        <tr><td>Hausser</td><td>Proteus</td><td>1882</td></tr>
+                        <tr><td>Escherich</td><td>Escherichia</td><td>1885</td></tr>
+                        <tr><td>Koch</td><td>Vibrio cholérique, Bacille tuberculeux</td><td>1883, 1882</td></tr>
+                        <tr><td>Nicolaier</td><td>Bacille tétanique</td><td>1885</td></tr>
+                        <tr><td>Klebs</td><td>Bacille diphtérique</td><td>1874</td></tr>
+                        <tr><td>Schaudinn & Hoffmann</td><td>Tréponème de la syphilis</td><td>1905</td></tr>
+                    </table>
+                    <p>Virologie : acte de naissance en 1903 (Émile Roux). Développement avec le microscope électronique.</p>
+                `
+            },
+            {
+                title: "VIII. Histoire de la Médecine en RDC - Introduction",
+                content: `
+                    <h3>Contexte</h3>
+                    <p>La colonie du Congo a connu un des meilleurs systèmes de santé coloniaux en Afrique. Médecine collective, cosmopolite, accessible.</p>
+                    
+                    <h3>Déclin post-colonial</h3>
+                    <p>Mauvaise gouvernance, troubles, guerres ont détruit ce passé médico-sanitaire glorieux.</p>
+                    
+                    <h3>Médecine avant l'ère coloniale</h3>
+                    <p>Les "Nganga" (spécialistes en plantes médicinales, techniques physiques et psychologiques) étaient de véritables praticiens. Efficacité insuffisante face à la médecine occidentale.</p>
+                    
+                    <div class="definition">
+                        <strong>Médecine traditionnelle congolaise :</strong> Valable, mais besoin d'être étudiée, codifiée, standardisée. Le médecin formé à l'occidental doit adopter une attitude positive et une critique objective.
+                    </div>
+                `
+            },
+            {
+                title: "Le Médecin Colonial",
+                content: `
+                    <h3>Premières pénétrations (1594)</h3>
+                    <p>Expéditions portugaises. Un médecin accompagne le gouverneur en Angola. Soins limités aux européens et proches.</p>
+                    
+                    <h3>Dr Allart (1883)</h3>
+                    <p>Un des premiers belges, installé à Boma pour l'expédition Stanley. Soignait torse nu, tablier en caoutchouc.</p>
+                    
+                    <h3>Évolution des effectifs</h3>
+                    <ul>
+                        <li>1885-1889 : un seul médecin (Mense)</li>
+                        <li>1891 : 8 médecins</li>
+                        <li>1910 : 59 médecins</li>
+                    </ul>
+                    
+                    <h3>Recrutement</h3>
+                    <p>Pays occidentaux avec expérience tropicale : Italie, Portugal, Espagne, Scandinavie.</p>
+                    
+                    <h3>Missions chrétiennes</h3>
+                    <p>Rôle majeur dans les soins de santé (triade : Évangélisation, Éducation, Santé).</p>
+                `
+            },
+            {
+                title: "La Médecine Mobile et le Personnel Auxiliaire",
+                content: `
+                    <h3>Médecine mobile</h3>
+                    <p>Dépistage actif des malades, hygiène communautaire. La médecine individuelle passe au second plan.</p>
+                    
+                    <h3>Division du travail</h3>
+                    <p>Délégation des tâches à des auxiliaires sanitaires (belges ou congolais), formés sur le tas. Rôle déterminant dans l'extension du réseau de santé.</p>
+                    
+                    <h3>Motivation coloniale</h3>
+                    <p>Besoin d'une main-d'œuvre locale saine pour meilleur rendement.</p>
+                    
+                    <h3>Participation communautaire</h3>
+                    <p>Importante pour couvrir tout le territoire.</p>
+                    
+                    <h3>Maladies de l'époque</h3>
+                    <p>Noma, lèpre, plan, filariose (photos Dr Germiers, 1930).</p>
+                `
+            },
+            {
+                title: "La Formation du Personnel",
+                content: `
+                    <h3>Évolution de la formation</h3>
+                    <ul>
+                        <li>Début : initiation aux techniques simples sur le tas</li>
+                        <li>Puis : éducation formelle en langue vernaculaire, puis en français</li>
+                        <li>Création d'écoles : aides-infirmiers, infirmiers, aides-accoucheuses, accoucheuses, gardes sanitaires, techniciens de laboratoire, assistants médicaux</li>
+                    </ul>
+                    
+                    <h3>Facultés de Médecine</h3>
+                    <ul>
+                        <li>1956 : Lovanium (Kinshasa)</li>
+                        <li>1958 : Elisabethville (U.O.C)</li>
+                        <li>1963 : Stanleyville/Kisangani (Université Libre du Congo, actuelle UPC)</li>
+                    </ul>
+                    
+                    <h3>Spécialisation</h3>
+                    <p>Dès les années 60, formation de spécialistes (principalement à l'Université de Kinshasa). Création des ISTM dans les années 70.</p>
+                `
+            },
+            {
+                title: "Le Système de Santé Congolais",
+                content: `
+                    <h3>Stratégie des Soins de Santé Primaires (SSP)</h3>
+                    <p>Issue d'Alma-Ata (1976). Objectif : "La santé pour tous et par tous".</p>
+                    
+                    <h3>Organisation pyramidale</h3>
+                    <ul>
+                        <li><strong>Niveau périphérique opérationnel :</strong> Zones de Santé (505 zones, 100-150 000 hab. chacune) avec Hôpital Général de Référence et Centres de Santé</li>
+                        <li><strong>Niveau intermédiaire :</strong> Districts sanitaires (appui aux zones)</li>
+                        <li><strong>Niveau stratégique :</strong> Ministère de la Santé et structures spécialisées</li>
+                    </ul>
+                    
+                    <h3>Référence</h3>
+                    <p>Communauté → Centre de Santé → Hôpital Général de Référence pour les problèmes non résolus.</p>
+                    
+                    <h3>Place des tradithérapeutes</h3>
+                    <p>Environ 80% des Congolais y ont recours. Leur rôle doit être encouragé.</p>
+                `
+            },
+            {
+                title: "Grands Noms de la Santé en RDC",
+                content: `
+                    <h3>Dr Paul KALONDA</h3>
+                    <p>Ministre de la Santé Publique (années 60-70). Initiateur des lois sur l'organisation de la profession médicale (création de l'Ordre des Médecins).</p>
+                    
+                    <h3>Prof. Dr Martin NGUETE KINKELA</h3>
+                    <p>Commissaire d'État à la Santé Publique (années 80). À l'origine des SSP au Congo et dans le monde.</p>
+                    
+                    <h3>Prof. Dr J.J. MUYEMBE TAMFUM</h3>
+                    <p>Éminent virologue, Directeur de l'INRB. Spécialiste mondial des fièvres hémorragiques.</p>
+                    
+                    <h3>Prof. Dr Léonard MASHAKO MAMBA</h3>
+                    <p>Ministre de la Santé (1999-2004). Lutte contre la poliomyélite, programmes nationaux de santé.</p>
+                `
+            },
+            {
+                title: "Ebola et la RDC - Une Longue Histoire (1976-2012)",
+                content: `
+                    <table>
+                        <tr><th>Année</th><th>Événement</th></tr>
+                        <tr><td>1976</td><td>Découverte du virus Ebola (sous-type Zaïre) à Yambuku. Prof. Muyembe sur le terrain. Peter Piot identifie le virus. 280 morts.</td></tr>
+                        <tr><td>1977</td><td>Réapparition à Tandala (500 km de Yambuku). Un adolescent décédé.</td></tr>
+                        <tr><td>1995</td><td>Première occurrence en milieu urbain : Kikwit. 250 décès.</td></tr>
+                        <tr><td>2007</td><td>Centre de la RDC (territoire de Mweka). 264 cas, 187 morts.</td></tr>
+                        <tr><td>2008-2009</td><td>Réapparition à Mweka (Kasai Occidental) et Lwebio. 15 morts.</td></tr>
+                        <tr><td>2012</td><td>Souche Bundibugyo à Isiro (Nord-est). 36 cas, 13 décès.</td></tr>
+                    </table>
+                `
+            },
+            {
+                title: "Ebola et la RDC - Histoire Récente et Conclusion",
+                content: `
+                    <table>
+                        <tr><th>Année</th><th>Événement</th></tr>
+                        <tr><td>2014</td><td>Épidémie maîtrisée en 3 mois. 66 cas, 49 morts. Aucun lien avec l'Afrique de l'Ouest.</td></tr>
+                        <tr><td>2017</td><td>Huitième épidémie. Patient mort à l'arrivée, chauffeur de taxi-moto décédé. "Déjà sous contrôle" (Pr Muyembe).</td></tr>
+                        <tr><td>2018</td><td>Épidémie au Nord-Kivu et Ituri.</td></tr>
+                    </table>
+                    
+                    <div class="definition">
+                        <strong>Prof. Dr Jean-Jacques Muyembe Tamfum :</strong> Directeur de l'INRB. Membre de l'équipe dépêchée en Afrique de l'Ouest (2014). Lauréat du Prix Christophe Mérieux pour ses travaux sur les maladies infectieuses, notamment Ebola (plus de 700 morts en RDC depuis 1976).
+                    </div>
+                    
+                    <h3>Conclusion générale</h3>
+                    <p>L'histoire de la médecine nous enseigne que notre art est le fruit d'une longue évolution, des pratiques empiriques antiques aux découvertes scientifiques modernes. Le médecin d'aujourd'hui, héritier d'Hippocrate, de Galien, de Pasteur et des praticiens coloniaux, doit connaître cette histoire pour mieux comprendre sa mission et innover pour l'avenir, en RDC comme ailleurs.</p>
+                `
+            }
+        ];
+
+        // ============================================
+        // TIMINGS POUR SYNCHRONISATION AUDIO
+        // (Basé sur 150 mots/minute)
+        // ============================================
+        const timeline = [
+            0,      // Slide 0 - Introduction
+            22,     // Slide 1 - Égyptienne
+            72,     // Slide 2 - Hébreux
+            100,    // Slide 3 - Grecs (Homère)
+            129,    // Slide 4 - Écoles grecques
+            159,    // Slide 5 - Hippocrate
+            188.5,    // Slide 6 - Collection Hippocratique
+            218.5,    // Slide 7 - Serment
+            259,    // Slide 8 - Méthode hippocratique
+            276,    // Slide 9 - Latine (étrusque/romaine)
+            310,    // Slide 10 - Évolution latine
+            337,    // Slide 11 - Asclépiade et Celse
+            374,    // Slide 12 - Galien
+            406,    // Slide 13 - Grecs de Galien à 1453
+            438,    // Slide 14 - Christianisme
+            467,    // Slide 15 - Microbiologie (avant Pasteur)
+            496,    // Slide 16 - Découvertes Pasteur
+            530,    // Slide 17 - Bactério/virologie
+            588,    // Slide 18 - RDC (intro)
+            620,    // Slide 19 - Médecin colonial
+            650,    // Slide 20 - Médecine mobile
+            672,    // Slide 21 - Formation
+            703,    // Slide 22 - Système de santé
+            742,   // Slide 23 - Grands noms
+            778,   // Slide 24 - Ebola 1976-2012
+            822    // Slide 25 - Ebola récent + conclusion
+        ];
+
+        const totalDuration = 870; // secondes (20 minutes)
+
+        // Variables d'état
+        let currentSlide = 0;
+        let isAutoPlaying = false;
+        let autoPlayInterval;
+        let syncInterval;
+        
+        // Éléments DOM
+        const audioPlayer = document.getElementById('audioPlayer');
+        const contentDiv = document.getElementById('content');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const playBtn = document.getElementById('playBtn');
+        const statusDiv = document.getElementById('status');
+        const slideCounter = document.getElementById('slideCounter');
+        const progressFill = document.getElementById('progressFill');
+        const timeDisplay = document.getElementById('timeDisplay');
+
+        // ============================================
+        // FONCTIONS D'AFFICHAGE
+        // ============================================
+        function renderSlide(index) {
+            const slide = slides[index];
+            
+            contentDiv.innerHTML = `
+                <div class="slide active">
+                    <h2 class="slide-title">${slide.title}</h2>
+                    <div class="slide-content">${slide.content}</div>
+                </div>
+            `;
+            
+            slideCounter.textContent = `${index + 1}/${slides.length}`;
+            progressFill.style.width = `${((index + 1) / slides.length) * 100}%`;
+            
+            // Mise à jour des boutons de navigation
+            if (!isAutoPlaying) {
+                prevBtn.disabled = index === 0;
+                nextBtn.disabled = index === slides.length - 1;
+            }
+            
+            // Scroll en haut
+            contentDiv.scrollTop = 0;
+        }
+
+        // ============================================
+        // FONCTIONS DE NAVIGATION
+        // ============================================
+        function nextSlide() {
+            if (currentSlide < slides.length - 1) {
+                currentSlide++;
+                renderSlide(currentSlide);
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                renderSlide(currentSlide);
+            }
+        }
+
+        // ============================================
+        // SYNCHRONISATION AUDIO / SLIDES
+        // ============================================
+        function updateTimeDisplay() {
+            const current = audioPlayer.currentTime;
+            const minutes = Math.floor(current / 60);
+            const seconds = Math.floor(current % 60);
+            const totalMinutes = Math.floor(totalDuration / 60);
+            const totalSeconds = Math.floor(totalDuration % 60);
+            
+            timeDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')} / ${totalMinutes.toString().padStart(2, '0')}:${totalSeconds.toString().padStart(2, '0')}`;
+            
+            // Mise à jour de la barre de progression
+            const progress = (current / totalDuration) * 100;
+            progressFill.style.width = `${Math.min(progress, 100)}%`;
+        }
+
+        function checkSync() {
+            if (!isAutoPlaying) return;
+            
+            const currentTime = audioPlayer.currentTime;
+            
+            // Trouver la slide correspondante au temps actuel
+            for (let i = timeline.length - 1; i >= 0; i--) {
+                if (currentTime >= timeline[i]) {
+                    if (i !== currentSlide) {
+                        currentSlide = i;
+                        renderSlide(currentSlide);
+                    }
+                    break;
+                }
+            }
+            
+            updateTimeDisplay();
+            
+            // Arrêt automatique à la fin
+            if (currentTime >= totalDuration - 1) {
+                stopAutoPlay();
+            }
+        }
+
+        function startAutoPlay() {
+            if (!audioPlayer.src) {
+                alert('Veuillez placer le fichier audio "histoire_medecine.mp3" dans le même dossier que ce fichier HTML.');
+                return;
+            }
+            
+            isAutoPlaying = true;
+            playBtn.textContent = '⏸ Pause';
+            playBtn.classList.remove('play-btn');
+            playBtn.classList.add('stop-btn');
+            statusDiv.textContent = 'Mode automatique';
+            statusDiv.style.background = 'rgba(40, 167, 69, 0.9)';
+            
+            prevBtn.disabled = true;
+            nextBtn.disabled = true;
+            
+            audioPlayer.play();
+            
+            // Vérifier la synchronisation toutes les 100ms
+            syncInterval = setInterval(checkSync, 100);
+        }
+
+        function stopAutoPlay() {
+            isAutoPlaying = false;
+            playBtn.textContent = '▶ Lecture automatique';
+            playBtn.classList.remove('stop-btn');
+            playBtn.classList.add('play-btn');
+            statusDiv.textContent = 'Mode navigation';
+            statusDiv.style.background = 'rgba(0,0,0,0.8)';
+            
+            audioPlayer.pause();
+            
+            if (syncInterval) {
+                clearInterval(syncInterval);
+            }
+            
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === slides.length - 1;
+        }
+
+        function toggleAutoPlay() {
+            if (isAutoPlaying) {
+                stopAutoPlay();
+            } else {
+                startAutoPlay();
+            }
+        }
+
+        // ============================================
+        // GESTION DES ÉVÉNEMENTS AUDIO
+        // ============================================
+        audioPlayer.addEventListener('ended', function() {
+            stopAutoPlay();
+        });
+
+        audioPlayer.addEventListener('timeupdate', function() {
+            if (!isAutoPlaying) {
+                updateTimeDisplay();
+            }
+        });
+
+        // ============================================
+        // RACCOURCIS CLAVIER
+        // ============================================
+        document.addEventListener('keydown', function(e) {
+            if (isAutoPlaying) return;
+            
+            if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                prevSlide();
+            } else if (e.key === 'ArrowRight') {
+                e.preventDefault();
+                nextSlide();
+            } else if (e.key === ' ') {
+                e.preventDefault();
+                toggleAutoPlay();
+            }
+        });
+
+        // ============================================
+        // INITIALISATION
+        // ============================================
+        renderSlide(0);
+        updateTimeDisplay();
+
+        // Vérifier si l'audio existe
+        audioPlayer.addEventListener('error', function() {
+            console.warn('Fichier audio non trouvé. Placez "histoire_medecine.mp3" dans le même dossier.');
+        });
+    </script>
+</body>
+</html>
