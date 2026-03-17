@@ -423,6 +423,10 @@
             <div class="menu-section">
                 <h2>⭐ Premium</h2>
                 <div class="menu-items">
+                    <div class="menu-card premium" data-premium="im1">
+                        <h3> Introduction au Management<span class="badge">Premium</span></h3>
+                        <div class="description">Première Partie du Cours. Couvre les Chapitres 1 et 2</div>
+                    </div>
                     <div class="menu-card premium" data-premium="his2">
                         <h3> Histoire des Faits et Pensées Économiques<span class="badge">Premium</span></h3>
                         <div class="description">Deuxième Partie du Cours</div>
@@ -476,7 +480,16 @@
             <!-- Section Premium -->
             <div class="section-title">⭐ Premium <span class="premium-badge">(contactez-nous)</span></div>
             <div class="cards-grid">
-                
+                <div class="featured-card premium-card premium-pulse" data-premium="im2">
+                    <div class="card-content">
+                        <div class="card-icon"></div>
+                        <h3> Introduction au Management<span class="premium-badge">Premium</span></h3>
+                        <p> Première Partie du Cours. Couvre les Chapitres 1 et 2</p>
+                        <div class="card-meta">
+                            <span class="card-tag">Cliquez pour accéder</span>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- Carte Premium 2 : Vaccinologie -->
                 <div class="featured-card premium-card premium-pulse" data-premium="microeco">
@@ -591,6 +604,9 @@
             }
         else if (sujet === "his3") {
             window.open("Histoire3.html", "_blank");
+            }
+        else if (sujet === "im1") {
+            window.open("IntroMan.html", "_blank");
             }
         }
         else {
