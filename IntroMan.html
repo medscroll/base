@@ -1,0 +1,1499 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introduction au Management - Chapitres 1 & 2</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1300px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: #f0f0f0;
+            width: 100%;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3498db, #2c3e50);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .header {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            font-size: 1.3em;
+            font-weight: 600;
+        }
+
+        .badge {
+            background: #2c3e50;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+
+        .content {
+            padding: 30px;
+            min-height: 500px;
+            max-height: 70vh;
+            overflow-y: auto;
+            background: #ffffff;
+            scroll-behavior: smooth;
+        }
+
+        .slide {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide-title {
+            color: #2c3e50;
+            font-size: 2.2em;
+            margin-bottom: 25px;
+            font-weight: 700;
+            border-left: 5px solid #3498db;
+            padding-left: 20px;
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 10;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+        }
+
+        .slide-content {
+            color: #2c3e50;
+            line-height: 1.8;
+            font-size: 1.15em;
+        }
+
+        .slide-content h3 {
+            color: #2c3e50;
+            margin: 25px 0 15px 0;
+            font-size: 1.5em;
+        }
+
+        .slide-content h4 {
+            color: #2c3e50;
+            margin: 20px 0 10px 0;
+            font-size: 1.25em;
+        }
+
+        .slide-content p {
+            margin: 15px 0;
+        }
+
+        .slide-content ul, .slide-content ol {
+            margin: 15px 0 15px 30px;
+        }
+
+        .slide-content li {
+            margin: 10px 0;
+        }
+
+        .definition {
+            background: #e8f4fd;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 25px 0;
+            border-left: 5px solid #3498db;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .definition strong {
+            color: #2c3e50;
+            font-size: 1.1em;
+        }
+
+        .formula {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 25px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 1.3em;
+            text-align: center;
+            border-left: 5px solid #2c3e50;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .example {
+            background: #fef5e7;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 25px 0;
+            border-left: 5px solid #f39c12;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin: 25px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        th {
+            background: #2c3e50;
+            color: white;
+            font-weight: 600;
+            padding: 15px;
+            text-align: left;
+        }
+
+        td {
+            border: 1px solid #e9ecef;
+            padding: 12px;
+        }
+
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .controls {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-btn {
+            background: white;
+            color: #2c3e50;
+            border: 1px solid #dee2e6;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            background: #e9ecef;
+            transform: translateY(-1px);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .play-btn {
+            background: linear-gradient(90deg, #3498db, #2c3e50);
+            color: white;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        .play-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.5);
+        }
+
+        .stop-btn {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .stop-btn:hover {
+            background: #c0392b;
+        }
+
+        .counter {
+            color: #6c757d;
+            font-size: 0.95em;
+            background: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .status {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 0.9em;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            backdrop-filter: blur(5px);
+        }
+
+        .section-marker {
+            border-bottom: 2px solid #3498db;
+            margin: 30px 0 20px 0;
+            padding-bottom: 10px;
+            color: #2c3e50;
+            font-weight: 600;
+            font-size: 1.3em;
+        }
+
+        .quote {
+            font-style: italic;
+            color: #555;
+            border-left: 3px solid #2c3e50;
+            padding-left: 20px;
+            margin: 20px 0;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                padding: 20px;
+                max-height: 60vh;
+            }
+            
+            .slide-title {
+                font-size: 1.8em;
+            }
+            
+            .controls {
+                flex-direction: column;
+            }
+            
+            .nav-buttons {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            button {
+                flex: 1;
+                text-align: center;
+            }
+            
+            .status {
+                top: 10px;
+                right: 10px;
+                font-size: 0.8em;
+                padding: 8px 15px;
+            }
+        }
+
+        .org-chart {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 30px 0;
+        }
+        
+        .org-level {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 10px 0;
+        }
+        
+        .org-box {
+            border: 2px solid #3498db;
+            padding: 15px 25px;
+            border-radius: 8px;
+            background: #f8f9fa;
+            font-weight: 600;
+            min-width: 50px;
+            text-align: center;
+        }
+        
+        .org-connector {
+            width: 2px;
+            height: 20px;
+            background: #3498db;
+            margin: 0 auto;
+        }
+        
+        .smart-badge {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            font-weight: bold;
+            width: 30px;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        
+        .smart-item {
+            margin: 15px 0;
+            padding: 10px;
+            border-left: 3px solid #3498db;
+            background: #f8f9fa;
+        }
+    </style>
+</head>
+<body>
+    <div class="status" id="status">Mode navigation</div>
+    
+    <div class="container">
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        
+        <div class="header">
+            <h1>📊 Introduction au Management des Organisations - Chapitres 1 & 2</h1>
+            <span class="badge" id="slideCounter">1/25</span>
+        </div>
+
+        <div class="content" id="content">
+            <!-- Les slides seront injectées dynamiquement -->
+        </div>
+
+        <div class="controls">
+            <div class="nav-buttons">
+                <button class="nav-btn" onclick="prevSlide()" id="prevBtn">← Précédent</button>
+                <button class="nav-btn" onclick="nextSlide()" id="nextBtn">Suivant →</button>
+            </div>
+            <button class="play-btn" onclick="toggleAutoPlay()" id="playBtn">▶ Lecture automatique</button>
+            <span class="counter" id="timeDisplay">00:00 / 00:00</span>
+        </div>
+    </div>
+
+    <audio id="audioPlayer" src="management_ch1_2.mp3" preload="auto"></audio>
+
+    <script>
+        // Message d'accueil
+        alert("📚 Bienvenue dans le cours d'Introduction au Management - Chapitres 1 et 2 !\n\nAstuces :\n• Mettez le cours en pause ⏸️ pour lire les écrits 📄\n• Utilisez les flèches ← → pour naviguer\n• La barre d'espace démarre/arrête la lecture\n\nProfitez bien de ce cours !");
+
+        // ============================================
+        // DONNÉES DU COURS - 25 SLIDES
+        // ============================================
+        const slides = [
+            {
+                title: "Chapitre 1 - Concepts de base",
+                content: `
+                    <h3>Introduction au Management des Organisations</h3>
+                    
+                    <p>Le médecin travaille sur le corps humain, le psychologue sur l'âme, le sociologue sur les comportements des groupes. Le manager pilote les organisations pour les rendre performantes.</p>
+                    
+                    <div class="definition">
+                        <strong>Henry Mintzberg :</strong> "Lorsque nous pensons organisation, nous pensons management."
+                    </div>
+                    
+                    <h4>Place des organisations dans notre vie humaine</h4>
+                    <p>Chaque organisation est créée pour une mission bien précise. Les organisations nous entourent. Nous y passons toute notre vie humaine. Elles sont incontournables.</p>
+                    
+                    <p>Jacques Rojot signale : "Nous vivons dans un monde d'organisations. Nés le plus souvent dans un hôpital, où nous retournons mourir, nous sommes élevés à la crèche, puis à l'école et éventuellement l'université, après quoi, nous travaillons dans les entreprises ou des administrations."</p>
+                    
+                    <p>Henry Mintzberg confirme : "Notre monde est devenu, pour le meilleur et pour le pire, une société faite d'organisations et ce sont encore des organisations qui ont veillé à notre éducation. Elles nous gouvernent et nous tourmentent."</p>
+                `
+            },
+            {
+                title: "Définition de l'Organisation",
+                content: `
+                    <h3>Le concept d'Organisation</h3>
+                    
+                    <p>L'organisation est un concept équivoque. Pour éviter les difficultés sémantiques, les Anglo-Saxons ont conçu deux concepts :</p>
+                    
+                    <div class="definition">
+                        <strong>ORGANIZATION :</strong> Liée à la réalité sociologique. Talcott Parsons la conçoit comme une unité sociale en vue d'atteindre des buts spécifiques. C'est un groupement humain, délibérément construit pour poursuivre des buts spécifiques.
+                    </div>
+                    
+                    <div class="definition">
+                        <strong>ORGANIZING :</strong> L'acte d'organiser - division du travail, répartition des tâches, coordination des activités.
+                    </div>
+                    
+                    <h4>Stephen Robbins, David Decenzo et Mary Coulter :</h4>
+                    <p>"Ensemble de personnes rassemblées afin d'atteindre des objectifs, par une division du travail et des fonctions, grâce à des modalités de coordination définies."</p>
+                    
+                    <h4>Éléments constitutifs de l'organisation (Jacques Rojot) :</h4>
+                    <ul>
+                        <li>Une hiérarchie</li>
+                        <li>Les règles et procédures</li>
+                        <li>Le contrôle</li>
+                        <li>Les communications formalisées</li>
+                        <li>Une spécialisation des rôles</li>
+                        <li>L'emploi de personnel qualifié</li>
+                        <li>Des objectifs spécifiques</li>
+                    </ul>
+                `
+            },
+            {
+                title: "Performance, Efficacité et Efficience",
+                content: `
+                    <h3>Les indicateurs de performance</h3>
+                    
+                    <div class="definition">
+                        <strong>Efficacité :</strong> Réalisation d'un objectif que l'organisation ou un individu s'était fixé. Rapport entre les résultats et les objectifs prédéterminés.
+                    </div>
+                    
+                    <div class="definition">
+                        <strong>Efficience :</strong> Meilleur usage des moyens, des ressources. Rapport entre les résultats obtenus et les ressources mises en œuvre. Capacité de produire le maximum de résultats avec moins d'efforts.
+                    </div>
+                    
+                    <div class="definition">
+                        <strong>Performance :</strong> Atteinte des objectifs. Degré d'accomplissement des objectifs fixés. Le dictionnaire Robert la conçoit comme l'exploit, la prouesse, le record, le succès, le résultat.
+                    </div>
+                    
+                    <h4>Performance globale de l'organisation :</h4>
+                    <p>Capacité de l'organisation à atteindre ses différents objectifs dans ses différents domaines de gestion :</p>
+                    <ul>
+                        <li><strong>Performance marketing :</strong> satisfaction des clients</li>
+                        <li><strong>Performance économique et financière :</strong> résultats, trésorerie, rentabilité</li>
+                        <li><strong>Performance sociale :</strong> taux réduit de démissions, taux réduit d'absentéisme, budget formation</li>
+                        <li><strong>Performance environnementale :</strong> moins de déchets, pas de pollution</li>
+                    </ul>
+                `
+            },
+            {
+                title: "Entreprise, Administration, État",
+                content: `
+                    <h3>Les différentes formes d'organisations</h3>
+                    
+                    <h4>Entreprise</h4>
+                    <p>Une organisation qui rassemble des hommes et des moyens financiers, informationnels, techniques, matériels, en vue de produire des biens et/ou des services destinés à la vente. (Chantal Busseneault et Martine Pretet)</p>
+                    <p>Unité économique et juridique produisant des biens et des services pour les vendre sur le marché afin de réaliser un bénéfice. (Jean-Yves Capul et Olivier Garnier)</p>
+                    
+                    <h4>Administration</h4>
+                    <ul>
+                        <li><strong>Sens organique (grand A) :</strong> Ensemble des personnes morales (État, collectivités, établissements publics) et physiques (fonctionnaires) qui accomplissent des activités d'intérêt général.</li>
+                        <li><strong>Sens fonctionnel (petit a) :</strong> Activités dont le but est de répondre aux besoins d'intérêt général de la population.</li>
+                    </ul>
+                    
+                    <h4>État</h4>
+                    <p>Max Weber : Communauté humaine qui, dans les limites d'un territoire, revendique avec succès le monopole de la violence physique légitime.</p>
+                    <p>Jean-Yves Capul et Olivier Garnier : Forme d'organisation politique caractérisée par le monopole du pouvoir de contrainte et par un ensemble de règles juridiques stables (Constitution, lois).</p>
+                `
+            },
+            {
+                title: "Définitions du Management",
+                content: `
+                    <h3>Le concept de Management</h3>
+                    
+                    <div class="definition">
+                        <strong>Serge Alecian et Dominique Foucher :</strong> Activité consistant à conduire, diriger un service, une institution, une entreprise. Conduire dans un contexte donné un groupe de personnes ayant en commun des objectifs conformes aux finalités de l'organisation.
+                    </div>
+                    
+                    <div class="definition">
+                        <strong>Jean-Michel Plane :</strong> Activité humaine et sociale visant à stimuler les comportements, à animer des équipes, à développer les structures et à conduire les activités d'une organisation en vue d'atteindre un certain niveau de performance.
+                    </div>
+                    
+                    <div class="definition">
+                        <strong>Stephen Robbins, David Decenzo et Mary Coulter :</strong> Ensemble d'activités par lequel des résultats sont obtenus de façon efficace et efficiente via et avec la coopération d'autrui.
+                    </div>
+                    
+                    <div class="definition">
+                        <strong>Don Hellriegel et John W. Slocum :</strong> Étude du comportement, des attitudes et de la performance des humains dans des organisations.
+                    </div>
+                    
+                    <div class="definition">
+                        <strong>Bob Nelson et Peter Economy :</strong> Une attitude, un mode de vie. Un désir de travailler avec les autres et de les aider à réussir et à rendre la société performante.
+                    </div>
+                    
+                    <p>Le management est un métier solidaire et non solitaire, un travail en équipe. Il suscite le comportement productif en décourageant le comportement contre-productif.</p>
+                `
+            },
+            {
+                title: "Déterminants de la Performance Globale",
+                content: `
+                    <h3>Les 3 déterminants selon Gérard Donnadieu</h3>
+                    
+                    <div class="org-chart">
+                        <div class="org-level">
+                            <div class="org-box" style="background: #3498db; color: white;">PERFORMANCE</div>
+                        </div>
+                        <div class="org-connector"></div>
+                        <div class="org-level">
+                            <div class="org-box">ORGANISATION</div>
+                            <div class="org-box">STRATÉGIE</div>
+                            <div class="org-box">HOMME</div>
+                        </div>
+                    </div>
+                    
+                    <h4>1. Organisation</h4>
+                    <p><strong>Organisation formelle :</strong> Liée à la structure, à la division du travail, à la répartition des compétences, des rôles et des pouvoirs. C'est l'organigramme.</p>
+                    <p><strong>Organisation informelle :</strong> Liée aux relations humaines, relations sociales dans le milieu professionnel. Réseaux de relations informelles, normes officieuses, relations d'autorité non prévues.</p>
+                    
+                    <h4>2. Stratégie</h4>
+                    <p>Du grec "stratego" : planifier la destruction de ses ennemis au moyen d'un usage efficace des ressources. Ensemble d'actions coordonnées pour atteindre un objectif.</p>
+                    
+                    <h4>3. Homme</h4>
+                    <p>Déterminants de l'efficacité humaine : la motivation, la compétence et la culture (valeurs partagées).</p>
+                `
+            },
+            {
+                title: "Les 4 Approches de Bolman et Deal",
+                content: `
+                    <h3>Approches de la performance organisationnelle</h3>
+                    
+                    <div class="definition">
+                        <strong>Théorie :</strong> Du grec "contempler, regarder avec intensité". Les théories permettent un regard approprié qui fait apparaître le relief des situations et accroît les chances de trouver des solutions.
+                    </div>
+                    
+                    <table>
+                        <tr>
+                            <th>Approche</th>
+                            <th>Origine</th>
+                            <th>Focalisation</th>
+                        </tr>
+                        <tr>
+                            <td><strong>Structurelle</strong></td>
+                            <td>Sociologie et management</td>
+                            <td>Objectifs, relations formelles, organigramme, division du travail</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Ressources Humaines</strong></td>
+                            <td>Psychologie</td>
+                            <td>Hommes et femmes, besoins, sentiments, valorisation</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Politique</strong></td>
+                            <td>Histoire et science politique</td>
+                            <td>Intérêts opposés, ressources rares, coalitions, alliances</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Symbolique</strong></td>
+                            <td>Anthropologie sociale et culturelle</td>
+                            <td>Symbole, culture, valeurs partagées</td>
+                        </tr>
+                    </table>
+                    
+                    <div class="quote">
+                        "La culture est toujours un phénomène collectif car elle est partagée au moins partiellement par les individus qui vivent ou ont vécu dans le même environnement social." - Geert Hofstede
+                    </div>
+                `
+            },
+            {
+                title: "Chapitre 2 - Activités Managériales",
+                content: `
+                    <h3>Le Processus du Management selon Henri Fayol</h3>
+                    
+                    <div class="definition">
+                        <strong>Henri Fayol (1841-1925) :</strong> Ingénieur des mines français, premier théoricien à s'intéresser à l'administration des entreprises et aux problèmes de commandement. Auteur de "Administration industrielle et générale" (1916).
+                    </div>
+                    
+                    <h4>Les activités managériales selon Fayol :</h4>
+                    <ul>
+                        <li>Administrer</li>
+                        <li>Planifier</li>
+                        <li>Organiser</li>
+                        <li>Commander</li>
+                        <li>Coordonner</li>
+                        <li>Contrôler</li>
+                    </ul>
+                    
+                    <p>Administration = Planification + Organisation + Commandement + Coordination + Contrôle</p>
+                    
+                    <h4>Évolution (1950) :</h4>
+                    <p>Prévoir (planifier), Organiser, Embaucher, Diriger, Contrôler</p>
+                    
+                    <h4>Les 4 activités modernes :</h4>
+                    <div class="org-chart">
+                        <div class="org-level">
+                            <div class="org-box">PLANIFIER</div>
+                            <div class="org-box">ORGANISER</div>
+                            <div class="org-box">DIRIGER</div>
+                            <div class="org-box">CONTRÔLER</div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                title: "La Planification - Définitions",
+                content: `
+                    <h3>Activité de Planification</h3>
+                    
+                    <div class="definition">
+                        <strong>Chantal Busseneault et Martine Pretet :</strong> Planifier, c'est concevoir un futur désiré et les moyens pour y parvenir.
+                    </div>
+                    
+                    <div class="definition">
+                        <strong>Peter Drucker :</strong> La planification est un instrument d'action. Elle permet à l'entreprise d'avoir les ressources d'agir sur le futur.
+                    </div>
+                    
+                    <div class="definition">
+                        <strong>Ferdinand Mushi Mugumo :</strong> Planifier, c'est déterminer et décider à l'avance de ce qui doit être fait, comment cela doit être fait, où, quand cela doit être fait et par qui cela doit être fait.
+                    </div>
+                    
+                    <div class="definition">
+                        <strong>Stephen Robbins et al. :</strong> Activité managériale qui englobe la définition d'objectifs, l'élaboration d'une stratégie et le développement de plans pour coordonner les activités.
+                    </div>
+                    
+                    <p>La planification concerne le futur de l'organisation. Par elle, l'on fixe les objectifs, on définit les stratégies pour les réaliser.</p>
+                `
+            },
+            {
+                title: "Les Objectifs SMART",
+                content: `
+                    <h3>Objectifs SMART</h3>
+                    
+                    <p>Un objectif est un résultat attendu. Il donne une orientation, permet de savoir où l'on va et comment y arriver.</p>
+                    
+                    <div class="smart-item">
+                        <span class="smart-badge">S</span> <strong>SPÉCIFIQUE :</strong> Précis et bien défini, permettant aux employés de savoir ce qu'on attend d'eux.
+                    </div>
+                    
+                    <div class="smart-item">
+                        <span class="smart-badge">M</span> <strong>MESURABLE :</strong> Des repères, des indicateurs permettant de savoir si les salariés progressent ou régressent.
+                    </div>
+                    
+                    <div class="smart-item">
+                        <span class="smart-badge">A</span> <strong>ACCESSIBLE :</strong> Réalisable, ne doit pas dépasser les compétences de ceux qui sont appelés à le réaliser.
+                    </div>
+                    
+                    <div class="smart-item">
+                        <span class="smart-badge">R</span> <strong>RÉALISTE :</strong> Instrument pour concrétiser un projet de l'organisation.
+                    </div>
+                    
+                    <div class="smart-item">
+                        <span class="smart-badge">T</span> <strong>TEMPOREL :</strong> Défini dans un délai précis, une durée donnée, un début et une fin.
+                    </div>
+                    
+                    <div class="example">
+                        <strong>Exemple :</strong> "Construction d'un auditoire en six mois, de juin à décembre" (T), par 10 maçons érigeant un mur de 1000 briques (R), mesurable quotidiennement (M), avec un objectif clair (S) et accessible (A).
+                    </div>
+                `
+            },
+            {
+                title: "Types d'Objectifs",
+                content: `
+                    <h3>Les deux grandes catégories d'objectifs</h3>
+                    
+                    <table>
+                        <tr>
+                            <th>Objectifs Stratégiques</th>
+                            <th>Objectifs Financiers</th>
+                        </tr>
+                        <tr>
+                            <td>Liés aux performances de l'organisation dans tous les domaines</td>
+                            <td>Liés aux performances financières de l'organisation</td>
+                        </tr>
+                        <tr>
+                            <td>Exemple : Améliorer la performance sociale du personnel en formant le personnel et en le plaçant dans de bonnes conditions de travail</td>
+                            <td>Exemple : Réaliser un chiffre d'affaires de 5 millions de dollars pour l'exercice 2025-2026</td>
+                        </tr>
+                        <tr>
+                            <td>Exemple : Assainir l'environnement de l'organisation</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>Exemple : Améliorer la qualité des produits et services pour satisfaire et fidéliser les clients</td>
+                            <td></td>
+                        </tr>
+                    </table>
+                    
+                    <p>Pour réaliser 80% des bénéfices (objectif financier), il faut améliorer les autres performances : sociale, environnementale, commerciale.</p>
+                `
+            },
+            {
+                title: "La Stratégie",
+                content: `
+                    <h3>Le concept de Stratégie</h3>
+                    
+                    <div class="definition">
+                        <strong>Étymologie :</strong> Du verbe grec "stratego" qui signifie planifier la destruction de ses ennemis au moyen d'un usage efficace des ressources.
+                    </div>
+                    
+                    <p>Avec le temps, la stratégie a intégré d'autres domaines scientifiques en économie et en gestion pour signifier l'utilisation rationnelle des ressources matérielles ou humaines.</p>
+                    
+                    <div class="definition">
+                        <strong>Définition :</strong> Ensemble d'actions coordonnées entreprises pour atteindre un objectif. Ensemble des décisions qui engagent durablement l'avenir de l'entreprise et conditionnent sa performance et son rythme de développement.
+                    </div>
+                    
+                    <h4>Avantage concurrentiel :</h4>
+                    <p>Élément qui permet à l'entreprise d'avoir une avance sur ses concurrents (prix bas, produits différenciés).</p>
+                    
+                    <h4>Management stratégique vs Management opérationnel :</h4>
+                    <ul>
+                        <li><strong>Management stratégique :</strong> Moyen et long terme. Ensemble des activités qui permettent de développer la stratégie d'une organisation. Décisions dont l'impact est fondamental pour l'avenir.</li>
+                        <li><strong>Management opérationnel (tactique) :</strong> Court terme. Gestion quotidienne de l'organisation.</li>
+                    </ul>
+                `
+            },
+            {
+                title: "Types de Stratégies",
+                content: `
+                    <h3>Les trois niveaux de stratégie</h3>
+                    
+                    <div class="definition">
+                        <strong>1. Stratégie d'entreprise :</strong> Définit les domaines d'activités actuels et futurs d'une organisation et le développement de ses activités. Se fonde sur la mission, les objectifs de l'organisation et le rôle de chaque activité. (Stratégie de stabilité, de croissance, de renouvellement)
+                    </div>
+                    
+                    <div class="definition">
+                        <strong>2. Stratégie concurrentielle :</strong> Définit comment une organisation positionne ses activités au sein de l'environnement concurrentiel pour avoir un avantage concurrentiel (prix réduit, services ou produits uniques appréciés par les clients).
+                    </div>
+                    
+                    <div class="definition">
+                        <strong>3. Stratégie fonctionnelle :</strong> Concerne les départements fonctionnels de l'organisation. Exemple : stratégie marketing, stratégie RH, stratégie financière.
+                    </div>
+                    
+                    <div class="org-chart">
+                        <div class="org-level">
+                            <div class="org-box">Stratégie d'entreprise</div>
+                        </div>
+                        <div class="org-connector"></div>
+                        <div class="org-level">
+                            <div class="org-box">Stratégie concurrentielle</div>
+                        </div>
+                        <div class="org-connector"></div>
+                        <div class="org-level">
+                            <div class="org-box">Stratégies fonctionnelles</div>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                title: "Les Plans",
+                content: `
+                    <h3>Définition et types de plans</h3>
+                    
+                    <div class="definition">
+                        <strong>Plan :</strong> Document qui indique la marche à suivre pour réaliser l'objectif prédéterminé.
+                    </div>
+                    
+                    <h4>Critères de distinction des plans :</h4>
+                    
+                    <table>
+                        <tr>
+                            <th>Critère</th>
+                            <th>Types</th>
+                        </tr>
+                        <tr>
+                            <td><strong>Portée</strong></td>
+                            <td>
+                                <ul>
+                                    <li><strong>Plan stratégique :</strong> Concerne l'ensemble de l'organisation, positionne l'organisation par rapport à son environnement, fixe les objectifs globaux</li>
+                                    <li><strong>Plan opérationnel :</strong> Plan tactique, explique en détail comment réaliser les objectifs globaux</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Durée</strong></td>
+                            <td>
+                                <ul>
+                                    <li><strong>Court terme :</strong> Tout au plus une année</li>
+                                    <li><strong>Long terme :</strong> Plus de trois ans</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Spécificité</strong></td>
+                            <td>
+                                <ul>
+                                    <li><strong>Plan directionnel :</strong> Flexible, définit les grandes lignes</li>
+                                    <li><strong>Plan spécifique :</strong> Objectifs concis et précis</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Fréquence</strong></td>
+                            <td>
+                                <ul>
+                                    <li><strong>Plan ponctuel :</strong> Une seule situation</li>
+                                    <li><strong>Plan permanent :</strong> Activités qui se reproduisent</li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </table>
+                `
+            },
+            {
+                title: "L'Organisation (Organizing)",
+                content: `
+                    <h3>Activité d'Organisation</h3>
+                    
+                    <p>L'organisation dans ce chapitre correspond au concept d'"ORGANIZING" : division du travail, répartition des tâches, coordination des activités.</p>
+                    
+                    <h4>Structure et Organigramme</h4>
+                    
+                    <div class="definition">
+                        <strong>Organigramme :</strong> Représentation graphique de la structure de l'entreprise. Reflet de la structure formelle. Décrit le fonctionnement de l'entreprise, met en exergue les différentes fonctions et activités.
+                    </div>
+                    
+                    <h4>Les 3 modes de structuration :</h4>
+                    <ul>
+                        <li>Structure fonctionnelle</li>
+                        <li>Structure divisionnelle</li>
+                        <li>Structure matricielle</li>
+                    </ul>
+                `
+            },
+            {
+                title: "Structure Fonctionnelle",
+                content: `
+                    <h3>Structure fonctionnelle</h3>
+                    
+                    <div class="definition">
+                        <strong>Définition :</strong> Découpage de l'organisation par ses principales fonctions. Le nombre des fonctions dépend des besoins de l'entreprise.
+                    </div>
+                    
+                    <h4>Les 6 fonctions selon Henri Fayol (1916) :</h4>
+                    <ul>
+                        <li>Fonction administrative</li>
+                        <li>Fonction sécurité</li>
+                        <li>Fonction commerciale</li>
+                        <li>Fonction financière</li>
+                        <li>Fonction technique (production)</li>
+                        <li>Fonction comptable</li>
+                    </ul>
+                    
+                    <div class="org-chart">
+                        <div class="org-level">
+                            <div class="org-box" style="background: #2c3e50; color: white;">Direction générale</div>
+                        </div>
+                        <div class="org-level">
+                            <div class="org-box">Production</div>
+                            <div class="org-box">Marketing</div>
+                            <div class="org-box">Finances</div>
+                            <div class="org-box">Ressources Humaines</div>
+                        </div>
+                    </div>
+                    
+                    <p>Structure basée sur les différentes activités de l'entreprise ou ses fonctions de base.</p>
+                `
+            },
+            {
+                title: "Structure Divisionnelle",
+                content: `
+                    <h3>Structure divisionnelle</h3>
+                    
+                    <div class="definition">
+                        <strong>Définition :</strong> Basée sur le découpage de l'entreprise en unités spécialisées en fonction des domaines d'activités stratégiques (produits, marchés).
+                    </div>
+                    
+                    <p>En général, basée sur la distinction des activités, la famille des produits ou encore des marchés.</p>
+                    
+                    <div class="org-chart">
+                        <div class="org-level">
+                            <div class="org-box" style="background: #2c3e50; color: white;">Direction générale</div>
+                        </div>
+                        <div class="org-level">
+                            <div class="org-box">Division Produit A</div>
+                            <div class="org-box">Division Produit B</div>
+                            <div class="org-box">Division Produit C</div>
+                        </div>
+                        <div class="org-level" style="font-size: 0.9em;">
+                            <div class="org-box" style="padding: 8px;">Marketing</div>
+                            <div class="org-box" style="padding: 8px;">Production</div>
+                            <div class="org-box" style="padding: 8px;">Finances</div>
+                        </div>
+                        <div class="org-level" style="font-size: 0.9em;">
+                            <div class="org-box" style="padding: 8px;">Marketing</div>
+                            <div class="org-box" style="padding: 8px;">Production</div>
+                            <div class="org-box" style="padding: 8px;">Finances</div>
+                        </div>
+                        <div class="org-level" style="font-size: 0.9em;">
+                            <div class="org-box" style="padding: 8px;">Marketing</div>
+                            <div class="org-box" style="padding: 8px;">Production</div>
+                            <div class="org-box" style="padding: 8px;">Finances</div>
+                        </div>
+                    </div>
+                    
+                    <p>Chaque division fonctionne comme une quasi-entreprise avec ses propres fonctions.</p>
+                `
+            },
+            {
+                title: "Structure Matricielle",
+                content: `
+                    <h3>Structure matricielle</h3>
+                    
+                    <div class="definition">
+                        <strong>Définition :</strong> Structure complexe qui peut porter sur la fonction et le produit, ou le produit et le lieu. Conduit à une double hiérarchie, voire triple, pour les employés. Suppose plusieurs chefs.
+                    </div>
+                    
+                    <div class="org-chart">
+                        <div class="org-level">
+                            <div class="org-box" style="background: #2c3e50; color: white;">Direction générale</div>
+                        </div>
+                        <table style="margin: 20px auto; width: 90%;">
+                            <tr>
+                                <th></th>
+                                <th>Chef de produit A</th>
+                                <th>Chef de produit B</th>
+                                <th>Chef de produit C</th>
+                            </tr>
+                            <tr>
+                                <td><strong>Direction Production</strong></td>
+                                <td>Responsable production A</td>
+                                <td>Responsable production B</td>
+                                <td>Responsable production C</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Direction Marketing</strong></td>
+                                <td>Responsable marketing A</td>
+                                <td>Responsable marketing B</td>
+                                <td>Responsable marketing C</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Direction Finances</strong></td>
+                                <td>Contrôleur A</td>
+                                <td>Contrôleur B</td>
+                                <td>Contrôleur C</td>
+                            </tr>
+                        </table>
+                    </div>
+                    
+                    <p>Chaque employé a deux chefs : son chef fonctionnel et son chef de produit.</p>
+                `
+            },
+            {
+                title: "Spécialisation des Tâches",
+                content: `
+                    <h3>Spécialisation verticale et horizontale</h3>
+                    
+                    <h4>Spécialisation verticale :</h4>
+                    <p>Liée à la création des niveaux hiérarchiques, la hauteur de l'organigramme.</p>
+                    
+                    <div class="example">
+                        <strong>Exemple - Statut des agents publics (RDC, Loi n°16/013) :</strong>
+                        <ul>
+                            <li><strong>Catégorie A :</strong> Conception, commandement, direction (Secrétaire général, Directeur général, Directeur)</li>
+                            <li><strong>Catégorie B :</strong> Coordination, encadrement (Chef de division, Chef de bureau)</li>
+                            <li><strong>Catégorie C :</strong> Collaboration, prestations intellectuelles et techniques (Attaché d'Administration)</li>
+                            <li><strong>Catégorie D :</strong> Exécution, tâches non spécialisées, prestations manuelles (Agent d'Administration, Huissier)</li>
+                        </ul>
+                    </div>
+                    
+                    <h4>Spécialisation horizontale :</h4>
+                    <p>Basée sur la création des fonctions, des services indépendants. C'est la largeur de l'organigramme (organigramme plat).</p>
+                    
+                    <div class="example">
+                        <strong>Exemple :</strong> Plusieurs Secrétariats généraux spécialisés : Enseignement supérieur, Économie, Budget, Urbanisme, Finances, Plan...
+                    </div>
+                `
+            },
+            {
+                title: "Coordination des Activités",
+                content: `
+                    <h3>Les 6 mécanismes de coordination (Henry Mintzberg)</h3>
+                    
+                    <table>
+                        <tr>
+                            <th>Mécanisme</th>
+                            <th>Description</th>
+                        </tr>
+                        <tr>
+                            <td><strong>1. Ajustement mutuel</strong></td>
+                            <td>Coordination par communication informelle, entente entre les gens travaillant ensemble</td>
+                        </tr>
+                        <tr>
+                            <td><strong>2. Supervision directe</strong></td>
+                            <td>Le chef donne aux employés les ordres et directives</td>
+                        </tr>
+                        <tr>
+                            <td><strong>3. Standardisation des procédés</strong></td>
+                            <td>Respect des procédés à suivre pour réaliser le travail</td>
+                        </tr>
+                        <tr>
+                            <td><strong>4. Standardisation des résultats</strong></td>
+                            <td>Précision des résultats attendus</td>
+                        </tr>
+                        <tr>
+                            <td><strong>5. Standardisation des qualifications</strong></td>
+                            <td>Formation spécifique exigée (profil attendu)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>6. Standardisation des normes</strong></td>
+                            <td>Observance des règles à suivre, normes appropriées</td>
+                        </tr>
+                    </table>
+                `
+            },
+            {
+                title: "Les 6 Parties d'une Organisation",
+                content: `
+                    <h3>Les composantes selon Henry Mintzberg</h3>
+                    
+                    <div class="org-chart">
+                        <div class="org-level">
+                            <div class="org-box" style="background: #3498db; color: white;">IDÉOLOGIE</div>
+                        </div>
+                        <div class="org-level">
+                            <div class="org-box">SOMMET STRATÉGIQUE</div>
+                        </div>
+                        <div class="org-level" style="display: flex; gap: 10px;">
+                            <div class="org-box" style="width: 120px;">TECHNO-STRUCTURE</div>
+                            <div class="org-box" style="width: 120px;">LIGNE HIÉRARCHIQUE</div>
+                            <div class="org-box" style="width: 120px;">SUPPORT LOGISTIQUE</div>
+                        </div>
+                        <div class="org-level">
+                            <div class="org-box" style="background: #f39c12;">CENTRE OPÉRATIONNEL</div>
+                        </div>
+                    </div>
+                    
+                    <ul>
+                        <li><strong>Centre opérationnel :</strong> Opérateurs chargés de la production (poumon de l'organisation) - ex: enseignants</li>
+                        <li><strong>Sommet stratégique :</strong> Autorités qui prennent les décisions stratégiques - ex: Conseil d'Administration</li>
+                        <li><strong>Ligne hiérarchique :</strong> Lie le centre opérationnel au sommet stratégique</li>
+                        <li><strong>Support logistique :</strong> Fonctions de soutien - ex: restaurant</li>
+                        <li><strong>Technostructure :</strong> Analystes chargés de la conception, planification</li>
+                        <li><strong>Idéologie :</strong> Symbole, culture dans l'organisation</li>
+                    </ul>
+                `
+            },
+            {
+                title: "Départementalisation",
+                content: `
+                    <h3>Les modes de découpage</h3>
+                    
+                    <p>Lorsqu'une organisation devient grande et complexe, on la découpe pour une bonne gestion.</p>
+                    
+                    <table>
+                        <tr>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <th>Exemple</th>
+                        </tr>
+                        <tr>
+                            <td><strong>Par fonction</strong></td>
+                            <td>Regroupement basé sur les grandes fonctions</td>
+                            <td>Production, RH, Marketing, Finances</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Par clientèle</strong></td>
+                            <td>Distinction par type de clients</td>
+                            <td>Service gros / Service détail</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Par produit</strong></td>
+                            <td>Distinction par famille de produits</td>
+                            <td>Boissons alcooliques / Boissons sucrées</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Par espace géographique</strong></td>
+                            <td>Distinction par zone</td>
+                            <td>SONAS Gombe, SONAS Nord, Sud, Est, Ouest</td>
+                        </tr>
+                    </table>
+                    
+                    <div class="example">
+                        <strong>Exemple géographique :</strong> REGIDESO NORD, SUD, EST, OUEST
+                    </div>
+                `
+            },
+            {
+                title: "Structure Formelle et Informelle",
+                content: `
+                    <h3>Les deux dimensions de la structure</h3>
+                    
+                    <table>
+                        <tr>
+                            <th>Structure Formelle</th>
+                            <th>Structure Informelle</th>
+                        </tr>
+                        <tr>
+                            <td>Officielle, planifiée, voulue par les dirigeants</td>
+                            <td>Spontanée, non définie par la structure</td>
+                        </tr>
+                        <tr>
+                            <td>Représentée par l'organigramme</td>
+                            <td>Réseaux de relations informelles</td>
+                        </tr>
+                        <tr>
+                            <td>Répartition officielle des tâches</td>
+                            <td>Normes et règles non officielles</td>
+                        </tr>
+                        <tr>
+                            <td>Autorité officielle</td>
+                            <td>Relations d'autorité non prévues (forte personnalité, compétence particulière)</td>
+                        </tr>
+                        <tr>
+                            <td>Communications formalisées</td>
+                            <td>Relations sociales, affinités personnelles</td>
+                        </tr>
+                    </table>
+                    
+                    <div class="definition">
+                        <strong>Structure formelle :</strong> Schéma de la répartition des tâches, d'attribution des pouvoirs et des responsabilités, des communications, et de coordination des activités.
+                    </div>
+                    
+                    <div class="definition">
+                        <strong>Structure informelle :</strong> Réseau de relations sociales non définies par la structure, dues aux affinités personnelles, intérêts sociaux communs, valeurs et attitudes propres.
+                    </div>
+                    
+                    <p>Les relations informelles pallient les insuffisances de la structure formelle, mais peuvent aussi créer du dysfonctionnement.</p>
+                `
+            },
+            {
+                title: "Résumé Chapitre 1",
+                content: `
+                    <h3>Synthèse - Concepts clés</h3>
+                    
+                    <table>
+                        <tr>
+                            <th>Concept</th>
+                            <th>Définition</th>
+                        </tr>
+                        <tr>
+                            <td><strong>Organisation (Organization)</strong></td>
+                            <td>Unité sociale construite pour atteindre des buts spécifiques</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Organisation (Organizing)</strong></td>
+                            <td>Division du travail, répartition des tâches, coordination</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Efficacité</strong></td>
+                            <td>Rapport résultats / objectifs</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Efficience</strong></td>
+                            <td>Rapport résultats / ressources</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Performance</strong></td>
+                            <td>Atteinte des objectifs</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Management</strong></td>
+                            <td>Activités pour obtenir des résultats avec et par autrui</td>
+                        </tr>
+                    </table>
+                    
+                    <h4>Déterminants de la performance (Donnadieu) :</h4>
+                    <ul>
+                        <li>Organisation (formelle et informelle)</li>
+                        <li>Stratégie</li>
+                        <li>Homme (motivation, compétence, culture)</li>
+                    </ul>
+                    
+                    <h4>Approches de Bolman & Deal :</h4>
+                    <ul>
+                        <li>Structurelle</li>
+                        <li>Ressources Humaines</li>
+                        <li>Politique</li>
+                        <li>Symbolique</li>
+                    </ul>
+                `
+            },
+            {
+                title: "Résumé Chapitre 2",
+                content: `
+                    <h3>Synthèse - Processus managérial</h3>
+                    
+                    <h4>Les 4 activités managériales :</h4>
+                    
+                    <div class="org-chart">
+                        <div class="org-level">
+                            <div class="org-box" style="background: #3498db; color: white;">1. PLANIFIER</div>
+                        </div>
+                        <div class="org-level">
+                            <div class="org-box" style="background: #3498db; color: white;">2. ORGANISER</div>
+                        </div>
+                        <div class="org-level">
+                            <div class="org-box" style="background: #3498db; color: white;">3. DIRIGER</div>
+                        </div>
+                        <div class="org-level">
+                            <div class="org-box" style="background: #3498db; color: white;">4. CONTRÔLER</div>
+                        </div>
+                    </div>
+                    
+                    <h4>Planification :</h4>
+                    <ul>
+                        <li>Objectifs (SMART)</li>
+                        <li>Stratégies (entreprise, concurrentielle, fonctionnelle)</li>
+                        <li>Plans (portée, durée, spécificité, fréquence)</li>
+                    </ul>
+                    
+                    <h4>Organisation (Organizing) :</h4>
+                    <ul>
+                        <li>Structures (fonctionnelle, divisionnelle, matricielle)</li>
+                        <li>Spécialisation (verticale, horizontale)</li>
+                        <li>Coordination (6 mécanismes de Mintzberg)</li>
+                        <li>Départementalisation (fonction, produit, client, zone)</li>
+                        <li>Formel vs Informel</li>
+                    </ul>
+                    
+                    <div class="quote">
+                        "Administrer, c'est prévoir, organiser, commander, coordonner et contrôler." - Henri Fayol
+                    </div>
+                `
+            }
+        ];
+
+        // ============================================
+        // TIMINGS POUR SYNCHRONISATION AUDIO
+        // ============================================
+        const timeline = [
+    0,       // Slide 1  - 0:00
+    103,     // Slide 2  - 1:46
+    182,   // Slide 3  - 3:19.5
+    282.0,   // Slide 4  - 4:46.0
+    401,   // Slide 5  - 5:58.5
+    524.0,   // Slide 6  - 7:23.0
+    756,   // Slide 7  - 8:44.5
+    921,   // Slide 8  - 10:00.0
+    1029,   // Slide 9  - 10:55.5
+    1089,   // Slide 10 - 11:57.0
+    1159,   // Slide 11 - 13:05.5
+    1175,   // Slide 12 - 13:59.0
+    1221,   // Slide 13 - 15:02.5
+    1272,   // Slide 14 - 16:01.0
+    1340.5,  // Slide 15 - 17:01.5
+    1383.5,  // Slide 16 - 17:53.0
+    1413,  // Slide 17 - 18:47.5
+    1432,  // Slide 18 - 19:40.0
+    1448,  // Slide 19 - 20:30.5
+    1557,  // Slide 20 - 21:44.0
+    1629,  // Slide 21 - 22:40.5
+    1690.0,  // Slide 22 - 23:40.0
+    1760,  // Slide 23 - 24:34.5
+    1822,  // Slide 24 - 25:33.0
+    1825.5  // Slide 25 - 26:36.5
+     // Fin      - 27:38.1
+];
+
+        // Durée totale estimée
+        const totalDuration = 1835; // secondes (environ 30 minutes)
+
+        // Variables d'état
+        let currentSlide = 0;
+        let isAutoPlaying = false;
+        let autoPlayInterval;
+        let syncInterval;
+        
+        // Éléments DOM
+        const audioPlayer = document.getElementById('audioPlayer');
+        const contentDiv = document.getElementById('content');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const playBtn = document.getElementById('playBtn');
+        const statusDiv = document.getElementById('status');
+        const slideCounter = document.getElementById('slideCounter');
+        const progressFill = document.getElementById('progressFill');
+        const timeDisplay = document.getElementById('timeDisplay');
+
+        // ============================================
+        // FONCTIONS D'AFFICHAGE
+        // ============================================
+        function renderSlide(index) {
+            const slide = slides[index];
+            
+            contentDiv.innerHTML = `
+                <div class="slide active">
+                    <h2 class="slide-title">${slide.title}</h2>
+                    <div class="slide-content">${slide.content}</div>
+                </div>
+            `;
+            
+            slideCounter.textContent = `${index + 1}/${slides.length}`;
+            progressFill.style.width = `${((index + 1) / slides.length) * 100}%`;
+            
+            // Mise à jour des boutons de navigation
+            if (!isAutoPlaying) {
+                prevBtn.disabled = index === 0;
+                nextBtn.disabled = index === slides.length - 1;
+            }
+            
+            // Scroll en haut
+            contentDiv.scrollTop = 0;
+        }
+
+        // ============================================
+        // FONCTIONS DE NAVIGATION
+        // ============================================
+        function nextSlide() {
+            if (currentSlide < slides.length - 1) {
+                currentSlide++;
+                renderSlide(currentSlide);
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                renderSlide(currentSlide);
+            }
+        }
+
+        // ============================================
+        // SYNCHRONISATION AUDIO / SLIDES
+        // ============================================
+        function updateTimeDisplay() {
+            const current = audioPlayer.currentTime;
+            const minutes = Math.floor(current / 60);
+            const seconds = Math.floor(current % 60);
+            const totalMinutes = Math.floor(totalDuration / 60);
+            const totalSeconds = Math.floor(totalDuration % 60);
+            
+            timeDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')} / ${totalMinutes.toString().padStart(2, '0')}:${totalSeconds.toString().padStart(2, '0')}`;
+            
+            // Mise à jour de la barre de progression
+            const progress = (current / totalDuration) * 100;
+            progressFill.style.width = `${Math.min(progress, 100)}%`;
+        }
+
+        function checkSync() {
+            if (!isAutoPlaying) return;
+            
+            const currentTime = audioPlayer.currentTime;
+            
+            // Trouver la slide correspondante au temps actuel
+            for (let i = timeline.length - 1; i >= 0; i--) {
+                if (currentTime >= timeline[i]) {
+                    if (i !== currentSlide) {
+                        currentSlide = i;
+                        renderSlide(currentSlide);
+                    }
+                    break;
+                }
+            }
+            
+            updateTimeDisplay();
+            
+            // Arrêt automatique à la fin
+            if (currentTime >= totalDuration - 1) {
+                stopAutoPlay();
+            }
+        }
+
+        function startAutoPlay() {
+            if (!audioPlayer.src) {
+                alert('Veuillez placer le fichier audio "management_ch1_2.mp3" dans le même dossier que ce fichier HTML.');
+                return;
+            }
+            
+            isAutoPlaying = true;
+            playBtn.textContent = '⏸ Pause';
+            playBtn.classList.remove('play-btn');
+            playBtn.classList.add('stop-btn');
+            statusDiv.textContent = 'Mode automatique';
+            statusDiv.style.background = 'rgba(40, 167, 69, 0.9)';
+            
+            prevBtn.disabled = true;
+            nextBtn.disabled = true;
+            
+            audioPlayer.play();
+            
+            // Vérifier la synchronisation toutes les 100ms
+            syncInterval = setInterval(checkSync, 100);
+        }
+
+        function stopAutoPlay() {
+            isAutoPlaying = false;
+            playBtn.textContent = '▶ Lecture automatique';
+            playBtn.classList.remove('stop-btn');
+            playBtn.classList.add('play-btn');
+            statusDiv.textContent = 'Mode navigation';
+            statusDiv.style.background = 'rgba(0,0,0,0.8)';
+            
+            audioPlayer.pause();
+            
+            if (syncInterval) {
+                clearInterval(syncInterval);
+            }
+            
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === slides.length - 1;
+        }
+
+        function toggleAutoPlay() {
+            if (isAutoPlaying) {
+                stopAutoPlay();
+            } else {
+                startAutoPlay();
+            }
+        }
+
+        // ============================================
+        // GESTION DES ÉVÉNEMENTS AUDIO
+        // ============================================
+        audioPlayer.addEventListener('ended', function() {
+            stopAutoPlay();
+        });
+
+        audioPlayer.addEventListener('timeupdate', function() {
+            if (!isAutoPlaying) {
+                updateTimeDisplay();
+            }
+        });
+
+        // ============================================
+        // RACCOURCIS CLAVIER
+        // ============================================
+        document.addEventListener('keydown', function(e) {
+            if (isAutoPlaying) return;
+            
+            if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                prevSlide();
+            } else if (e.key === 'ArrowRight') {
+                e.preventDefault();
+                nextSlide();
+            } else if (e.key === ' ') {
+                e.preventDefault();
+                toggleAutoPlay();
+            }
+        });
+
+        // ============================================
+        // INITIALISATION
+        // ============================================
+        renderSlide(0);
+        updateTimeDisplay();
+
+        // Vérifier si l'audio existe
+        audioPlayer.addEventListener('error', function() {
+            console.warn('Fichier audio non trouvé. Placez "management_ch1_2.mp3" dans le même dossier.');
+        });
+    </script>
+</body>
+</html>
