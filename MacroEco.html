@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Macroéconomie - Cours complet</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a472a 0%, #2e8b57 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1300px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: #f0f0f0;
+            width: 100%;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #2e8b57, #1a472a);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .header {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .header h1 {
+            color: #1a472a;
+            font-size: 1.3em;
+            font-weight: 600;
+        }
+
+        .badge {
+            background: #2e8b57;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+
+        .content {
+            padding: 30px;
+            min-height: 500px;
+            max-height: 70vh;
+            overflow-y: auto;
+            background: #ffffff;
+            scroll-behavior: smooth;
+        }
+
+        .slide {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide-title {
+            color: #1a472a;
+            font-size: 2.2em;
+            margin-bottom: 25px;
+            font-weight: 700;
+            border-left: 5px solid #2e8b57;
+            padding-left: 20px;
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 10;
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+
+        .slide-content {
+            color: #2c3e50;
+            line-height: 1.8;
+            font-size: 1.15em;
+        }
+
+        .slide-content h3 {
+            color: #1a472a;
+            margin: 25px 0 15px 0;
+            font-size: 1.5em;
+        }
+
+        .slide-content h4 {
+            color: #1a472a;
+            margin: 20px 0 10px 0;
+            font-size: 1.25em;
+        }
+
+        .slide-content p {
+            margin: 15px 0;
+        }
+
+        .slide-content ul, .slide-content ol {
+            margin: 15px 0 15px 30px;
+        }
+
+        .slide-content li {
+            margin: 10px 0;
+        }
+
+        .definition {
+            background: #e8f5e9;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 25px 0;
+            border-left: 5px solid #2e8b57;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .formula {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 25px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 1.3em;
+            text-align: center;
+            border-left: 5px solid #1a472a;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .example {
+            background: #fef5e7;
+            padding: 25px;
+            border-radius: 12px;
+            margin: 25px 0;
+            border-left: 5px solid #f39c12;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin: 25px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        th {
+            background: #1a472a;
+            color: white;
+            font-weight: 600;
+            padding: 15px;
+            text-align: left;
+        }
+
+        td {
+            border: 1px solid #e9ecef;
+            padding: 12px;
+        }
+
+        tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .controls {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-btn {
+            background: white;
+            color: #1a472a;
+            border: 1px solid #dee2e6;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            background: #e9ecef;
+            transform: translateY(-1px);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .play-btn {
+            background: linear-gradient(90deg, #2e8b57, #1a472a);
+            color: white;
+            box-shadow: 0 4px 15px rgba(46, 139, 86, 0.4);
+        }
+
+        .play-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(46, 139, 86, 0.5);
+        }
+
+        .stop-btn {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .stop-btn:hover {
+            background: #c0392b;
+        }
+
+        .counter {
+            color: #6c757d;
+            font-size: 0.95em;
+            background: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .status {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 0.9em;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            backdrop-filter: blur(5px);
+        }
+
+        .circuit {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 30px 0;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+        }
+
+        .circuit-row {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+
+        .circuit-box {
+            border: 2px solid #2e8b57;
+            padding: 15px 25px;
+            border-radius: 8px;
+            background: white;
+            font-weight: 600;
+            text-align: center;
+            min-width: 150px;
+        }
+
+        .circuit-arrow {
+            font-size: 1.5em;
+            color: #2e8b57;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                padding: 20px;
+                max-height: 60vh;
+            }
+            
+            .slide-title {
+                font-size: 1.8em;
+            }
+            
+            .controls {
+                flex-direction: column;
+            }
+            
+            .nav-buttons {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            button {
+                flex: 1;
+                text-align: center;
+            }
+            
+            .circuit-box {
+                min-width: 100px;
+                padding: 10px 15px;
+                font-size: 0.9em;
+            }
+        }
+
+        .smart-badge {
+            display: inline-block;
+            background: #2e8b57;
+            color: white;
+            font-weight: bold;
+            width: 30px;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="status" id="status">Mode navigation</div>
+    
+    <div class="container">
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        
+        <div class="header">
+            <h1>📊 MACROÉCONOMIE - Cours complet</h1>
+            <span class="badge" id="slideCounter">1/24</span>
+        </div>
+
+        <div class="content" id="content">
+            <!-- Les slides seront injectées dynamiquement -->
+        </div>
+
+        <div class="controls">
+            <div class="nav-buttons">
+                <button class="nav-btn" onclick="prevSlide()" id="prevBtn">← Précédent</button>
+                <button class="nav-btn" onclick="nextSlide()" id="nextBtn">Suivant →</button>
+            </div>
+            <button class="play-btn" onclick="toggleAutoPlay()" id="playBtn">▶ Lecture automatique</button>
+            <span class="counter" id="timeDisplay">00:00 / 00:00</span>
+        </div>
+    </div>
+
+    <audio id="audioPlayer" src="macro_complet.mp3" preload="auto"></audio>
+
+    <script>
+        // Message d'accueil
+        alert("📚 Bienvenue dans le cours de MACROÉCONOMIE !\n\nAstuces :\n• Mettez le cours en pause ⏸️ pour lire les écrits 📄\n• Utilisez les flèches ← → pour naviguer\n• La barre d'espace démarre/arrête la lecture\n\nProfitez bien de ce cours !");
+
+        // ============================================
+        // DONNÉES DU COURS - 24 SLIDES
+        // ============================================
+        const slides = [
+    {
+        title: "INTRODUCTION ET QUESTIONS FONDAMENTALES",
+        content: `<p><strong>Cours de macroéconomie. Chemin de la réussite.</strong></p>
+        <h3>INTRODUCTION ET QUESTIONS FONDAMENTALES</h3>
+        <p><strong>Première question :</strong> Dois-je aller à l'université pour trouver un emploi maintenant ?</p>
+        <p><strong>Deuxième question :</strong> Qu'est-ce qui détermine le salaire offert par toute entreprise à un individu diplômé d'une université ?</p>
+        <p><strong>Troisième question :</strong> A-t-il un déterminant dans le coût de l'offre d'un nouveau cours pour une université ?</p>
+        <p><strong>Quatrième question :</strong> Quelles mesures doivent être adoptées par l'État pour faciliter l'accès aux universités et stabiliser les revenus ?</p>
+        <p><strong>Cinquième question :</strong> A-t-il un déterminant dans le fait qu'un langage évènement dans un séjour à l'étranger ?</p>`
+    },
+    {
+        title: "CHAPITRE PREMIER : LA POLITIQUE ÉCONOMIQUE - DÉFINITION",
+        content: `<h3>CHAPITRE PREMIER : LA POLITIQUE ÉCONOMIQUE</h3>
+        <p>La macroéconomie s'intéresse aussi, et de manière centrale, à la politique économique.</p>
+        <div class="definition">
+            <strong>La politique économique se définit comme</strong> un ensemble de mesures et de politiques prises par l'État pour assurer la bonne santé de l'économie et répondre aux besoins des êtres humains vivant en société.
+        </div>
+        <p><strong>Son but est d'assurer le bien-être de la population.</strong></p>`
+    },
+    {
+        title: "LES OBJECTIFS DE LA POLITIQUE ÉCONOMIQUE",
+        content: `<h3>LES OBJECTIFS DE LA POLITIQUE ÉCONOMIQUE</h3>
+        <p><strong>Premier objectif : la croissance économique.</strong> Il s'agit de viser un niveau élevé de la production et d'augmenter le revenu national.</p>
+        <p><strong>Deuxième objectif : le plein emploi.</strong> L'État doit chercher à réduire le chômage. Tous les facteurs de production doivent être utilisés. On parle de sous-emploi lorsque ce n'est pas le cas.</p>
+        <p><strong>Troisième objectif : la stabilité des prix.</strong> L'État doit maîtriser le niveau général des prix. Il faut éviter l'inflation. On recherche plutôt un niveau d'inflation faible. La norme générale est de 2 pour cent. Lorsque l'inflation atteint 5 pour cent, on considère qu'elle est déjà trop élevée.</p>
+        <p><strong>Quatrième objectif : l'équilibre de la balance des paiements.</strong> L'État cherche à maîtriser le commerce du pays au niveau international, entre les importations et les exportations.</p>
+        <p>Les objectifs de la politique économique ne sont pas différents de ceux de la macroéconomie, car la politique économique se situe au niveau de la macroéconomie.</p>`
+    },
+    {
+        title: "LES INSTRUMENTS DE LA POLITIQUE ÉCONOMIQUE",
+        content: `<h3>LES INSTRUMENTS DE LA POLITIQUE ÉCONOMIQUE</h3>
+        <p>La politique économique utilise des instruments que l'État emploie pour atteindre ses objectifs. On distingue la politique budgétaire et la politique monétaire.</p>
+        <div class="definition"><strong>Politique budgétaire :</strong> Action sur les dépenses publiques et les recettes fiscales.</div>
+        <div class="definition"><strong>Politique monétaire :</strong> Action sur la masse monétaire, les taux d'intérêt et le crédit.</div>
+        <p><strong>Les politiques macroéconomiques sont à court terme, tandis que les politiques structurelles sont à long terme.</strong></p>`
+    },
+    {
+        title: "LE CIRCUIT ÉCONOMIQUE",
+        content: `<h3>LE CIRCUIT ÉCONOMIQUE</h3>
+        <p>Représentons le circuit économique. Les ménages offrent leurs facteurs de travail. Les entreprises produisent des biens et services. Les ménages consomment et épargnent. Les institutions financières, ou marchés financiers, collectent l'épargne et la mettent à disposition des entreprises pour financer l'investissement.</p>
+        <p>Dans ce circuit, les entreprises ont besoin de revenu. Les ménages, avec leur revenu, peuvent effectuer des achats, ce qui constitue la consommation. Ce qui leur manque, ils le consomment.</p>
+        <p>Les institutions financières peuvent mettre à disposition des entreprises des sommes pour qu'elles investissent et fabriquent.</p>`
+    },
+    {
+        title: "CHAPITRE DEUXIÈME : LA COMPTABILITÉ NATIONALE",
+        content: `<h3>CHAPITRE DEUXIÈME : LA COMPTABILITÉ NATIONALE</h3>
+        <p>La comptabilité nationale constitue la principale compétitivité économique. Elle est l'ensemble des règles et du traitement des mesures de base de la production totale et de l'efficacité des moyens qui gouvernent l'économie.</p>
+        <p>Elle vise à représenter l'économie de manière synthétique et simplifiée.</p>
+        <p>La comptabilité nationale a deux grandes fonctions. D'abord, elle collecte des informations statistiques pour mesurer les flux de production et de revenu dans le circuit économique entre les agents économiques. Ensuite, elle traite et analyse les informations statistiques et les agrégats nationaux.</p>`
+    },
+    {
+        title: "LES CARACTÉRISTIQUES DE LA COMPTABILITÉ NATIONALE",
+        content: `<h3>LES CARACTÉRISTIQUES DE LA COMPTABILITÉ NATIONALE</h3>
+        <ul>
+            <li><strong>Première caractéristique :</strong> elle mesure des flux, c'est-à-dire des revenus, des flux de production.</li>
+            <li><strong>Deuxième caractéristique :</strong> elle mesure des flux monétaires.</li>
+            <li><strong>Troisième caractéristique :</strong> elle mesure des données ex post. Il s'agit d'observations à posteriorité, c'est-à-dire après que les événements ont eu lieu.</li>
+        </ul>`
+    },
+    {
+        title: "LES AGENTS ÉCONOMIQUES",
+        content: `<h3>LES AGENTS ÉCONOMIQUES AU SENS DE LA COMPTABILITÉ NATIONALE</h3>
+        <p>Dans la comptabilité nationale, les agents économiques sont appelés secteurs institutionnels résidents.</p>
+        <p><strong>Les cinq secteurs institutionnels résidents :</strong></p>
+        <ul>
+            <li>1. Les entreprises (sociétés non financières)</li>
+            <li>2. Les ménages</li>
+            <li>3. L'État (administrations publiques)</li>
+            <li>4. Les institutions financières (sociétés financières)</li>
+            <li>5. Les institutions sans but lucratif (ASBL)</li>
+        </ul>
+        <p>À ces cinq secteurs, on ajoute un secteur non résident : <strong>le reste du monde</strong>.</p>`
+    },
+    {
+        title: "LES OPÉRATIONS ÉCONOMIQUES",
+        content: `<h3>LES OPÉRATIONS ÉCONOMIQUES</h3>
+        <p>La comptabilité nationale groupe les opérations économiques en fonction de leur nature économique. Elle distingue trois catégories d'opérations.</p>
+        <ul>
+            <li><strong>1. Opérations sur les biens et services</strong></li>
+            <li><strong>2. Opérations de répartition</strong></li>
+            <li><strong>3. Opérations financières</strong></li>
+        </ul>`
+    },
+    {
+        title: "OPÉRATIONS SUR LES BIENS ET SERVICES",
+        content: `<h3>LES OPÉRATIONS SUR LES BIENS ET SERVICES</h3>
+        <p>Les ressources en biens et services sont constituées par la production nationale (P) plus les importations (M).</p>
+        <div class="formula">Ressources = P + M</div>
+        <p>Les emplois sont constitués par :</p>
+        <ul>
+            <li>Consommations intermédiaires (CI)</li>
+            <li>Consommation finale (CF)</li>
+            <li>Formation brute de capital fixe (FBCF)</li>
+            <li>Variation de stocks (VS)</li>
+            <li>Exportations (X)</li>
+        </ul>`
+    },
+    {
+        title: "L'ÉQUILIBRE RESSOURCES - EMPLOIS",
+        content: `<h3>L'ÉQUILIBRE RESSOURCES ET EMPLOIS</h3>
+        <div class="formula">P + M = CI + CF + FBCF + VS + X</div>
+        <p>Les importations constituent des ressources en produits pour l'économie. Les biens et services importés peuvent être soit consommés, soit utilisés pour la production.</p>`
+    },
+    {
+        title: "LA CONSOMMATION INTERMÉDIAIRE",
+        content: `<h3>LA CONSOMMATION INTERMÉDIAIRE</h3>
+        <div class="definition">
+            <strong>Consommation intermédiaire :</strong> Biens et services marchands consommés au cours du processus de production pour créer d'autres biens.
+        </div>
+        <p><strong>Exemples :</strong> matières premières, énergie, fournitures de bureau.</p>`
+    },
+    {
+        title: "LA CONSOMMATION FINALE",
+        content: `<h3>LA CONSOMMATION FINALE</h3>
+        <div class="definition">
+            <strong>Consommation finale :</strong> Utilisation des biens et services à leur stade final de production, pour satisfaire directement les besoins.
+        </div>
+        <p>La consommation finale peut être :</p>
+        <ul>
+            <li><strong>Privée</strong> (consommation des ménages)</li>
+            <li><strong>Publique</strong> (consommation des administrations publiques)</li>
+        </ul>`
+    },
+    {
+        title: "FBCF ET VARIATION DE STOCKS",
+        content: `<h3>LA FORMATION BRUTE DE CAPITAL FIXE (FBCF)</h3>
+        <div class="definition">
+            <strong>FBCF :</strong> Acquisition de biens durables utilisés pendant au moins un an pour produire d'autres biens (machines, bâtiments, infrastructures).
+        </div>
+        <h3>LA VARIATION DE STOCKS (VS)</h3>
+        <p>Augmentation ou diminution des biens en stock : matières premières, produits semi-finis, produits finis.</p>`
+    },
+    {
+        title: "EXPORTATIONS ET OPÉRATIONS DE RÉPARTITION",
+        content: `<h3>LES EXPORTATIONS</h3>
+        <p>Ventes de biens et services à des agents non résidents.</p>
+        <h3>LES OPÉRATIONS DE RÉPARTITION</h3>
+        <p>Ensemble des opérations de distribution et de redistribution du revenu entre les agents économiques.</p>
+        <ul>
+            <li>Elles ne modifient pas le revenu national total</li>
+            <li>Ce sont des transferts d'un agent à un autre</li>
+            <li>Elles déterminent le revenu disponible de chaque agent</li>
+        </ul>`
+    },
+    {
+        title: "LES OPÉRATIONS FINANCIÈRES",
+        content: `<h3>LES OPÉRATIONS FINANCIÈRES</h3>
+        <p>Elles décrivent la manière dont la création monétaire dépend du comportement et de la détention des ressources de l'économie.</p>
+        <ul>
+            <li><strong>Actifs financiers :</strong> créances et moyens de paiement</li>
+            <li><strong>Passifs financiers :</strong> contraction d'un engagement</li>
+        </ul>`
+    },
+    {
+        title: "LES COMPTES DE LA COMPTABILITÉ NATIONALE",
+        content: `<h3>LES COMPTES DE LA COMPTABILITÉ NATIONALE</h3>
+        <p>La comptabilité nationale établit des comptes pour chaque secteur institutionnel.</p>
+        <ul>
+            <li><strong>Sociétés non financières :</strong> emplois = achats, impôts, salaires ; ressources = ventes</li>
+            <li><strong>Ménages :</strong> revenus (salaires, transferts) et dépenses (achats)</li>
+            <li><strong>Administrations publiques :</strong> impôts perçus et dépenses publiques</li>
+        </ul>`
+    },
+    {
+        title: "LE PRODUIT INTÉRIEUR BRUT (PIB)",
+        content: `<h3>LE PRODUIT INTÉRIEUR BRUT (PIB)</h3>
+        <p><strong>Approche par la production :</strong> PIB = ΣVA + Impôts nets</p>
+        <p><strong>Approche par la dépense :</strong> PIB = CF + FBCF + VS + (X - M)</p>
+        <p><strong>Approche par le revenu :</strong> PIB = Salaires + Intérêts + Rentes + Profits</p>
+        <p>Chaque vente dans l'économie correspond à un revenu pour quelqu'un.</p>`
+    },
+    {
+        title: "EXERCICE - PARTIE 1 (DONNÉES)",
+        content: `<h3>EXERCICE D'APPLICATION</h3>
+        <p>Trois entreprises :</p>
+        <ul>
+            <li>X (minerais) : ventes 8400 UM</li>
+            <li>Y (acier) : ventes 18000 UM, achète 8400 UM à X</li>
+            <li>Z (voitures) : ventes 43000 UM, achète 18000 UM à Y</li>
+        </ul>
+        <p>Salaires : X=4400, Y=7400, Z=50000</p>`
+    },
+    {
+        title: "EXERCICE - PARTIE 2 (CALCUL VA)",
+        content: `<h3>Calcul de la valeur ajoutée</h3>
+        <ul>
+            <li>VA(X) = 8400 - 0 = 8400</li>
+            <li>VA(Y) = 18000 - 8400 = 9600</li>
+            <li>VA(Z) = 43000 - 18000 = 25000</li>
+        </ul>
+        <div class="formula">PIB (production) = 8400 + 9600 + 25000 = <strong>43000 UM</strong></div>`
+    },
+    {
+        title: "EXERCICE - PARTIE 3 (APPROCHE REVENU)",
+        content: `<h3>Vérification par l'approche revenu</h3>
+        <p>Salaires totaux = 4400 + 7400 + 50000 = 61800</p>
+        <p>Excédents bruts : 4000 + 2200 - 25000 = -18800</p>
+        <div class="formula">PIB = 61800 - 18800 = <strong>43000 UM</strong></div>
+        <p>Les deux méthodes convergent.</p>`
+    },
+    {
+        title: "DEUXIÈME EXERCICE - ÉCONOMIE OUVERTE",
+        content: `<h3>DEUXIÈME EXERCICE</h3>
+        <p><strong>Données :</strong> Production=510, CI=188, Impôts nets=15, Salaires=200, EBE=107, CF APU=30, VS=10, FBCF=50, X=60</p>
+        <p>VA = 510 - 188 = 322</p>
+        <div class="formula">PIB = VA + Impôts nets = 322 + 15 = <strong>337 UM</strong></div>`
+    },
+    {
+        title: "SYNTHÈSE",
+        content: `<h3>SYNTHÈSE</h3>
+        <p>La macroéconomie étudie l'économie dans son ensemble. Ses objectifs sont :</p>
+        <ul>
+            <li>Croissance économique</li>
+            <li>Plein emploi</li>
+            <li>Stabilité des prix</li>
+            <li>Équilibre extérieur</li>
+        </ul>
+        <div class="formula">P + M = CI + CF + FBCF + VS + X</div>
+        <p>Le PIB est calculable par trois méthodes : production, dépense et revenu.</p>
+        <div class="definition" style="text-align: center; font-size: 1.3em;">
+            <strong>Ceci termine le cours de macroéconomie.</strong><br><br>
+            Chemin de la réussite.
+        </div>`
+    }
+];
+
+        // Timings pour synchronisation audio (en secondes)
+        const timeline = [
+  0.0,
+  41.0,
+  67.0,
+  134.0,
+  154.0,
+  199,
+  248,
+  278,
+  329.0,
+  362.0,
+  413,
+  444,
+  462,
+  483,
+  514,
+  558,
+  582.0,
+  622.0,
+  689.5,
+  743.0,
+  784.0,
+  831.0,
+  904.0,
+  
+];
+
+        const totalDuration = 950; // secondes (18 minutes)
+
+        let currentSlide = 0;
+        let isAutoPlaying = false;
+        let syncInterval;
+        
+        const audioPlayer = document.getElementById('audioPlayer');
+        const contentDiv = document.getElementById('content');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const playBtn = document.getElementById('playBtn');
+        const statusDiv = document.getElementById('status');
+        const slideCounter = document.getElementById('slideCounter');
+        const progressFill = document.getElementById('progressFill');
+        const timeDisplay = document.getElementById('timeDisplay');
+
+        function renderSlide(index) {
+            const slide = slides[index];
+            contentDiv.innerHTML = `
+                <div class="slide active">
+                    <h2 class="slide-title">${slide.title}</h2>
+                    <div class="slide-content">${slide.content}</div>
+                </div>
+            `;
+            slideCounter.textContent = `${index + 1}/${slides.length}`;
+            progressFill.style.width = `${((index + 1) / slides.length) * 100}%`;
+            if (!isAutoPlaying) {
+                prevBtn.disabled = index === 0;
+                nextBtn.disabled = index === slides.length - 1;
+            }
+            contentDiv.scrollTop = 0;
+        }
+
+        function nextSlide() {
+            if (currentSlide < slides.length - 1) {
+                currentSlide++;
+                renderSlide(currentSlide);
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                renderSlide(currentSlide);
+            }
+        }
+
+        function updateTimeDisplay() {
+            const current = audioPlayer.currentTime;
+            const minutes = Math.floor(current / 60);
+            const seconds = Math.floor(current % 60);
+            const totalMinutes = Math.floor(totalDuration / 60);
+            const totalSeconds = Math.floor(totalDuration % 60);
+            timeDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')} / ${totalMinutes.toString().padStart(2, '0')}:${totalSeconds.toString().padStart(2, '0')}`;
+            const progress = (current / totalDuration) * 100;
+            progressFill.style.width = `${Math.min(progress, 100)}%`;
+        }
+
+        function checkSync() {
+            if (!isAutoPlaying) return;
+            const currentTime = audioPlayer.currentTime;
+            for (let i = timeline.length - 1; i >= 0; i--) {
+                if (currentTime >= timeline[i]) {
+                    if (i !== currentSlide) {
+                        currentSlide = i;
+                        renderSlide(currentSlide);
+                    }
+                    break;
+                }
+            }
+            updateTimeDisplay();
+            if (currentTime >= totalDuration - 1) {
+                stopAutoPlay();
+            }
+        }
+
+        function startAutoPlay() {
+            if (!audioPlayer.src || audioPlayer.src === window.location.href) {
+                alert('Veuillez placer le fichier audio "macro_ch1_2.mp3" dans le même dossier que ce fichier HTML.');
+                return;
+            }
+            isAutoPlaying = true;
+            playBtn.textContent = '⏸ Pause';
+            playBtn.classList.remove('play-btn');
+            playBtn.classList.add('stop-btn');
+            statusDiv.textContent = 'Mode automatique';
+            statusDiv.style.background = 'rgba(46, 139, 86, 0.9)';
+            prevBtn.disabled = true;
+            nextBtn.disabled = true;
+            audioPlayer.play();
+            syncInterval = setInterval(checkSync, 100);
+        }
+
+        function stopAutoPlay() {
+            isAutoPlaying = false;
+            playBtn.textContent = '▶ Lecture automatique';
+            playBtn.classList.remove('stop-btn');
+            playBtn.classList.add('play-btn');
+            statusDiv.textContent = 'Mode navigation';
+            statusDiv.style.background = 'rgba(0,0,0,0.8)';
+            audioPlayer.pause();
+            if (syncInterval) clearInterval(syncInterval);
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === slides.length - 1;
+        }
+
+        function toggleAutoPlay() {
+            if (isAutoPlaying) stopAutoPlay();
+            else startAutoPlay();
+        }
+
+        audioPlayer.addEventListener('ended', () => stopAutoPlay());
+        audioPlayer.addEventListener('timeupdate', () => { if (!isAutoPlaying) updateTimeDisplay(); });
+
+        document.addEventListener('keydown', function(e) {
+            if (isAutoPlaying) return;
+            if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+            else if (e.key === 'ArrowRight') { e.preventDefault(); nextSlide(); }
+            else if (e.key === ' ') { e.preventDefault(); toggleAutoPlay(); }
+        });
+
+        renderSlide(0);
+        updateTimeDisplay();
+        
+        audioPlayer.addEventListener('error', function() {
+            console.warn('Fichier audio non trouvé. Placez "macro_ch1_2.mp3" dans le même dossier.');
+        });
+    </script>
+</body>
+</html>
+                
