@@ -423,6 +423,10 @@
             <div class="menu-section">
                 <h2>⭐ Premium</h2>
                 <div class="menu-items">
+                    <div class="menu-card premium" data-premium="macroeco">
+                        <h3> MacroEconomie Ière année<span class="badge">Premium</span></h3>
+                        <div class="description">Cours complet de MacroEconomie</div>
+                    </div>
                     <div class="menu-card premium" data-premium="im1">
                         <h3> Introduction au Management<span class="badge">Premium</span></h3>
                         <div class="description">Première Partie du Cours. Couvre les Chapitres 1 et 2</div>
@@ -480,6 +484,17 @@
             <!-- Section Premium -->
             <div class="section-title">⭐ Premium <span class="premium-badge">(contactez-nous)</span></div>
             <div class="cards-grid">
+                <div class="featured-card premium-card premium-pulse" data-premium="macroeco">
+                    <div class="card-content">
+                        <div class="card-icon">💉</div>
+                        <h3> MacroEconomie Ière année<span class="premium-badge">Premium</span></h3>
+                        <p>Cours de MacroEconomie</p>
+                        <div class="card-meta">
+                            <span class="card-tag">Cliquez pour accéder</span>
+                        </div>
+                        
+                    </div>
+                </div>
                 <div class="featured-card premium-card premium-pulse" data-premium="im1">
                     <div class="card-content">
                         <div class="card-icon"></div>
@@ -608,6 +623,9 @@
         else if (sujet === "im1") {
             window.open("IntroMan.html", "_blank");
             }
+        else if (sujet === "macroeco") {
+            window.open("MacroEco.html", "_blank");
+            } 
         }
         else {
         // ❌ PAS DANS LA LISTE → REDIRECTION WHATSAPP AVEC SON NOM
