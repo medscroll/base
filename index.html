@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Accès à MedScroll | Portail d'invitation</title>
+    <title>STUDIA | Accès plateforme</title>
     <style>
         * {
             margin: 0;
@@ -13,7 +13,7 @@
 
         body {
             font-family: system-ui, 'Segoe UI', 'Inter', 'Helvetica Neue', sans-serif;
-            background: linear-gradient(135deg, #0b2b3f 0%, #1a4a6f 100%);
+            background: linear-gradient(135deg, #0f2b3d 0%, #1e4a6e 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -23,31 +23,31 @@
             overflow-x: hidden;
         }
 
-        /* Effet de particules ou décor subtil */
+        /* Effet de grille subtile */
         body::before {
             content: '';
             position: absolute;
             width: 100%;
             height: 100%;
-            background-image: radial-gradient(circle at 10% 20%, rgba(255,255,255,0.08) 2%, transparent 2.5%);
-            background-size: 35px 35px;
+            background-image: radial-gradient(circle at 15% 30%, rgba(255,255,255,0.06) 2%, transparent 2.5%);
+            background-size: 40px 40px;
             pointer-events: none;
             z-index: 0;
         }
 
         /* Carte principale */
         .card {
-            background: rgba(255, 255, 255, 0.96);
+            background: rgba(255, 255, 255, 0.97);
             backdrop-filter: blur(0px);
             border-radius: 3rem;
-            max-width: 600px;
+            max-width: 620px;
             width: 100%;
             padding: 2.2rem 2rem 2.8rem;
             box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.35), 0 8px 18px rgba(0, 0, 0, 0.1);
             text-align: center;
             transition: transform 0.25s ease, box-shadow 0.3s ease;
             z-index: 2;
-            border: 1px solid rgba(255,255,255,0.3);
+            border: 1px solid rgba(255,255,255,0.4);
         }
 
         .card:hover {
@@ -55,40 +55,40 @@
             box-shadow: 0 32px 55px -15px rgba(0, 0, 0, 0.4);
         }
 
-        /* Logo / icône stylisée */
+        /* Logo / icône stylisée - STUDIA */
         .icon-wrapper {
-            background: linear-gradient(145deg, #eef4ff, #e0e9f5);
-            width: 85px;
-            height: 85px;
+            background: linear-gradient(145deg, #eef4ff, #dfe8f3);
+            width: 90px;
+            height: 90px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 1.5rem;
+            margin: 0 auto 1.4rem;
             box-shadow: 0 10px 18px rgba(0, 0, 0, 0.08);
         }
 
         .icon-svg {
-            width: 50px;
-            height: 50px;
+            width: 52px;
+            height: 52px;
             color: #1f6392;
         }
 
         h1 {
-            font-size: 2.1rem;
-            font-weight: 700;
+            font-size: 2.3rem;
+            font-weight: 800;
             background: linear-gradient(120deg, #1f4e6e, #0f3a52);
             background-clip: text;
             -webkit-background-clip: text;
             color: transparent;
-            margin-bottom: 0.75rem;
-            letter-spacing: -0.3px;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.5px;
         }
 
         .tagline {
             font-size: 1.1rem;
             color: #2c5a7a;
-            font-weight: 500;
+            font-weight: 600;
             margin-bottom: 1rem;
             border-bottom: 2px dashed #cbdde9;
             display: inline-block;
@@ -106,7 +106,7 @@
             font-weight: 450;
         }
 
-        /* Bouton principal */
+        /* Bouton principal STUDIA */
         .btn-access {
             display: inline-flex;
             align-items: center;
@@ -123,7 +123,7 @@
             transition: all 0.25s ease-in-out;
             box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
             width: 100%;
-            max-width: 280px;
+            max-width: 300px;
             margin: 0.5rem auto 1.2rem;
             letter-spacing: 0.5px;
             backdrop-filter: blur(2px);
@@ -155,22 +155,12 @@
         .info-note {
             font-size: 0.85rem;
             color: #5b7f99;
-            margin-top: 1.8rem;
+            margin-top: 1.6rem;
             background: #eef3fc;
             display: inline-block;
             padding: 0.4rem 1.2rem;
             border-radius: 50px;
             font-weight: 450;
-        }
-
-        /* micro-interaction / effet de pulse au survol du conteneur (optionnel) */
-        @keyframes subtleGlow {
-            0% {
-                box-shadow: 0 0 0 0 rgba(31, 99, 146, 0.3);
-            }
-            100% {
-                box-shadow: 0 0 0 8px rgba(31, 99, 146, 0);
-            }
         }
 
         /* Responsive */
@@ -180,15 +170,23 @@
                 border-radius: 2rem;
             }
             h1 {
-                font-size: 1.7rem;
+                font-size: 1.9rem;
             }
             .btn-access {
                 font-size: 1.25rem;
                 padding: 0.85rem 1.8rem;
-                max-width: 240px;
+                max-width: 250px;
             }
             .description {
                 font-size: 0.9rem;
+            }
+            .icon-wrapper {
+                width: 75px;
+                height: 75px;
+            }
+            .icon-svg {
+                width: 42px;
+                height: 42px;
             }
         }
 
@@ -201,10 +199,6 @@
             z-index: 2;
             position: relative;
         }
-        .footer-meta a {
-            color: #cbe0f0;
-            text-decoration: none;
-        }
 
         /* accessibilité focus */
         .btn-access:focus-visible {
@@ -212,7 +206,7 @@
             outline-offset: 3px;
         }
 
-        /* Effet de confirmation (apparition toast) */
+        /* Effet de notification toast */
         .toast-message {
             position: fixed;
             bottom: 30px;
@@ -246,6 +240,20 @@
                 line-height: 1.3;
             }
         }
+        
+        /* Badge STUDIA spécifique */
+        .studia-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #e8f0fe;
+            border-radius: 40px;
+            padding: 0.2rem 1rem;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #1f5e8c;
+            margin-top: 0.5rem;
+        }
     </style>
 </head>
 <body>
@@ -253,70 +261,72 @@
 <div class="card">
     <div class="icon-wrapper">
         <svg class="icon-svg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
         </svg>
     </div>
-    <h1>MedScroll</h1>
-    <div class="tagline">Ressources médicales & connaissances</div>
+    <h1>STUDIA</h1>
+    <div class="tagline">Espace Savoir & Formation Continue</div>
     <div class="description">
-        ✨ Découvrez un espace dédié à l'information médicale, articles et références.
-        <br>Un simple clic vous ouvre les portes de <strong>medscroll.github.io</strong>
+        🎓 Bienvenue sur STUDIA — votre plateforme de ressources éducatives, cours et documents interactifs.
+        <br>Cliquez sur le bouton ci-dessous pour accéder à l'espace STUDIA sur <strong>medscroll.github.io</strong>
     </div>
     
-    <!-- Bouton accéder avec comportement JS sécurisé -->
+    <!-- Bouton accéder vers medscroll.github.io (STUDIA) -->
     <button class="btn-access" id="accessButton">
-        <span>Accéder à la plateforme</span>
+        <span>Accéder à STUDIA</span>
         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
         </svg>
     </button>
     
     <div class="info-note">
-        🔒 Redirection sécurisée • Nouvel onglet ou fenêtre
+        🔐 Redirection sécurisée • Nouvel onglet
+    </div>
+    <div class="studia-badge">
+        📘 STUDIA powered by MedScroll
     </div>
     <div class="footer-meta">
-        ⚡ Cliquez sur le bouton pour rejoindre MedScroll
+        ⚡ Cliquez sur le bouton pour accéder à la plateforme STUDIA
     </div>
 </div>
 
-<!-- Toaster notification élégante -->
-<div id="toastMsg" class="toast-message">✨ Redirection vers MedScroll... ✨</div>
+<!-- Toast notification -->
+<div id="toastMsg" class="toast-message">✨ Accès à STUDIA en cours... ✨</div>
 
 <script>
     (function() {
-        // URL cible (absolue, conforme à la demande)
+        // URL cible (conforme à la demande : https://medscroll.github.io)
         const TARGET_URL = "https://medscroll.github.io";
         
-        // Récupération des éléments
+        // Éléments du DOM
         const button = document.getElementById('accessButton');
         const toast = document.getElementById('toastMsg');
         
-        // Fonction pour afficher un toast temporaire
         let toastTimeout = null;
+        
+        // Fonction pour afficher un toast temporaire avec message personnalisable
         function showToastMessage(message, duration = 1800) {
             if (!toast) return;
-            // Mise à jour du texte si personnalisé
             if (message) toast.textContent = message;
             toast.classList.add('show');
             
             if (toastTimeout) clearTimeout(toastTimeout);
             toastTimeout = setTimeout(() => {
                 toast.classList.remove('show');
-                // Remettre le texte original après disparition (optionnel)
+                // Restauration du message original après disparition
                 setTimeout(() => {
-                    if (toast && toast.textContent !== '✨ Redirection vers MedScroll... ✨') {
-                        toast.textContent = '✨ Redirection vers MedScroll... ✨';
+                    if (toast && toast.textContent !== '✨ Accès à STUDIA en cours... ✨') {
+                        toast.textContent = '✨ Accès à STUDIA en cours... ✨';
                     }
                 }, 300);
             }, duration);
         }
         
         // Fonction principale de redirection
-        function redirectToMedScroll(event) {
-            // On évite tout comportement par défaut indésirable (bouton n'est pas un lien)
+        function redirectToStudia(event) {
             if (event) event.preventDefault();
             
-            // Petit retour haptique / visuel sympathique : animation de bouton rapide
+            // Feedback visuel sur le bouton
             if (button) {
                 button.style.transform = 'scale(0.98)';
                 setTimeout(() => {
@@ -324,87 +334,70 @@
                 }, 120);
             }
             
-            // Afficher notification de pré-redirection
-            showToastMessage('🚀 Ouverture de MedScroll...', 1500);
+            // Notification avant redirection
+            showToastMessage('🚀 Ouverture de STUDIA...', 1500);
             
-            // Petite micro-pause pour que l'utilisateur perçoive le feedback (améliore l'expérience)
-            // et éviter les bloqueurs de popup (ouvrir directement après timeout court n'est pas bloqué car déclenché par clic utilisateur)
-            // Cependant setTimeout peut dégrader la perception par certains navigateurs anti-popup, 
-            // mais comme l'action est un clic réel sur le bouton, l'ouverture immédiate est plus fiable.
-            // On va ouvrir immédiatement après le feedback visuel (mais la notification est asynchrone)
-            // Ouvrir dans un nouvel onglet pour conserver la page d'accueil ouverte (bonne pratique)
-            // On utilise window.open avec _blank pour ne pas quitter la page actuelle.
-            
-            // Petite vérification : si l'utilisateur a des restrictions de popup, on tente un fallback vers window.location
-            // Mais la majorité des navigateurs acceptent _blank à partir d'un événement utilisateur direct.
-            // Pour être robuste on ouvre directement sans délai supplémentaire (sinon le délai pourrait être suspect)
-            // On va effectuer l'ouverture immédiatement après l'affichage du toast (sans attendre la fin du timeout)
-            // Cependant le toast est visible durant la redirection, c'est parfait.
-            
+            // Tentative d'ouverture dans un nouvel onglet (meilleure expérience)
             try {
-                // Ouvre dans un nouvel onglet (préserve l'état de la page d'invitation)
                 const newWindow = window.open(TARGET_URL, '_blank', 'noopener,noreferrer');
-                // Fallback au cas où le popup serait bloqué : on propose un lien alternatif avec avertissement
+                
+                // Gestion du blocage de popup
                 if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
-                    // Si blocage de popup, on affiche un toast différent et on redirige la page courante ?
-                    // Mieux: on affiche un message invitant à autoriser les popups ou on propose un clic direct.
+                    // Si popup bloqué, on propose une redirection dans la même fenêtre
                     showToastMessage("⚠️ Autorisez les popups ou recliquez. Redirection directe...", 2500);
-                    // On tente une redirection dans la même fenêtre après 600ms pour ne pas perdre l'utilisateur
                     setTimeout(() => {
                         window.location.href = TARGET_URL;
                     }, 500);
                 } else {
-                    // Succès, on peut optionnellement afficher un second toast rapide mais pas nécessaire
-                    // Pour plus de clarté, on modifie le message du toast existant
+                    // Succès : on peut confirmer l'ouverture avec un petit message élégant
                     if (toast && !toast.classList.contains('show')) {
-                        showToastMessage("✅ Nouvel onglet ouvert ! Bonne visite 🩺", 1800);
+                        showToastMessage("✅ Nouvel onglet STUDIA ouvert ! Bonne visite 📚", 2000);
                     } else {
-                        // Si le toast est déjà affiché avec le message initial, on peut laisser
+                        // Mise à jour discrète du toast existant
                         setTimeout(() => {
-                            if (toast && toast.textContent.includes('Ouverture')) {
-                                toast.textContent = "✅ Nouvel onglet ouvert vers MedScroll !";
+                            if (toast && toast.textContent.includes('STUDIA')) {
+                                toast.textContent = "✅ Accès STUDIA réussi !";
                                 setTimeout(() => {
-                                    if (toast && toast.textContent !== '✨ Redirection vers MedScroll... ✨')
-                                        toast.textContent = '✨ Redirection vers MedScroll... ✨';
+                                    if (toast && toast.textContent !== '✨ Accès à STUDIA en cours... ✨')
+                                        toast.textContent = '✨ Accès à STUDIA en cours... ✨';
                                 }, 1800);
                             }
                         }, 800);
                     }
                 }
             } catch (err) {
-                // Fallback ultime : redirection dans la même page
-                console.warn("Popup bloqué ou erreur:", err);
-                showToastMessage("🔁 Redirection automatique...", 1000);
+                console.warn("Erreur lors de la redirection:", err);
+                showToastMessage("🔄 Redirection automatique...", 1000);
                 setTimeout(() => {
                     window.location.href = TARGET_URL;
                 }, 300);
             }
         }
         
-        // Écouteur d'événement clic
+        // Attacher l'événement au clic
         if (button) {
-            button.addEventListener('click', redirectToMedScroll);
-            // Ajouter un attribut aria pour accessibilité
-            button.setAttribute('aria-label', 'Accéder au site MedScroll (nouvel onglet)');
+            button.addEventListener('click', redirectToStudia);
+            button.setAttribute('aria-label', 'Accéder à STUDIA via medscroll.github.io (nouvel onglet)');
+            
+            // Support clavier (Entrée / Espace)
+            button.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    redirectToStudia(e);
+                }
+            });
         } else {
-            console.warn("Bouton non trouvé, vérifiez l'ID");
+            console.warn("Bouton avec ID 'accessButton' introuvable.");
         }
         
-        // Option : Préchargement DNS pour accélérer la résolution (bonne pratique)
+        // Préchargement DNS pour améliorer la vitesse de résolution
         const linkPrefetch = document.createElement('link');
         linkPrefetch.rel = 'dns-prefetch';
         linkPrefetch.href = 'https://medscroll.github.io';
         document.head.appendChild(linkPrefetch);
         
-        // Ajout d'un indicateur de focus pour le clavier
-        if (button) {
-            button.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    redirectToMedScroll(e);
-                }
-            });
-        }
+        // Petite indication console pour les développeurs (optionnel mais propre)
+        console.log("STUDIA | Page d'accès prête — redirection vers https://medscroll.github.io");
     })();
 </script>
 </body>
